@@ -26,3 +26,10 @@ We plan to use cameras and aruco tags, similar to [this](https://github.com/fred
 under occlusion (2014)](https://code.ihub.org.cn/projects/641/repository/revisions/master/entry/readed/Automatic%20generation%20and%20detection%20of%20highly%20reliable%20fiducial%20markersnunder%20occlusion.pdf)
 [Robust identification of fiducial markers in challenging conditions (2018)](https://www.researchgate.net/profile/Rafael_Munoz-Salinas/publication/320439756_Robust_identification_of_fiducial_markers_in_challenging_conditions/links/59e9fd810f7e9bfdeb6cb66c/Robust-identification-of-fiducial-markers-in-challenging-conditions.pdf)
 
+# Equipment
+ - Raspberry Pi 4, Model B, 2GB RAM
+ - Picam module v 2.1
+ - 32GB U3 SD card
+ - Default recommended Raspberry Pi OS, 32-bit
+
+
