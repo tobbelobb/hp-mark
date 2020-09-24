@@ -13,10 +13,16 @@ We could use this data to:
  4. Detect print disasters
  5. Improve precision by dynamically compensating for measured errors
 
-# Status 
-This project is being planned.
+# Status
+I've just started working on this project. [Tweet](https://twitter.com/tobbelobb/status/1309108246850961409).
 
 # Roadmap
 Let's start with point 1 and see how far we get.
 
 We plan to use cameras and aruco tags, similar to [this](https://github.com/fredrudolf/hangprinter-computer-vision-calibration).
+
+# Reading List
+[Automatic generation and detection of highly reliable fiducial markers
+under occlusion (2014)](https://code.ihub.org.cn/projects/641/repository/revisions/master/entry/readed/Automatic%20generation%20and%20detection%20of%20highly%20reliable%20fiducial%20markersnunder%20occlusion.pdf)
+[Robust identification of fiducial markers in challenging conditions (2018)](https://www.researchgate.net/profile/Rafael_Munoz-Salinas/publication/320439756_Robust_identification_of_fiducial_markers_in_challenging_conditions/links/59e9fd810f7e9bfdeb6cb66c/Robust-identification-of-fiducial-markers-in-challenging-conditions.pdf)
+
