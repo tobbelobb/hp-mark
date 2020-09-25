@@ -29,6 +29,7 @@ We plan to use cameras and aruco tags, similar to [this](https://github.com/fred
  - Library choice OpenCV and/or ViSP and/or Vuforia has not been decided
 
 # Reading List
+ - [Motion tracking: No silver bullet, but a respectable arsenal (2002)](https://my.eng.utah.edu/~cs6360/Readings/cga02_welch_tracking.pdf)
  - [Pose estimation for augmented reality: a hands-on survey (2016)](https://hal.inria.fr/hal-01246370/document)
  - [Detection of ArUco Markers (2020)](https://docs.opencv.org/master/d5/dae/tutorial_aruco_detection.html)
  - [Automatic generation and detection of highly reliable fiducial markers
