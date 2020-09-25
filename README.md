@@ -43,4 +43,10 @@ under occlusion (2014)](https://code.ihub.org.cn/projects/641/repository/revisio
  # Keywords
  camera localization, pose estimation, motion tracking, optical sensors, vision-based registration, marker-based tracking techniques
 
+# Challenges
+ - The cameras' positions, or at least distance from the origin, must be measured.
+ - We must place markers both on the effector (on-board) and on the build plate (off-board).
+ - Off-board markers must define the global coordinate system. This breaks the Hangprinter's old system where the A-anchor defines the y-axis, and that the D-anchor defines the z-axis. So all anchor positions must be described with three (possibly non-zero) coordinates.
 
+# Opportunities
+ - Distances between nozzle, pivot points, and on-board markers may be measured by placing markers on every point (or in the case of the nozzle, move it to one of the off-board markers), and letting hp-mark measure relative distances.
