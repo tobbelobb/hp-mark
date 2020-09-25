@@ -6,20 +6,32 @@ Current Hangprinters can only measure their own motor positions.
 This is useful, but limited.
 HP Mark is a separate solution for measuring a Hangprinter's
 positions and orientations of anchors and effector.
-We could use this data to:
- 1. Calibrate perfect anchor positions
- 2. Measure Hangprinter precision and accuracy
- 3. Improve accuracy with static compensation matrix
- 4. Detect print disasters
- 5. Improve precision by dynamically compensating for measured errors
+
+# High-Level Dream User Story
+ 1. Mount a computer-connected camera
+ 2. Point camera towards build area
+ 3. BAM! Hangprinter calibrates itself, and gets ready to start printing with fantastic accuracy & reliability 
+
+A user experience and performance might be impossible to achieve.
+We'll try and get as close to that as we can, and remain aware of any discrepancies.
+
+# Use Cases by Priority
+ 0. Establish a coordinate system, with z-axis normal to the build plate
+ 1. The effector as a measurement device: Measure the effector's position and orientation
+ 2. Calibrate perfect anchor positions
+ 3. Measure Hangprinter's positional precision and accuracy
+ 4. Improve accuracy with static compensation matrix
+ 5. Detect print disasters
+ 6. Improve precision by dynamically compensating for measured errors
+
+Comment on use case 2: By combining effector position data with the [auto-calibration-simulation-for-hangprinter](https://gitlab.com/tobben/auto-calibration-simulation-for-hangprinter/), we might find perfect anchor positions without hanving the anchors in-image.
+
+I plan to use cameras and aruco tags, similar to [this](https://github.com/fredrudolf/hangprinter-computer-vision-calibration).
+
+This project will be all about getting good tag localization first, in terms of accuracy and precision.
 
 # Status
 I've just started working on this project. [Tweet](https://twitter.com/tobbelobb/status/1309108246850961409).
-
-# Roadmap
-Let's start with point 1 and see how far we get.
-
-We plan to use cameras and aruco tags, similar to [this](https://github.com/fredrudolf/hangprinter-computer-vision-calibration).
 
 # Equipment
  - Raspberry Pi 4, Model B, 2GB RAM
@@ -44,9 +56,9 @@ under occlusion (2014)](https://code.ihub.org.cn/projects/641/repository/revisio
  camera localization, pose estimation, motion tracking, optical sensors, vision-based registration, marker-based tracking techniques
 
 # Challenges
- - The cameras' positions, or at least distance from the origin, must be measured.
- - We must place markers both on the effector (on-board) and on the build plate (off-board).
- - Off-board markers must define the global coordinate system. This breaks the Hangprinter's old system where the A-anchor defines the y-axis, and that the D-anchor defines the z-axis. So all anchor positions must be described with three (possibly non-zero) coordinates.
+ - The cameras' positions, or at least distance from the origin, must be measured
+ - We must place markers both on the effector (on-board) and on the build plate (off-board)
+ - Off-board markers must define the global coordinate system. This breaks the Hangprinter's old system where the A-anchor defines the y-axis, and that the D-anchor defines the z-axis. So all anchor positions must be described with three (possibly non-zero) coordinates
 
-# Opportunities
- - Distances between nozzle, pivot points, and on-board markers may be measured by placing markers on every point (or in the case of the nozzle, move it to one of the off-board markers), and letting hp-mark measure relative distances.
+# Opportunities & Smaller Use Cases
+ - Distances between nozzle, pivot points, and on-board markers may be measured by placing markers on every point (or in the case of the nozzle, move it to one of the off-board markers), and letting hp-mark measure relative distances. This is useful for line-collision-detector, who needs those values.
