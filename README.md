@@ -84,10 +84,12 @@ under occlusion (2014)](https://code.ihub.org.cn/projects/641/repository/revisio
     * Solves an easier problem than ours: Tracking fiducials in a plane (2D)
     * Establishes that we can improve precision a lot by computing position from a grey scale image
     * GPU based tracking. This might be a bit over-kill for early tests, but might be just what HP Mark needs in the longer run.
-    * Calibration of light that allows for computation on a greyscale image. Using grayscale improves precision and noise tolerance compared to black/white images. However, calibration of light relies on having a stable background image, which a running HP will not have. However, we can find estimate position based on black/white image, and refine that based on a grey scale image.
+    * Calibration of light that allows for computation on a greyscale image. Using grayscale improves precision and noise tolerance compared to black/white images. However, calibration of light relies on having a stable background image, which a running HP will not have. However, we can find estimate position based on black/white image, and refine that based on a grey scale image. Once found, we can know that some points of the tag should be white. With this assumption we can calibrate for background light after we've localized the tag.
     * An automated technique for optical distortion compensation
     * "If a fiducial is partially in a brighter lit area of a table, the position may be slightly offset towards the brighter lit area." Probably true for any fudicial, and a good argument for using several fudicials, not one single fiducial on the HP effector. Light will vary less across a smaller marker. We'll have to make a trade off on marker size anyways.
     * Briefly describes how we can create benchmark videos in Blender. This would be super useful for HP Mark to have.
+ - [Affordable Infrared-Optical Pose-Tracking for Virtual and Augmented Reality (2007)](https://www.researchgate.net/profile/Hannes_Kaufmann/publication/228648906_Affordable_infrared-optical_pose-tracking_for_virtual_and_augmented_reality/links/0fcfd5092886b132ea000000/Affordable-infrared-optical-pose-tracking-for-virtual-and-augmented-reality.pdf)
+    * Describes camera calibration quite well 
 
 
 
