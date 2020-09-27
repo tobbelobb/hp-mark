@@ -67,6 +67,7 @@ under occlusion (2014)](https://code.ihub.org.cn/projects/641/repository/revisio
 
 # Challenges
  - The cameras' positions, or at least distance from the origin, must be measured
+ - We must compensate for optical distortion
  - We must place markers both on the effector (on-board) and on the build plate (off-board)
  - Off-board markers must define the global coordinate system. This breaks the Hangprinter's old system where the A-anchor defines the y-axis, and that the D-anchor defines the z-axis. So all anchor positions must be described with three (possibly non-zero) coordinates
 
