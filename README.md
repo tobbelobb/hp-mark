@@ -48,11 +48,12 @@ under occlusion (2014)](https://code.ihub.org.cn/projects/641/repository/revisio
  - [Robust identification of fiducial markers in challenging conditions (2018)](https://www.researchgate.net/profile/Rafael_Munoz-Salinas/publication/320439756_Robust_identification_of_fiducial_markers_in_challenging_conditions/links/59e9fd810f7e9bfdeb6cb66c/Robust-identification-of-fiducial-markers-in-challenging-conditions.pdf)
  - [Speeded up detection of squared fiducial markers (2018)](https://www.researchgate.net/profile/Rafael_Munoz-Salinas/publication/325787310_Speeded_Up_Detection_of_Squared_Fiducial_Markers/links/5b346d19aca2720785ef8a84/Speeded-Up-Detection-of-Squared-Fiducial-Markers.pdf)
  - [STag: A stable fiducial marker system (2019)](https://arxiv.org/pdf/1707.06292.pdf) Establishes that we want circular tags for stability and robustness
- - [An Efficient Visual Fiducial Localisation System (2017)](http://eprints.lincoln.ac.uk/29678/1/ec4ebaef91e81085404ca74d9f87773b.pdf) Establishes that we also want circular tags for computational efficiency
+ - [An Efficient Visual Fiducial Localisation System (2017)](http://eprints.lincoln.ac.uk/29678/1/ec4ebaef91e81085404ca74d9f87773b.pdf) Establishes that we also want circular tags for computational efficiency. Predicts where markers will be based on previous frames. Saves 99% of computation that way.
 ## Less Relevant but Still Interesting Opportunities
  - [Indoor Localization of Mobile Robots Through QR Code Detection and Dead Reckoning Data Fusion (2017)](https://scholar.google.com/scholar?q=Indoor%20Localization%20of%20Mobile%20Robots%20Through%20QR%20Code%20Detection%20and%20Dead%20Reckoning%20Data%20Fusion&btnG=Search&as_sdt=800000000001&as_sdtp=on)
  - [TopoTag: A Robust and Scalable Topological Fiducial Marker System (2019)](https://arxiv.org/pdf/1908.01450.pdf)
  - [LFTag: A Scalable Visual Fiducial System with Low Spatial Frequency (2020)](https://arxiv.org/pdf/2006.00842.pdf)
+ - [BullsEye: High-Precision Fiducial Tracking for Table-based Tangible Interaction (2014)](https://www.klokmose.net/clemens/wp-content/uploads/2015/08/bullseye-author.pdf) GPU based tracking, calibration of light that allows for computation on a greyscale image, and an automated technique for optical distortion compensation
 
 
 
