@@ -54,6 +54,7 @@ under occlusion (2014)](https://code.ihub.org.cn/projects/641/repository/revisio
  - [TopoTag: A Robust and Scalable Topological Fiducial Marker System (2019)](https://arxiv.org/pdf/1908.01450.pdf)
  - [LFTag: A Scalable Visual Fiducial System with Low Spatial Frequency (2020)](https://arxiv.org/pdf/2006.00842.pdf)
  - [BullsEye: High-Precision Fiducial Tracking for Table-based Tangible Interaction (2014)](https://www.klokmose.net/clemens/wp-content/uploads/2015/08/bullseye-author.pdf)
+    * Solves an easier problem than ours: Tracking fiducials in a plane (2D).
     * GPU based tracking. This might be a bit over-kill for early tests, but might be just what HP Mark needs in the longer run.
     * Calibration of light that allows for computation on a greyscale image. Using grayscale improves precision and noise tolerance compared to black/white images. However, calibration of light relies on having a stable background image, which a running HP will not have.
     * An automated technique for optical distortion compensation
