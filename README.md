@@ -12,8 +12,7 @@ positions and orientations of anchors and effector.
  2. Point camera towards build area
  3. BAM! Hangprinter calibrates itself, and gets ready to start printing with fantastic accuracy & reliability 
 
-A user experience and performance might be impossible to achieve.
-We'll try and get as close to that as we can, and remain aware of any discrepancies.
+That user experience might be impossible to achieve, but let's get as close as we can.
 
 # Use Cases by Priority
  0. Establish a coordinate system, with z-axis normal to the build plate
