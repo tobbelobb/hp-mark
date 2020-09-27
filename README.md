@@ -42,13 +42,24 @@ I've just started working on this project. [Tweet](https://twitter.com/tobbelobb
  - [A Comprehensive Survey of Indoor Localization Methods Based on Computer Vision (2020)](https://www.mdpi.com/1424-8220/20/9/2641/pdf)
  - [Pose estimation for augmented reality: a hands-on survey (2016)](https://hal.inria.fr/hal-01246370/document)
  - [Image-based camera localization: an overview (2018)](https://vciba.springeropen.com/articles/10.1186/s42492-018-0008-z)
+
+### Square Tags
  - [Detection of ArUco Markers (2020)](https://docs.opencv.org/master/d5/dae/tutorial_aruco_detection.html)
+   * OpenCV documentation. OpenCV is the most commonly used reference library in 2020.
+ - [AprilTag 2: Efficient and robust fiducial detection (2016)](https://april.eecs.umich.edu/media/pdfs/wang2016iros.pdf)
+   * April tags are the most common reference tags in 2020.
  - [Automatic generation and detection of highly reliable fiducial markers
 under occlusion (2014)](https://code.ihub.org.cn/projects/641/repository/revisions/master/entry/readed/Automatic%20generation%20and%20detection%20of%20highly%20reliable%20fiducial%20markersnunder%20occlusion.pdf)
- - [AprilTag 2: Efficient and robust fiducial detection (2016)](https://april.eecs.umich.edu/media/pdfs/wang2016iros.pdf)
  - [Robust identification of fiducial markers in challenging conditions (2018)](https://www.researchgate.net/profile/Rafael_Munoz-Salinas/publication/320439756_Robust_identification_of_fiducial_markers_in_challenging_conditions/links/59e9fd810f7e9bfdeb6cb66c/Robust-identification-of-fiducial-markers-in-challenging-conditions.pdf)
  - [Speeded up detection of squared fiducial markers (2018)](https://www.researchgate.net/profile/Rafael_Munoz-Salinas/publication/325787310_Speeded_Up_Detection_of_Squared_Fiducial_Markers/links/5b346d19aca2720785ef8a84/Speeded-Up-Detection-of-Squared-Fiducial-Markers.pdf)
- - [STag: A stable fiducial marker system (2019)](https://arxiv.org/pdf/1707.06292.pdf) Establishes that we want circular tags for stability and robustness
+  - [Towards Low-Cost Indoor Localisation Using a Multi-camera System (2019)](https://www.iccs-meeting.org/archive/iccs2019/papers/115400136.pdf)
+    * Practical project with a similar goal as HP Mark
+    * Suggests using as big markers as possible
+    * Suggests that averaging the results from multiple cameras works well
+
+### Circular Tags & Video Work
+ - [STag: A stable fiducial marker system (2019)](https://arxiv.org/pdf/1707.06292.pdf)
+   * Establishes that we want circular tags for stability and robustness
  - [An Efficient Visual Fiducial Localisation System (2017)](http://eprints.lincoln.ac.uk/29678/1/ec4ebaef91e81085404ca74d9f87773b.pdf)
     * Establishes that we also want circular tags for computational efficiency.
     * Predicts where markers will be based on previous frames. Saves 99% of computation that way in an image series images were taken close in time (ie video) application.
@@ -60,11 +71,15 @@ under occlusion (2014)](https://code.ihub.org.cn/projects/641/repository/revisio
       2. Detection thread
       3. Compensation thread
       4. Tracking thread
-   * Is able to predict and confirm marker position even when almost completely occluded. Regardless of marker type, just uses corners.
+    * Is able to predict and confirm marker position even when almost completely occluded. Regardless of marker type, just uses corners.
+
 ## Less Relevant but Still Interesting Opportunities
  - [Indoor Localization of Mobile Robots Through QR Code Detection and Dead Reckoning Data Fusion (2017)](https://scholar.google.com/scholar?q=Indoor%20Localization%20of%20Mobile%20Robots%20Through%20QR%20Code%20Detection%20and%20Dead%20Reckoning%20Data%20Fusion&btnG=Search&as_sdt=800000000001&as_sdtp=on)
+   * Sensor fusion. It should be a goal of HP Mark to not have to use an IMU sensor (accelerometer) in addition to cameras
  - [TopoTag: A Robust and Scalable Topological Fiducial Marker System (2019)](https://arxiv.org/pdf/1908.01450.pdf)
+   * Topological tags. Main benefit is that you can have many in each image. HP Mark will only need a few anyways.
  - [LFTag: A Scalable Visual Fiducial System with Low Spatial Frequency (2020)](https://arxiv.org/pdf/2006.00842.pdf)
+   * Also topological tags
  - [BullsEye: High-Precision Fiducial Tracking for Table-based Tangible Interaction (2014)](https://www.klokmose.net/clemens/wp-content/uploads/2015/08/bullseye-author.pdf)
     * Solves an easier problem than ours: Tracking fiducials in a plane (2D).
     * GPU based tracking. This might be a bit over-kill for early tests, but might be just what HP Mark needs in the longer run.
