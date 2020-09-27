@@ -81,11 +81,12 @@ under occlusion (2014)](https://code.ihub.org.cn/projects/641/repository/revisio
  - [LFTag: A Scalable Visual Fiducial System with Low Spatial Frequency (2020)](https://arxiv.org/pdf/2006.00842.pdf)
    * Also topological tags
  - [BullsEye: High-Precision Fiducial Tracking for Table-based Tangible Interaction (2014)](https://www.klokmose.net/clemens/wp-content/uploads/2015/08/bullseye-author.pdf)
-    * Solves an easier problem than ours: Tracking fiducials in a plane (2D).
+    * Solves an easier problem than ours: Tracking fiducials in a plane (2D)
+    * Establishes that we can improve precision a lot by computing position from a grey scale image
     * GPU based tracking. This might be a bit over-kill for early tests, but might be just what HP Mark needs in the longer run.
-    * Calibration of light that allows for computation on a greyscale image. Using grayscale improves precision and noise tolerance compared to black/white images. However, calibration of light relies on having a stable background image, which a running HP will not have.
+    * Calibration of light that allows for computation on a greyscale image. Using grayscale improves precision and noise tolerance compared to black/white images. However, calibration of light relies on having a stable background image, which a running HP will not have. However, we can find estimate position based on black/white image, and refine that based on a grey scale image.
     * An automated technique for optical distortion compensation
-    * "If a fiducial is partially in a brighter lit area of a table, the position may be slightly offset towards the brighter lit area." Probably true for any fudicial, and a good argument for using several fudicials, not one single fiducial on the HP effector.
+    * "If a fiducial is partially in a brighter lit area of a table, the position may be slightly offset towards the brighter lit area." Probably true for any fudicial, and a good argument for using several fudicials, not one single fiducial on the HP effector. Light will vary less across a smaller marker. We'll have to make a trade off on marker size anyways.
     * Briefly describes how we can create benchmark videos in Blender. This would be super useful for HP Mark to have.
 
 
