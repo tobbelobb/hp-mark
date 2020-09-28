@@ -48,6 +48,8 @@ I've just started working on this project. [Tweet](https://twitter.com/tobbelobb
    * OpenCV documentation. OpenCV is the most commonly used reference library in 2020.
  - [AprilTag 2: Efficient and robust fiducial detection (2016)](https://april.eecs.umich.edu/media/pdfs/wang2016iros.pdf)
    * April tags are the most common reference tags in 2020.
+ - [Tutorial: AprilTag marker detection (2020)](https://visp-doc.inria.fr/doxygen/visp-daily/tutorial-detection-apriltag.html)
+   * The team who developes Visp seem to use AprilTags a lot, and they have made this great tutorial on how to use them with Visp.
  - [Automatic generation and detection of highly reliable fiducial markers
 under occlusion (2014)](https://code.ihub.org.cn/projects/641/repository/revisions/master/entry/readed/Automatic%20generation%20and%20detection%20of%20highly%20reliable%20fiducial%20markersnunder%20occlusion.pdf)
  - [Robust identification of fiducial markers in challenging conditions (2018)](https://www.researchgate.net/profile/Rafael_Munoz-Salinas/publication/320439756_Robust_identification_of_fiducial_markers_in_challenging_conditions/links/59e9fd810f7e9bfdeb6cb66c/Robust-identification-of-fiducial-markers-in-challenging-conditions.pdf)
