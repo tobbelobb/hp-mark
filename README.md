@@ -61,7 +61,7 @@ under occlusion (2014)](https://code.ihub.org.cn/projects/641/repository/revisio
     * Improves the control of a cable driven robot with computer vision ("visual servoing")
     * Suggests using Lyapunov stability analysis for confirming the improvement
     * Manages to define a workspace within which control is stable
-   - [Modeling and Vision-Based Control of Large-Dimension Cable-Driven Parallel Robots Using a Multiple-Camera Setup (2019)](https://hal-lirmm.ccsd.cnrs.fr/lirmm-02157768/document)
+  - [Modeling and Vision-Based Control of Large-Dimension Cable-Driven Parallel Robots Using a Multiple-Camera Setup (2019)](https://hal-lirmm.ccsd.cnrs.fr/lirmm-02157768/document)
     * Again, very similar to HP Mark. Written by CoGiRo researchers. They have written papers that have helped the Hangprinter Project before, since their project is very similar (although bigger & more advanced).
     * Achieves ~2cm accuracy across a 15x11x6 m large build volume.
     * Uses 4 cameras to detect pose (and 8 cameras for other things).
