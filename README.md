@@ -56,6 +56,17 @@ under occlusion (2014)](https://code.ihub.org.cn/projects/641/repository/revisio
     * Practical project with a similar goal as HP Mark
     * Suggests using as big markers as possible
     * Suggests that averaging the results from multiple cameras works well
+  - [Robust 2 1/2D Visual Servoing of a Cable-Driven Parallel Robot Thanks to Trajectory Tracking (2020)](http://rainbow-doc.irisa.fr/pdf/2020_ral_zake.pdf)
+    * Has a camera on the effector (or movement platform as some call it)
+    * Improves the control of a cable driven robot with computer vision ("visual servoing")
+    * Suggests using Lyapunov stability analysis for confirming the improvement
+    * Manages to define a workspace within which control is stable
+   - [Modeling and Vision-Based Control of Large-Dimension Cable-Driven Parallel Robots Using a Multiple-Camera Setup (2019)](https://hal-lirmm.ccsd.cnrs.fr/lirmm-02157768/document)
+    * Again, very similar to HP Mark. Written by CoGiRo researchers. They have written papers that have helped the Hangprinter Project before, since their project is very similar (although bigger & more advanced).
+    * Achieves ~2cm accuracy across a 15x11x6 m large build volume.
+    * Uses 4 cameras to detect pose (and 8 cameras for other things).
+    * Uses a calibration object on the effector that looks like a game die. Top/bottom faces have 0 eyes. All other faces have 5 (white) eyes.
+    * Uses Visp and goes into some detail about how they use it.
 
 ### Circular Tags & Video Work
  - [STag: A stable fiducial marker system (2019)](https://arxiv.org/pdf/1707.06292.pdf)
