@@ -65,10 +65,11 @@ under occlusion (2014)](https://code.ihub.org.cn/projects/641/repository/revisio
     * Manages to define a workspace within which control is stable
   - [Modeling and Vision-Based Control of Large-Dimension Cable-Driven Parallel Robots Using a Multiple-Camera Setup (2019)](https://hal-lirmm.ccsd.cnrs.fr/lirmm-02157768/document)
     * Again, very similar to HP Mark. Written by CoGiRo researchers. They have written papers that have helped the Hangprinter Project before, since their project is very similar (although bigger & more advanced).
-    * Achieves ~2cm accuracy across a 15x11x6 m large build volume.
+    * Achieves a mean ~2cm accuracy across a 15x11x6 m large build volume.
     * Uses 4 cameras to detect pose (and 8 cameras for other things).
     * Uses a calibration object on the effector that looks like a game die. Top/bottom faces have 0 eyes. All other faces have 5 (white) eyes.
     * Uses Visp and goes into some detail about how they use it.
+    * We might want to use as much of their work as possible as a starting point, although we should go into the details of all of their choices (tags, cameras, update frequencies, detection and tracking algorithms, etc...) first.
 
 ### Circular Tags & Video Work
  - [STag: A stable fiducial marker system (2019)](https://arxiv.org/pdf/1707.06292.pdf)
