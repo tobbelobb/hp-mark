@@ -103,7 +103,14 @@ under occlusion (2014)](https://code.ihub.org.cn/projects/641/repository/revisio
     * "If a fiducial is partially in a brighter lit area of a table, the position may be slightly offset towards the brighter lit area." Probably true for any fudicial, and a good argument for using several fudicials, not one single fiducial on the HP effector. Light will vary less across a smaller marker. We'll have to make a trade off on marker size anyways.
     * Briefly describes how we can create benchmark videos in Blender. This would be super useful for HP Mark to have.
  - [Affordable Infrared-Optical Pose-Tracking for Virtual and Augmented Reality (2007)](https://www.researchgate.net/profile/Hannes_Kaufmann/publication/228648906_Affordable_infrared-optical_pose-tracking_for_virtual_and_augmented_reality/links/0fcfd5092886b132ea000000/Affordable-infrared-optical-pose-tracking-for-virtual-and-augmented-reality.pdf)
-    * Describes camera calibration quite well 
+    * Describes camera calibration quite well
+ - [Time-of-Flight Cameras in Computer Graphics (2010)](https://www.cg.informatik.uni-siegen.de/data/www.cg.informatik.uni-siegen.de/data/Publications/2010/kolb10survey.pdf)
+   * A great (although a bit outdated) introduction to challenges for Time-of-flight cameras (like Lidars)
+   * There are big hurdles to be overcome, like low resolution and high price
+   * The promise for the future is also enormous
+   * There is a race between RGB cameras and time-of-flight cameras. Both want to be the best solution for pose estimation. I can easily imagine time-of-flight winning in the long run, and sensor fusion between them helping ToF to become relevant earlier (see for example [this (2016)](https://past.date-conference.com/proceedings-archive/2016/pdf/0446.pdf)).
+ - [High-performance Indoor Positioning and Pose Estimation with Time-of-Flight 3D Imaging (2018)](https://www.researchgate.net/profile/Hannes_Plank/publication/321260313_High-performance_indoor_positioning_and_pose_estimation_with_time-of-flight_3D_imaging/links/5a840591a6fdcc6f3eb3338f/High-performance-indoor-positioning-and-pose-estimation-with-time-of-flight-3D-imaging.pdf)
+   * Efforts for getting depth images at higher frequencies. Author Hannes Plank does a lot of work on ToF
 
 
 
