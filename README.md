@@ -115,7 +115,7 @@ under occlusion (2014)](https://code.ihub.org.cn/projects/641/repository/revisio
    * Efforts for getting depth images at higher frequencies. Author Hannes Plank does a lot of work on ToF
  - [Design, stiffness analysis and experimental study of a cable-driven parallel 3D printer (2019)](https://www.sciencedirect.com/science/article/abs/pii/S0094114X18315568)
    * Somebody designed a Hangprinter with a spring instead of motorized D-axis
-   * They used a very expensive optical tracker (V120:Trio, ca $3000) system to check accuracy. The system uses six small spheres as markers: three on the build plate and three on the effector. After looking at products on optitrack.com, it seems like they use a lot of these ca 1 cm diameter grey spheres as markers, for all kinds of different tracking problems
+   * They used a very expensive optical tracker (V120:Trio, ca $3000) system to check accuracy. The system uses six small spheres as markers: three on the build plate and three on the effector. After looking at products on optitrack.com, it seems like they use a lot of these ca 1 cm diameter grey spheres as markers, for all kinds of different tracking problems. I also see only greyscale images, no time-of-flight sensors (but they might be there)
 
 
  # Keywords
