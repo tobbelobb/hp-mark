@@ -66,10 +66,12 @@ under occlusion (2014)](https://code.ihub.org.cn/projects/641/repository/revisio
   - [Modeling and Vision-Based Control of Large-Dimension Cable-Driven Parallel Robots Using a Multiple-Camera Setup (2019)](https://hal-lirmm.ccsd.cnrs.fr/lirmm-02157768/document)
     * Again, very similar to HP Mark. Written by CoGiRo researchers. They have written papers that have helped the Hangprinter Project before, since their project is very similar (although bigger & more advanced).
     * Achieves a mean ~2cm accuracy across a 15x11x6 m large build volume.
-    * Uses 4 cameras to detect pose (and 8 cameras for other things).
+    * Uses 3 cameras to detect pose (and 8 cameras for other things).
     * Uses a calibration object on the effector that looks like a game die. Top/bottom faces have 0 eyes. All other faces have 5 (white) eyes.
     * Uses Visp and goes into some detail about how they use it.
     * We might want to use as much of their work as possible as a starting point, although we should go into the details of all of their choices (tags, cameras, update frequencies, detection and tracking algorithms, etc...) first.
+ - [Towards vision-based control of cable-driven parallel robots (2012)](https://hal.archives-ouvertes.fr/file/index/docid/691562/filename/Iros2011_ReelAx8_Accepted_Version_04juillet-1.pdf)
+   * Earlier work by the CoGiRo team who motivated the 2019 paper mentioned above
 
 ### Circular Tags & Video Work
  - [STag: A stable fiducial marker system (2019)](https://arxiv.org/pdf/1707.06292.pdf)
@@ -111,7 +113,9 @@ under occlusion (2014)](https://code.ihub.org.cn/projects/641/repository/revisio
    * There is a race between RGB cameras and time-of-flight cameras. Both want to be the best solution for pose estimation. I can easily imagine time-of-flight winning in the long run, and sensor fusion between them helping ToF to become relevant earlier (see for example [this (2016)](https://past.date-conference.com/proceedings-archive/2016/pdf/0446.pdf)).
  - [High-performance Indoor Positioning and Pose Estimation with Time-of-Flight 3D Imaging (2018)](https://www.researchgate.net/profile/Hannes_Plank/publication/321260313_High-performance_indoor_positioning_and_pose_estimation_with_time-of-flight_3D_imaging/links/5a840591a6fdcc6f3eb3338f/High-performance-indoor-positioning-and-pose-estimation-with-time-of-flight-3D-imaging.pdf)
    * Efforts for getting depth images at higher frequencies. Author Hannes Plank does a lot of work on ToF
-
+ - [Design, stiffness analysis and experimental study of a cable-driven parallel 3D printer (2019)](https://www.sciencedirect.com/science/article/abs/pii/S0094114X18315568)
+   * Somebody designed a Hangprinter with a spring instead of motorized D-axis
+   * They used a very expensive optical tracker (V120:Trio, ca $3000) system to check accuracy. The system uses six small spheres as markers: three on the build plate and three on the effector. After looking at products on optitrack.com, it seems like they use a lot of these ca 1 cm diameter grey spheres as markers, for all kinds of different tracking problems
 
 
  # Keywords
