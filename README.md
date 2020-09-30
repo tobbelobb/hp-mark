@@ -128,4 +128,5 @@ under occlusion (2014)](https://code.ihub.org.cn/projects/641/repository/revisio
  - Off-board markers must define the global coordinate system. This breaks the Hangprinter's old system where the A-anchor defines the y-axis, and that the D-anchor defines the z-axis. So all anchor positions must be described with three (possibly non-zero) coordinates
 
 # Opportunities & Smaller Use Cases
+ - Could spherical 3d fiducials simplify the image analysis? Their radius in pixels should translate directly to a depth. Its the simplest shape to reason about anyways. I should find some first principles based on spherical fiducials.
  - Distances between nozzle, pivot points, and on-board markers may be measured by placing markers on every point (or in the case of the nozzle, move it to one of the off-board markers), and letting hp-mark measure relative distances. This is useful for line-collision-detector, who needs those values.
