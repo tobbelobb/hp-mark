@@ -32,7 +32,12 @@ I've just started working on this project. [Tweet](https://twitter.com/tobbelobb
 
 # Equipment
  - Raspberry Pi 4, Model B, 2GB RAM
+   * Processor (BCM2837) has an [Image Processor](https://en.wikipedia.org/wiki/Image_processor)
  - Picam module v 2.1
+   * Pixel size 1.12 x 1.12 µm
+   * Focal length 3.04 mm
+   * Horizontal field of view: 62.2 degrees
+   * Vertical field of view: 48.8 degrees 
  - 32GB U3 SD card
  - Default recommended Raspberry Pi OS, 32-bit
  - Library choice OpenCV and/or ViSP and/or Vuforia has not been decided
@@ -117,13 +122,20 @@ under occlusion (2014)](https://code.ihub.org.cn/projects/641/repository/revisio
    * Somebody designed a Hangprinter with a spring instead of motorized D-axis
    * They used a very expensive optical tracker (V120:Trio, ca $3000) system to check accuracy. The system uses six small spheres as markers: three on the build plate and three on the effector. After looking at products on optitrack.com, it seems like they use a lot of these ca 1 cm diameter grey spheres as markers, for all kinds of different tracking problems. I also see only greyscale images, no time-of-flight sensors (but they might be there)
 
+# Practical Know How
+ - [Fixed camera setup for object localization and measurement](https://pgaleone.eu/computer-vision/2019/01/18/camera-setup-measurement/)
+ - 
 
- # Keywords
+# Keywords
  camera localization, pose estimation, motion tracking, optical sensors, vision-based registration, marker-based tracking techniques, fiducial marker localization
 
 # Challenges
  - The cameras' positions, or at least distance from the origin, must be measured
  - We must compensate for optical distortion
+ - We might need to control the image processor (to compensate distortion predictably, or for other tasks). An image processor can do [lots of things](https://webpages.uncc.edu/jfan/isp.pdf). But the Raspberry pi 4 and libcamera gives us the perfect tools for the job:
+   * [raspberrypi.org page about libcamera](https://www.raspberrypi.org/documentation/linux/software/libcamera/)
+   * [libcamera's own home page](http://www.libcamera.org/)
+   * [Blog post announcing libcamera](https://www.raspberrypi.org/blog/an-open-source-camera-stack-for-raspberry-pi-using-libcamera/)
  - We must place markers both on the effector (on-board) and on the build plate (off-board)
  - Off-board markers must define the global coordinate system. This breaks the Hangprinter's old system where the A-anchor defines the y-axis, and that the D-anchor defines the z-axis. So all anchor positions must be described with three (possibly non-zero) coordinates
 
