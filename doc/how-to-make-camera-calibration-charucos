@@ -1,0 +1,20 @@
+Find pattern generator documentation here:
+https://github.com/opencv/opencv_contrib/tree/master/modules/aruco/misc/pattern_generator
+
+# Get pattern generator:
+# If you don't already have the opencv_contrib source code
+cd ~
+wget -O opencv_contrib.zip https://github.com/opencv/opencv_contrib/archive/4.4.0.zip
+unzip opencv_contrib.zip
+mv opencv_contrib-4.4.0 opencv_contrib
+cd ~/opencv_contrib/modules/aruco/misc/pattern_generator
+
+# Get dependencies
+sudo pip3 install cairosvg
+sudo pip3 install pycairo
+#sudo apt-get install python3-pil.imagetk # Only needed for GUI. We don't need GUI
+
+# These two versions  of the border are included among markers in this repo
+python3 MarkerPrinter.py --charuco --file "./charuco.pdf" --dictionary DICT_ARUCO_ORIGINAL --size_x 16 --size_y 9 --square_length 0.09 --marker_length 0.07 --border_bits 1
+python3 MarkerPrinter.py --charuco --file "./charuco_border.pdf" --dictionary DICT_ARUCO_ORIGINAL --size_x 16 --size_y 9 --square_length 0.09 --marker_length 0.07 --border_bits 1 --page_border_x 0.02 --page_border_y 0.02
+
