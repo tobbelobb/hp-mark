@@ -1,0 +1,31 @@
+
+Install rpi-images:
+Followed instructions from here:
+https://www.raspberrypi.org/downloads/
+Downloaded rpi-installer deb package for Ubuntu here:
+https://downloads.raspberrypi.org/imager/imager_1.4_amd64.deb
+sudo apt install qml-module-qtquick-controls2 qml-module-qtquick-templates2
+sudo apt --fix-broken install # Don't know why this was required
+sudo dpkg -i Downloads/qrcp_0.6.4_linux_x86_64.deb
+
+Found only 32-bit versions of Raspberry Pi OS inside rpi-imager.
+Wanter 64-bit.
+Why insist on 64-bit? Faster. Source:
+https://medium.com/@matteocroce/why-you-should-run-a-64-bit-os-on-your-raspberry-pi4-bd5290d48947
+
+It turns out they're already working on the 64-bit version I want.
+Downloaded beta from Aug 2020:
+https://downloads.raspberrypi.org/raspios_arm64/images/raspios_arm64-2020-08-24/2020-08-20-raspios-buster-arm64.zip
+
+Issues for the beta are collected here:
+https://github.com/raspberrypi/Raspberry-Pi-OS-64bit/issues
+
+Issue:
+None of MMAL (on which raspivid/still and Picamera rely) is currently working on 64 bit builds.
+V4L2 is working.
+https://github.com/raspberrypi/Raspberry-Pi-OS-64bit/issues/10
+
+So we must use the 32-bit until the 64-bit has MMAL working...
+I will use the recommended one from rpi-imager.
+
+
