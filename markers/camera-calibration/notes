@@ -1,0 +1,29 @@
+
+# I try to calibrate with the following command,
+# that crashes with an exception
+
+```
+$ opencv_interactive-calibration -t=charuco -sz=18.0 -w=16 -h=9 -of=camParams.xml -ft=true -vis=grid -d=1.0
+Hot keys:
+esc - exit application
+s - save current data to .xml file
+r - delete last frame
+u - enable/disable applying undistortion
+d - delete all frames
+v - switch visualization
+Warning: Unable to open defaultConfig.xml Applicatioin stated with default advanced parameters
+terminate called after throwing an instance of 'cv::Exception'
+  what():  OpenCV(4.4.0) /home/pi/opencv_contrib/modules/aruco/src/dictionary.cpp:141: error: (-215:Assertion failed) id >= 0 && id < bytesList.rows in function 'getDistanceToId'
+
+Aborted
+```
+
+I probably need to specify the correct aruco dictionary
+in defaultConfig.xml
+<?xml version="1.0"?>
+<opencv_storage>
+<charuco_dict>0</charuco_dict>
+</opencv_storage>
+
+
+I don't know which is the correct one though.
