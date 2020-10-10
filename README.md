@@ -95,6 +95,8 @@ under occlusion (2014)](https://code.ihub.org.cn/projects/641/repository/revisio
     * Is able to predict and confirm marker position even when almost completely occluded. Regardless of marker type, just uses corners.
 
 ## Less Relevant but Still Interesting Opportunities
+ - [Camera calibration method for solid spheres based on triangular primitives (2020)](https://www.sciencedirect.com/science/article/abs/pii/S0141635919308402)
+   * Suggests that camera calibration also gets more stable if we use spheres instead of square markers printed on paper.
  - [Indoor Localization of Mobile Robots Through QR Code Detection and Dead Reckoning Data Fusion (2017)](https://scholar.google.com/scholar?q=Indoor%20Localization%20of%20Mobile%20Robots%20Through%20QR%20Code%20Detection%20and%20Dead%20Reckoning%20Data%20Fusion&btnG=Search&as_sdt=800000000001&as_sdtp=on)
    * Sensor fusion. It should be a goal of HP Mark to not have to use an IMU sensor (accelerometer) in addition to cameras
  - [TopoTag: A Robust and Scalable Topological Fiducial Marker System (2019)](https://arxiv.org/pdf/1908.01450.pdf)
@@ -124,7 +126,9 @@ under occlusion (2014)](https://code.ihub.org.cn/projects/641/repository/revisio
 
 # Practical Know How
  - [Fixed camera setup for object localization and measurement](https://pgaleone.eu/computer-vision/2019/01/18/camera-setup-measurement/)
- - 
+ - [Install OpenCV 4.4.0 on Raspberry Pi 4 (visited Oct 2020)](https://qengineering.eu/install-opencv-4.4-on-raspberry-pi-4.html)
+   * OpenCV includes an application called `opencv_interactive-calibration`. It should be available from command line after installation
+ - [OpenCV Tutorials > Interactive camera calibration application (2020)](https://docs.opencv.org/4.4.0/d7/d21/tutorial_interactive_calibration.html)
 
 # Keywords
  camera localization, pose estimation, motion tracking, optical sensors, vision-based registration, marker-based tracking techniques, fiducial marker localization
