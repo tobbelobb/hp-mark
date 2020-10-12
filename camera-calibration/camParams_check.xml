@@ -1,0 +1,148 @@
+Frame # 1 captured
+Frame # 2 captured
+Frame # 3 captured
+Frame # 4 captured
+Frame # 5 captured
+Frame # 6 captured
+Frame # 7 captured
+Frame # 8 captured
+Frame # 9 captured
+Frame # 10 captured
+Frame # 11 captured
+Frame # 12 captured
+Frame # 13 captured
+Frame # 14 captured
+Frame # 15 captured
+Frame # 16 captured
+Frame # 17 captured
+Frame # 18 captured
+Frame # 19 captured
+Frame # 20 captured
+Frame # 21 captured
+Frame # 22 captured
+---------------------------------------------------
+Frames used for calibration: 22 	 RMS = 0.406385
+Fx = 1034.58 +- 0.789244 	 Fy = 1034.26 +- 0.664675
+Cx = 639.723 +- 0.173626 	Cy = 479.546 +- 0.126881
+K1 = 0.221985 +- 0.00698907
+K2 = -0.626317 +- 0.0301242
+K3 = 0.516751 +- 0.0418495
+TD1 = 0.00163862 +- 0.00048805
+TD2 = -0.00122747 +- 0.000558416
+Frame # 23 captured
+Frame # 24 captured
+Frame # 25 captured
+Frame # 26 captured
+Frame # 27 captured
+Frame # 28 captured
+Frame # 29 captured
+Frame # 30 captured
+Frame # 31 captured
+Frame # 32 captured
+---------------------------------------------------
+Frames used for calibration: 32 	 RMS = 0.418808
+F = 1029.05 +- 0.413948
+Cx = 645.068 +- 0.0665828 	Cy = 479.497 +- 0.0467887
+K1 = 0.219231 +- 0.00547559
+K2 = -0.603475 +- 0.0241888
+K3 = 0.48704 +- 0.0340548
+TD1 = 0 +- 0
+TD2 = 0 +- 0
+Frame # 33 captured
+Frame # 34 captured
+Frame # 35 captured
+Frame # 36 captured
+Frame # 37 captured
+Frame # 38 captured
+Frame # 39 captured
+Frame # 40 captured
+Frame # 41 captured
+Frame # 42 captured
+Frame # 43 captured
+Frame # 44 captured
+Frame # 45 captured
+---------------------------------------------------
+Frames used for calibration: 45 	 RMS = 0.457964
+F = 1082.41 +- 0.465153
+Cx = 641.29 +- 0.0815378 	Cy = 478.712 +- 0.0428266
+K1 = 0.256405 +- 0.00595659
+K2 = -0.782824 +- 0.0286466
+K3 = 0.719559 +- 0.0436871
+TD1 = 0 +- 0
+TD2 = 0 +- 0
+Frame 23 is worst
+Frame 4 is worst
+Frame 24 is worst
+Frame 17 is worst
+Frame 1 is worst
+Frame 19 is worst
+Frame # 40 captured
+Frame # 41 captured
+Frame # 42 captured
+Frame # 43 captured
+Frame # 44 captured
+Frame # 45 captured
+Frame # 46 captured
+Frame # 47 captured
+Frame # 48 captured
+Frame # 49 captured
+---------------------------------------------------
+Frames used for calibration: 49 	 RMS = 0.454028
+F = 1118.18 +- 0.454927
+Cx = 641.06 +- 0.078436 	Cy = 478.733 +- 0.0409365
+K1 = 0.276172 +- 0.00605071
+K2 = -0.893428 +- 0.0310332
+K3 = 0.881084 +- 0.0499896
+TD1 = 0 +- 0
+TD2 = 0 +- 0
+Frame 19 is worst
+Frame 39 is worst
+Frame 19 is worst
+Frame 1 is worst
+Frame 20 is worst
+Frame 2 is worst
+Frame 35 is worst
+Frame 22 is worst
+Frame 13 is worst
+Frame 16 is worst
+Frame # 40 captured
+Frame # 41 captured
+Frame # 42 captured
+Frame # 43 captured
+Frame # 44 captured
+Frame # 45 captured
+Frame # 46 captured
+Frame # 47 captured
+Frame # 48 captured
+Frame # 49 captured
+Frame # 50 captured
+Frame # 51 captured
+Frame # 52 captured
+Frame # 53 captured
+Frame # 54 captured
+Frame # 55 captured
+Frame # 56 captured
+---------------------------------------------------
+Frames used for calibration: 56 	 RMS = 0.512603
+F = 1208.25 +- 0.51379
+Cx = 641.055 +- 0.0824003 	Cy = 478.37 +- 0.0504166
+K1 = 0.334298 +- 0.00729336
+K2 = -1.25834 +- 0.0448803
+K3 = 1.4671 +- 0.0848003
+TD1 = 0 +- 0
+TD2 = 0 +- 0
+Frame 40 is worst
+Frame 47 is worst
+Frame 11 is worst
+Frame 39 is worst
+Frame 10 is worst
+Frame 45 is worst
+Frame 46 is worst
+Frame 31 is worst
+Frame 1 is worst
+Frame 29 is worst
+Frame # 47 captured
+Frame # 48 captured
+Frame # 49 captured
+Calibration parameters saved
+

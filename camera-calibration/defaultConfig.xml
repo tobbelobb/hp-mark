@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<opencv_storage>
+<charuco_dict>16</charuco_dict>
+<charuco_square_length>16071</charuco_square_length>
+<charuco_marker_size>12500</charuco_marker_size>
+<calibration_step>10</calibration_step>
+<max_frames_num>39</max_frames_num>
+<min_frames_num>9</min_frames_num>
+<solver_eps>6e-8</solver_eps>
+<solver_max_iters>40</solver_max_iters>
+<fast_solver>0</fast_solver>
+<frame_filter_conv_param>0.1</frame_filter_conv_param>
+</opencv_storage>
+
