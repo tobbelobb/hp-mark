@@ -1,0 +1,1 @@
+g++ calibrate_camera_charuco2.cpp `pkg-config --cflags --libs opencv4` -o calibrate_camera_charuco2

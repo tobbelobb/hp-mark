@@ -51,13 +51,13 @@ I need to adapt `calibrate_camera_charuco.cpp` so that it can use my `list.xml`
 of high-res calibration images.
 This should merely be a matter of copy-pasting code from `calibration.cpp` that I tried to use earlier.
 
-$ ./a.out -a=2714.286 -d=16 -h=16 -w=9 --ml=0.014 --sl=0.018 -i=list.xml -o=myCamParams.xml
+$ ./a.out -a=2714.286 -d=16 -h=16 -w=9 --ml=0.014 --sl=0.018 -i=list.xml myCamParams.xml
 
 -a fixates the aspect ratio.
 That is, it treats the focal length and pixel size as known values.
 Calculated as focal_length/pixel_size.
 In mm for the picam, that is
-3.04/0.00112
+3.04/0.00112=2714.286
 
 For more info about what `calibrate_camera_charuco.cpp` does, see
 https://docs.opencv.org/4.4.0/da/d13/tutorial_aruco_calibration.html
