@@ -34,7 +34,6 @@ Run the program in test mode
 ./calibrate_camera_charuco2 -d=16 -w=16 -h=9 --ml=0.014 --sl=0.018 -l=./pics_list.xml --test myCamParams.xml
 ```
 Check that your aruco tags get detected.
-If they're not, rotate your board 90 degrees and try again.
 
 Run the program in after-check mode
 ```
