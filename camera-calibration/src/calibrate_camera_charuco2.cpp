@@ -180,7 +180,60 @@ static bool saveCameraParams(const string &filename, Size imageSize, float aspec
     return true;
 }
 
+double calibrateCameraCharuco2(InputArrayOfArrays _charucoCorners,
+                               InputArrayOfArrays _charucoIds,
+                               const Ptr<aruco::CharucoBoard> &_board,
+                               Size imageSize, InputOutputArray _cameraMatrix,
+                               InputOutputArray _distCoeffs,
+                               OutputArrayOfArrays _rvecs,
+                               OutputArrayOfArrays _tvecs, int flags,
+                               int iFix) {
 
+  CV_Assert(_charucoIds.total() > 0 &&
+            (_charucoIds.total() == _charucoCorners.total()));
+
+  // Join object points of charuco corners in a single vector for
+  // calibrateCamera() function
+  vector<vector<Point3f>> allObjPoints;
+  allObjPoints.resize(_charucoIds.total());
+  for (unsigned int i = 0; i < _charucoIds.total(); i++) {
+    unsigned int nCorners = (unsigned int)_charucoIds.getMat(i).total();
+    CV_Assert(nCorners > 0 && nCorners == _charucoCorners.getMat(i).total());
+    allObjPoints[i].reserve(nCorners);
+
+    for (unsigned int j = 0; j < nCorners; j++) {
+      int pointId = _charucoIds.getMat(i).at<int>(j);
+      CV_Assert(pointId >= 0 &&
+                pointId < (int)_board->chessboardCorners.size());
+      allObjPoints[i].push_back(_board->chessboardCorners[pointId]);
+    }
+  }
+
+  // Code to help us find the top right corner...
+  // for (int j{0}; j < allObjPoints[0].size(); ++j) {
+  //  cout << j << " is (" << allObjPoints[0][j] << ") distances to 0th corner:
+  //  "
+  //       << allObjPoints[0][0].x - allObjPoints[0][j].x << ", "
+  //       << allObjPoints[0][0].y - allObjPoints[0][j].y
+  //       << " distances to last corner: "
+  //       << allObjPoints[0][allObjPoints[0].size() - 1].x -
+  //       allObjPoints[0][j].x
+  //       << ", "
+  //       << allObjPoints[0][allObjPoints[0].size() - 1].y -
+  //       allObjPoints[0][j].y
+  //       << " distance from both: "
+  //       << cv::norm(allObjPoints[0][0] - allObjPoints[0][j]) +
+  //              cv::norm(allObjPoints[0][allObjPoints[0].size() - 1] -
+  //                       allObjPoints[0][j])
+  //       << endl;
+  //}
+  for (auto const &point : allObjPoints) {
+    cout << point.size() << endl;
+  }
+  return calibrateCameraRO(allObjPoints, _charucoCorners, imageSize, iFix,
+                           _cameraMatrix, _distCoeffs, _rvecs, _tvecs,
+                           noArray(), flags);
+}
 
 /**
  */
@@ -323,7 +376,7 @@ int main(int argc, char *argv[]) {
       }
     } else {
       for (auto const &imageName : imageList) {
-        cout << "Using image " << imageName << endl;
+        cout << "Using image " << imageName;
         Mat image = imread(imageName, 1);
         vector<int> ids;
         vector<vector<Point2f>> corners, rejected;
@@ -339,6 +392,7 @@ int main(int argc, char *argv[]) {
           aruco::interpolateCornersCharuco(corners, ids, image, charucoboard,
                                            currentCharucoCorners,
                                            currentCharucoIds);
+        cout << " found " << corners.size() << " aruco tags" << endl;
 
         if (isTestRun) {
           // draw results
@@ -441,9 +495,9 @@ int main(int argc, char *argv[]) {
     }
 
     // calibrate camera using charuco
-    repError = aruco::calibrateCameraCharuco(
+    repError = calibrateCameraCharuco2(
         allCharucoCorners, allCharucoIds, charucoboard, imgSize, cameraMatrix,
-        distCoeffs, rvecs, tvecs, calibrationFlags);
+        distCoeffs, rvecs, tvecs, calibrationFlags, squaresX - 2);
 
     bool saveOk =
         saveCameraParams(outputFile, imgSize, aspectRatio, calibrationFlags,
