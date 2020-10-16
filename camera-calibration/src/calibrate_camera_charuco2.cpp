@@ -58,6 +58,7 @@ const char *keys =
     "{squares_x                            |       | Number of squares in X direction }"
     "{squares_y                            |       | Number of squares in Y direction }"
     "{square_side_length                   |       | Square side length (in arbitrary unit) }"
+    "{grid_width                           |       | Measured length of first row of corners }"
     "{marker_side_length                   |       | Marker side length (in arbitrary unit) }"
     "{dictionary                           | 16    | dictionary: DICT_4X4_50=0, "
                                                                "DICT_4X4_100=1, "
@@ -85,6 +86,7 @@ const char *keys =
     "{focal_length              |       | Use this focal length as initial guess (unit: pixels) }"
     "{principal_point_at_center | false | Fix the principal point at the center }"
     "{test                      | false | For an image sequence, show what got detected, don't calculate anything }"
+    "{verbose                   | false | Print out how many aruco tags and corners that were detected for each image }"
     "{show_detected_chessboard  | false | Show detected chessboard corners after calibration }";
 }
 // clang-format on
@@ -188,12 +190,10 @@ static bool saveCameraParams(const string &filename, Size imageSize, int flags,
 
 double calibrateCameraCharuco2(InputArrayOfArrays _charucoCorners,
                                InputArrayOfArrays _charucoIds,
-                               const Ptr<aruco::CharucoBoard> &_board,
+                               Ptr<aruco::CharucoBoard> const &_board,
                                Size imageSize, InputOutputArray _cameraMatrix,
-                               InputOutputArray _distCoeffs,
-                               OutputArrayOfArrays _rvecs,
-                               OutputArrayOfArrays _tvecs, int flags,
-                               int iFix) {
+                               InputOutputArray _distCoeffs, int const flags,
+                               int const iFix, float const grid_width) {
 
   CV_Assert(_charucoIds.total() > 0 &&
             (_charucoIds.total() == _charucoCorners.total()));
@@ -213,12 +213,24 @@ double calibrateCameraCharuco2(InputArrayOfArrays _charucoCorners,
                 pointId < (int)_board->chessboardCorners.size());
       allObjPoints[i].push_back(_board->chessboardCorners[pointId]);
     }
-    cout << allObjPoints[i][iFix] << endl;
   }
 
-  return calibrateCameraRO(allObjPoints, _charucoCorners, imageSize, iFix,
-                           _cameraMatrix, _distCoeffs, _rvecs, _tvecs,
-                           noArray(), flags);
+  for (auto &objPointsImg : allObjPoints) {
+    objPointsImg[iFix].x = objPointsImg[0].x + grid_width;
+  }
+  auto newObjPoints = allObjPoints[0];
+
+  auto const rms = calibrateCameraRO(allObjPoints, _charucoCorners, imageSize,
+                                     iFix, _cameraMatrix, _distCoeffs,
+                                     noArray(), noArray(), newObjPoints, flags);
+
+  cout << "New board corners: " << endl;
+  cout << newObjPoints[0] << endl;
+  cout << newObjPoints[iFix] << endl;
+  cout << newObjPoints[newObjPoints.size() - 1 - iFix] << endl;
+  cout << newObjPoints.back() << endl;
+
+  return rms;
 }
 
 /**
@@ -234,6 +246,7 @@ int main(int argc, char *argv[]) {
 
   int const squaresX = parser.get<int>("squares_x");
   int const squaresY = parser.get<int>("squares_y");
+  float const grid_width = parser.get<float>("grid_width");
   float const squareLength = parser.get<float>("square_side_length");
 
   float const markerLength = parser.get<float>("marker_side_length");
@@ -244,6 +257,7 @@ int main(int argc, char *argv[]) {
   bool const showChessboardCorners =
       parser.get<bool>("show_detected_chessboard");
   bool const isTestRun = parser.get<bool>("test");
+  bool const verbose = parser.get<bool>("verbose");
 
   int calibrationFlags = 0;
   Mat cameraMatrix = Mat::eye(3, 3, CV_64F);
@@ -363,7 +377,7 @@ int main(int argc, char *argv[]) {
     vector<string> imageList{};
     readStringList(samples::findFile(imageListFileName), imageList);
     for (auto const &imageName : imageList) {
-      cout << "Using image " << imageName;
+
       Mat const image = imread(imageName, 1);
       vector<int> ids;
       vector<vector<Point2f>> corners;
@@ -383,8 +397,11 @@ int main(int argc, char *argv[]) {
                                          currentCharucoCorners,
                                          currentCharucoIds);
       }
-      cout << " found " << corners.size() << " aruco tags and "
-           << currentCharucoIds.size() << " corners" << endl;
+      if (verbose) {
+        cout << "Using image " << imageName << " found " << corners.size()
+             << " aruco tags and " << currentCharucoIds.size() << " corners"
+             << endl;
+      }
 
       if (isTestRun) {
         // draw results
@@ -488,7 +505,7 @@ int main(int argc, char *argv[]) {
   // calibrate camera using charuco
   double const repError = calibrateCameraCharuco2(
       allCharucoCorners, allCharucoIds, charucoboard, imgSize, cameraMatrix,
-      distCoeffs, noArray(), noArray(), calibrationFlags, squaresX - 2);
+      distCoeffs, calibrationFlags, squaresX - 2, grid_width);
 
   bool saveOk = saveCameraParams(outputFile, imgSize, calibrationFlags,
                                  cameraMatrix, distCoeffs, repError);
