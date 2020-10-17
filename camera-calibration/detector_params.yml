@@ -2,7 +2,7 @@
 nMarkers: 1024
 adaptiveThreshWinSizeMin: 3
 adaptiveThreshWinSizeMax: 47
-adaptiveThreshWinSizeStep: 11
+adaptiveThreshWinSizeStep: 10
 adaptiveThreshWinSize: 21
 adaptiveThreshConstant: 7
 minMarkerPerimeterRate: 0.03
