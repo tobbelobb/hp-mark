@@ -188,12 +188,12 @@ static bool saveCameraParams(const string &filename, Size imageSize, int flags,
   return true;
 }
 
-double calibrateCameraCharuco2(InputArrayOfArrays _charucoCorners,
-                               InputArrayOfArrays _charucoIds,
-                               Ptr<aruco::CharucoBoard> const &_board,
-                               Size imageSize, InputOutputArray _cameraMatrix,
-                               InputOutputArray _distCoeffs, int const flags,
-                               int const iFix, float const grid_width) {
+double calibrateCameraCharucoRO(InputArrayOfArrays _charucoCorners,
+                                InputArrayOfArrays _charucoIds,
+                                Ptr<aruco::CharucoBoard> const &_board,
+                                Size imageSize, InputOutputArray _cameraMatrix,
+                                InputOutputArray _distCoeffs, int const flags,
+                                int const iFix, float const grid_width) {
 
   CV_Assert(_charucoIds.total() > 0 &&
             (_charucoIds.total() == _charucoCorners.total()));
@@ -503,7 +503,7 @@ int main(int argc, char *argv[]) {
   }
 
   // calibrate camera using charuco
-  double const repError = calibrateCameraCharuco2(
+  double const repError = calibrateCameraCharucoRO(
       allCharucoCorners, allCharucoIds, charucoboard, imgSize, cameraMatrix,
       distCoeffs, calibrationFlags, squaresX - 2, grid_width);
 
@@ -514,8 +514,7 @@ int main(int argc, char *argv[]) {
     return 0;
   }
 
-  cout << "Rep Error: " << repError << endl;
-  cout << "Rep Error Aruco: " << arucoRepErr << endl;
+  cout << "Reprojection Error: " << repError << endl;
   cout << "Calibration saved to " << outputFile << endl;
 
   // show interpolated charuco corners for debugging
