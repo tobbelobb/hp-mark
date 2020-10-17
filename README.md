@@ -79,6 +79,8 @@ under occlusion (2014)](https://code.ihub.org.cn/projects/641/repository/revisio
    * Earlier work by the CoGiRo team who motivated the 2019 paper mentioned above
 
 ### Circular Tags & Video Work
+ - [Detection and Accurate Localization of Circular Fiducials under Highly Challenging Conditions (2016)](https://hal.archives-ouvertes.fr/hal-01420665/document)
+   * Introduces CCTags
  - [STag: A stable fiducial marker system (2019)](https://arxiv.org/pdf/1707.06292.pdf)
    * Establishes that we want circular tags for stability and robustness
  - [An Efficient Visual Fiducial Localisation System (2017)](http://eprints.lincoln.ac.uk/29678/1/ec4ebaef91e81085404ca74d9f87773b.pdf)
