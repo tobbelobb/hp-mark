@@ -1,9 +1,20 @@
 # How To Calibrate PiCam v2 for HP Mark
 
+We're going to use a [charuco board](https://docs.opencv.org/4.4.0/da/d13/tutorial_aruco_calibration.html)
+as our pattern.
+
+We're also going to use [a non-linear optimization method](https://elib.dlr.de/71888/1/strobl_2011iccv.pdf)
+to compensate for the paper with the charuco board on being every so slightly non-flat.
+
+## Preparations
+
+Read this whole document first.
+You might want to do things in a different order than described here,
+so read the whole document first to avoid time consuming surprises later.
+You can always come back here and follow step-by-step later.
+
 Print the charuco board pdf as large as you can.
 Tape/glue your charuco board down as flat and straight as possible.
-
-Go into the pics directory and take a look at the example calibration images.
 
 Compile and take the camera calibration program for a test run:
 (Warning: this takes a few minutes to run on the Raspberry pi 4.)
@@ -16,6 +27,7 @@ If everything went smooth, an output file `myCamParams.xml` should have been cre
 It contains nonsense, but we hopefully confirmed that the compiler and the program itself are working.
 
 Next remove it and the test images.
+(Take a look at them first, they should be decent examples.)
 
 ```
 rm myCamParams.xml pics/camera*
@@ -23,7 +35,7 @@ rm myCamParams.xml pics/camera*
 
 ## How To Take Calibration Images
 
-Then take your own pics inside the pics directory.
+Take your own pics inside the pics directory.
 ```
 cd pics
 ./takeCalibrationStills.sh
@@ -63,6 +75,7 @@ Here's a procedure that tries to take the advice into account as much as we can 
 Here's an image of my "imaging lab" during calibration image grab.
 
 ![camera calibration image grab setup](./camera_calibration_image_grab_setup.jpg)
+
 
 ## How To Use the Calibration Images Well
 
