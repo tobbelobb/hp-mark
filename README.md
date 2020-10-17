@@ -97,6 +97,8 @@ under occlusion (2014)](https://code.ihub.org.cn/projects/641/repository/revisio
     * Is able to predict and confirm marker position even when almost completely occluded. Regardless of marker type, just uses corners.
 
 ## Less Relevant but Still Interesting Opportunities
+ - [Stereopi.com](https://stereopi.com/)
+   * An open source community and hardware kit based around stereo computer vision with pi hardware.
  - [Camera calibration method for solid spheres based on triangular primitives (2020)](https://www.sciencedirect.com/science/article/abs/pii/S0141635919308402)
    * Suggests that camera calibration also gets more stable if we use spheres instead of square markers printed on paper.
  - [Indoor Localization of Mobile Robots Through QR Code Detection and Dead Reckoning Data Fusion (2017)](https://scholar.google.com/scholar?q=Indoor%20Localization%20of%20Mobile%20Robots%20Through%20QR%20Code%20Detection%20and%20Dead%20Reckoning%20Data%20Fusion&btnG=Search&as_sdt=800000000001&as_sdtp=on)
