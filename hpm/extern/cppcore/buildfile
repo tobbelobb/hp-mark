@@ -1,0 +1,9 @@
+hxx{*}: extension =
+
+lib{cppcore}: {hxx ixx txx}{**}
+
+# Export options
+lib{cppcore}:
+{
+  cxx.export.poptions = "-I$src_root/extern/cppcore/"
+}
