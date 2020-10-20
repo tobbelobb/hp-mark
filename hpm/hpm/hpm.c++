@@ -28,36 +28,12 @@ auto main(int const argc, char **const argv) -> int {
     return 1;
   }
 
-  cv::Mat topLeftCorner{image, cv::Rect{0, 0, 5, 5}};
-  // std::cout << topLeftCorner << std::endl;
-
-  cv::Mat redImage{924, 1230, CV_8UC3, cv::Vec3b{0, 0, 255}};
-  cv::Point const center =
-      cv::Point(redImage.size().width / 2, redImage.size().height / 2);
-  double const outerRadius = 150.0;
-  double const innerRadius = 100.0;
-  std::cout << redImage.rows << " " << redImage.cols << '\n';
-  std::cout << center.x << " " << center.y << '\n';
-
-  for (int r = 0; r < redImage.rows; r++) {
-    for (int c = 0; c < redImage.cols; c++) {
-      double const dist = sqrt((c - center.x) * (c - center.x) +
-                               (r - center.y) * (r - center.y));
-      if (dist < outerRadius and dist > innerRadius) {
-        // std::cout << "r: " << r << " c: " << c << std::endl;
-        redImage.at<cv::Vec3b>(r, c) = cv::Vec3b(dist, 0, 0);
-      } else {
-        // Point is outside circle
-      }
-    }
-  }
-
   cv::namedWindow("Display image", cv::WINDOW_NORMAL);
-  cv::resizeWindow("Display image", 1230, 924);
-  cv::imshow("Display image", redImage);
+  cv::resizeWindow("Display image", 300, 300);
+  cv::imshow("Display image", image);
   // Wait for a keystroke in the window
   if (cv::waitKey(0) == 's') {
-    cv::imwrite("starry_night.png", image);
+    cv::imwrite("image.png", image);
   }
 
   return 0;

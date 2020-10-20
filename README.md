@@ -1,4 +1,4 @@
-# HP Mark
+# HP Mark [HP Mark logo](./logo.png)
 
 Measure Hangprinter externally
 
@@ -10,7 +10,7 @@ positions and orientations of anchors and effector.
 # High-Level Dream User Story
  1. Mount a computer-connected camera
  2. Point camera towards build area
- 3. BAM! Hangprinter calibrates itself, and gets ready to start printing with fantastic accuracy & reliability 
+ 3. BAM! Hangprinter calibrates itself, and gets ready to start printing with fantastic accuracy & reliability
 
 That user experience might be impossible to achieve, but let's get as close as we can.
 
@@ -37,7 +37,7 @@ I've just started working on this project. [Tweet](https://twitter.com/tobbelobb
    * Pixel size 1.12 x 1.12 µm
    * Focal length 3.04 mm
    * Horizontal field of view: 62.2 degrees
-   * Vertical field of view: 48.8 degrees 
+   * Vertical field of view: 48.8 degrees
  - 32GB U3 SD card
  - Default recommended Raspberry Pi OS, 32-bit
  - Library choice OpenCV and/or ViSP and/or Vuforia has not been decided
