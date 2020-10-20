@@ -143,8 +143,7 @@ under occlusion (2014)](https://code.ihub.org.cn/projects/641/repository/revisio
 # Practical Know How
  - [Fixed camera setup for object localization and measurement](https://pgaleone.eu/computer-vision/2019/01/18/camera-setup-measurement/)
  - [Install OpenCV 4.4.0 on Raspberry Pi 4 (visited Oct 2020)](https://qengineering.eu/install-opencv-4.4-on-raspberry-pi-4.html)
-   * OpenCV includes an application called `opencv_interactive-calibration`. It should be available from command line after installation
- - [OpenCV Tutorials > Interactive camera calibration application (2020)](https://docs.opencv.org/4.4.0/d7/d21/tutorial_interactive_calibration.html)
+ - [hp-mark camera calibration (2020)](./camera-calibration)
 
 # Keywords
  camera localization, pose estimation, motion tracking, optical sensors, vision-based registration, marker-based tracking techniques, fiducial marker localization
