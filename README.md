@@ -1,4 +1,4 @@
-# HP Mark [HP Mark logo](./logo.png)
+# HP Mark ![HP Mark logo](./logo.png)
 
 Measure Hangprinter externally
 
