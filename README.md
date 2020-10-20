@@ -15,7 +15,7 @@ positions and orientations of anchors and effector.
 That user experience might be impossible to achieve, but let's get as close as we can.
 
 # Use Cases by Priority
- 0. Establish a coordinate system, with z-axis normal to the build plate
+ 0. Establish a coordinate system, with z-axis normal to the build plate (?)
  1. The effector as a measurement device: Measure the effector's position and orientation
  2. Calibrate perfect anchor positions
  3. Measure Hangprinter's positional precision and accuracy
@@ -28,7 +28,18 @@ Comment on use case 2: By combining effector position data with the [auto-calibr
 This project will be all about getting good tag localization first, in terms of accuracy and precision.
 
 # Status
-I've just started working on this project. [Tweet](https://twitter.com/tobbelobb/status/1309108246850961409).
+The camera is calibrated. [Tweet](https://twitter.com/tobbelobb/status/1317544500332515329)
+We can not detect markers yet.
+
+ - [x] Aquire hardware
+ - [x] Calibrate camera
+ - [x] Aquire training/benchmark images
+ - [ ] Calculate one 3D point from one marker
+ - [ ] Calculate _n_ single points from _n_ markers
+ - [ ] Calculate 6D pose from _n_ points (solve perspective-n-point, or PnP problem)
+ - [ ] Aquire camera 6D pose (this includes defining our world coordinate system)
+
+A checked box above means "good enough for now".
 
 # Equipment
  - Raspberry Pi 4, Model B, 2GB RAM
@@ -110,7 +121,7 @@ under occlusion (2014)](https://code.ihub.org.cn/projects/641/repository/revisio
    * Also topological tags
  - [BullsEye: High-Precision Fiducial Tracking for Table-based Tangible Interaction (2014)](https://www.klokmose.net/clemens/wp-content/uploads/2015/08/bullseye-author.pdf)
     * Solves an easier problem than ours: Tracking fiducials in a plane (2D)
-    * Establishes that we can improve precision a lot by computing position from a grey scale image
+    * Establishes that we can improve precision a lot by computing position from a grey scale image compared to a binary (black and white) one.
     * GPU based tracking. This might be a bit over-kill for early tests, but might be just what hp-mark needs in the longer run.
     * Calibration of light that allows for computation on a greyscale image. Using grayscale improves precision and noise tolerance compared to black/white images. However, calibration of light relies on having a stable background image, which a running HP will not have. However, we can find estimate position based on black/white image, and refine that based on a grey scale image. Once found, we can know that some points of the tag should be white. With this assumption we can calibrate for background light after we've localized the tag.
     * An automated technique for optical distortion compensation
@@ -139,15 +150,19 @@ under occlusion (2014)](https://code.ihub.org.cn/projects/641/repository/revisio
  camera localization, pose estimation, motion tracking, optical sensors, vision-based registration, marker-based tracking techniques, fiducial marker localization
 
 # Challenges
- - The cameras' positions, or at least distance from the origin, must be measured
+ - The cameras' positions, or at least distance from the origin, must be known
+   * It can be hand measured. This is laborious but safe
+   * It can also be estimated from images of known patterns. The results' accuracy will be limited by errors in the markers and errors in the camera calibration values.
  - We must compensate for optical distortion
  - We might need to control the image processor (to compensate distortion predictably, or for other tasks). An image processor can do [lots of things](https://webpages.uncc.edu/jfan/isp.pdf). But the Raspberry pi 4 and libcamera gives us the perfect tools for the job:
    * [raspberrypi.org page about libcamera](https://www.raspberrypi.org/documentation/linux/software/libcamera/)
    * [libcamera's own home page](http://www.libcamera.org/)
    * [Blog post announcing libcamera](https://www.raspberrypi.org/blog/an-open-source-camera-stack-for-raspberry-pi-using-libcamera/)
  - We must place markers both on the effector (on-board) and on the build plate (off-board)
- - Off-board markers must define the global coordinate system. This breaks the Hangprinter's old system where the A-anchor defines the y-axis, and that the D-anchor defines the z-axis. So all anchor positions must be described with three (possibly non-zero) coordinates
+ - Off-board markers must define the global coordinate system. This breaks the Hangprinter's old system where the A-anchor defines the y-axis, and that the D-anchor defines the z-axis. So all anchor positions must be described with three (possibly non-zero) coordinates (edit 20 Oct 2020: I'm not sure that we should use off-board markers anymore.)
 
 # Opportunities & Smaller Use Cases
  - Could spherical 3d fiducials simplify the image analysis? Their radius in pixels should translate directly to a depth. Its the simplest shape to reason about anyways. I should find some first principles based on spherical fiducials.
+ - After we've found 3 or more points individually, then we need to solve the perspective-n-point (PnP) problem.
+   There's an interesting solver on its way into OpenCV that seems very good: [Added SQPnP algorithm to SolvePnP (2020)](https://github.com/opencv/opencv/pull/18371)
  - Distances between nozzle, pivot points, and on-board markers may be measured by placing markers on every point (or in the case of the nozzle, move it to one of the off-board markers), and letting hp-mark measure relative distances. This is useful for line-collision-detector, who needs those values.
