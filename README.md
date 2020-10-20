@@ -46,7 +46,7 @@ A checked box above means "good enough for now".
    * Processor (BCM2837) has an [Image Processor](https://en.wikipedia.org/wiki/Image_processor)
  - Picam module v 2.1
    * Pixel size 1.12 x 1.12 µm
-   * Focal length 3.04 mm
+   * Focal length 3.04 mm (?? My camera calibration says 2.89 mm, given 1.12 um pixel size. Not sure if I can trust the 3.04 mm value).
    * Horizontal field of view: 62.2 degrees
    * Vertical field of view: 48.8 degrees
  - 32GB U3 SD card
