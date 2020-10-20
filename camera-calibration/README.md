@@ -1,4 +1,4 @@
-# How To Calibrate PiCam v2 for HP Mark
+# How To Calibrate PiCam v2 for hp-mark
 
 We're going to use a [charuco board](https://docs.opencv.org/4.4.0/da/d13/tutorial_aruco_calibration.html)
 as our pattern.

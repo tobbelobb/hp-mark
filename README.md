@@ -1,10 +1,10 @@
-# HP Mark ![HP Mark logo](./logo_small.png)
+# hp-mark ![hp-mark logo](./logo_small.png)
 
 Measure Hangprinter externally
 
 Current Hangprinters can only measure their own motor positions.
 This is useful, but limited.
-HP Mark is a separate solution for measuring a Hangprinter's
+hp-mark is a separate solution for measuring a Hangprinter's
 positions and orientations of anchors and effector.
 
 # High-Level Dream User Story
@@ -60,7 +60,7 @@ under occlusion (2014)](https://code.ihub.org.cn/projects/641/repository/revisio
  - [Robust identification of fiducial markers in challenging conditions (2018)](https://www.researchgate.net/profile/Rafael_Munoz-Salinas/publication/320439756_Robust_identification_of_fiducial_markers_in_challenging_conditions/links/59e9fd810f7e9bfdeb6cb66c/Robust-identification-of-fiducial-markers-in-challenging-conditions.pdf)
  - [Speeded up detection of squared fiducial markers (2018)](https://www.researchgate.net/profile/Rafael_Munoz-Salinas/publication/325787310_Speeded_Up_Detection_of_Squared_Fiducial_Markers/links/5b346d19aca2720785ef8a84/Speeded-Up-Detection-of-Squared-Fiducial-Markers.pdf)
   - [Towards Low-Cost Indoor Localisation Using a Multi-camera System (2019)](https://www.iccs-meeting.org/archive/iccs2019/papers/115400136.pdf)
-    * Practical project with a similar goal as HP Mark
+    * Practical project with a similar goal as hp-mark
     * Suggests using as big markers as possible
     * Suggests that averaging the results from multiple cameras works well
   - [Robust 2 1/2D Visual Servoing of a Cable-Driven Parallel Robot Thanks to Trajectory Tracking (2020)](http://rainbow-doc.irisa.fr/pdf/2020_ral_zake.pdf)
@@ -69,7 +69,7 @@ under occlusion (2014)](https://code.ihub.org.cn/projects/641/repository/revisio
     * Suggests using Lyapunov stability analysis for confirming the improvement
     * Manages to define a workspace within which control is stable
   - [Modeling and Vision-Based Control of Large-Dimension Cable-Driven Parallel Robots Using a Multiple-Camera Setup (2019)](https://hal-lirmm.ccsd.cnrs.fr/lirmm-02157768/document)
-    * Again, very similar to HP Mark. Written by CoGiRo researchers. They have written papers that have helped the Hangprinter Project before, since their project is very similar (although bigger & more advanced).
+    * Again, very similar to hp-mark. Written by CoGiRo researchers. They have written papers that have helped the Hangprinter Project before, since their project is very similar (although bigger & more advanced).
     * Achieves a mean ~2cm accuracy across a 15x11x6 m large build volume.
     * Uses 3 cameras to detect pose (and 8 cameras for other things).
     * Uses a calibration object on the effector that looks like a game die. Top/bottom faces have 0 eyes. All other faces have 5 (white) eyes.
@@ -103,19 +103,19 @@ under occlusion (2014)](https://code.ihub.org.cn/projects/641/repository/revisio
  - [Camera calibration method for solid spheres based on triangular primitives (2020)](https://www.sciencedirect.com/science/article/abs/pii/S0141635919308402)
    * Suggests that camera calibration also gets more stable if we use spheres instead of square markers printed on paper.
  - [Indoor Localization of Mobile Robots Through QR Code Detection and Dead Reckoning Data Fusion (2017)](https://scholar.google.com/scholar?q=Indoor%20Localization%20of%20Mobile%20Robots%20Through%20QR%20Code%20Detection%20and%20Dead%20Reckoning%20Data%20Fusion&btnG=Search&as_sdt=800000000001&as_sdtp=on)
-   * Sensor fusion. It should be a goal of HP Mark to not have to use an IMU sensor (accelerometer) in addition to cameras
+   * Sensor fusion. It should be a goal of hp-mark to not have to use an IMU sensor (accelerometer) in addition to cameras
  - [TopoTag: A Robust and Scalable Topological Fiducial Marker System (2019)](https://arxiv.org/pdf/1908.01450.pdf)
-   * Topological tags. Main benefit is that you can have many in each image. HP Mark will only need a few anyways.
+   * Topological tags. Main benefit is that you can have many in each image. hp-mark will only need a few anyways.
  - [LFTag: A Scalable Visual Fiducial System with Low Spatial Frequency (2020)](https://arxiv.org/pdf/2006.00842.pdf)
    * Also topological tags
  - [BullsEye: High-Precision Fiducial Tracking for Table-based Tangible Interaction (2014)](https://www.klokmose.net/clemens/wp-content/uploads/2015/08/bullseye-author.pdf)
     * Solves an easier problem than ours: Tracking fiducials in a plane (2D)
     * Establishes that we can improve precision a lot by computing position from a grey scale image
-    * GPU based tracking. This might be a bit over-kill for early tests, but might be just what HP Mark needs in the longer run.
+    * GPU based tracking. This might be a bit over-kill for early tests, but might be just what hp-mark needs in the longer run.
     * Calibration of light that allows for computation on a greyscale image. Using grayscale improves precision and noise tolerance compared to black/white images. However, calibration of light relies on having a stable background image, which a running HP will not have. However, we can find estimate position based on black/white image, and refine that based on a grey scale image. Once found, we can know that some points of the tag should be white. With this assumption we can calibrate for background light after we've localized the tag.
     * An automated technique for optical distortion compensation
     * "If a fiducial is partially in a brighter lit area of a table, the position may be slightly offset towards the brighter lit area." Probably true for any fudicial, and a good argument for using several fudicials, not one single fiducial on the HP effector. Light will vary less across a smaller marker. We'll have to make a trade off on marker size anyways.
-    * Briefly describes how we can create benchmark videos in Blender. This would be super useful for HP Mark to have.
+    * Briefly describes how we can create benchmark videos in Blender. This would be super useful for hp-mark to have.
  - [Affordable Infrared-Optical Pose-Tracking for Virtual and Augmented Reality (2007)](https://www.researchgate.net/profile/Hannes_Kaufmann/publication/228648906_Affordable_infrared-optical_pose-tracking_for_virtual_and_augmented_reality/links/0fcfd5092886b132ea000000/Affordable-infrared-optical-pose-tracking-for-virtual-and-augmented-reality.pdf)
     * Describes camera calibration quite well
  - [Time-of-Flight Cameras in Computer Graphics (2010)](https://www.cg.informatik.uni-siegen.de/data/www.cg.informatik.uni-siegen.de/data/Publications/2010/kolb10survey.pdf)
