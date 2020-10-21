@@ -1,10 +1,6 @@
 # Just executing this script and hoping that everything works is overly optimistic
 # Copy-paste the lines one by one instead
-#
-# Raspberry Pi OS 32-bit version was installed
 
-# Install OpenCV 4.4 by following this guide:
-# https://qengineering.eu/install-opencv-4.4-on-raspberry-pi-4.html
 sudo apt update
 sudo apt upgrade
 
