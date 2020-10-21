@@ -170,3 +170,30 @@ under occlusion (2014)](https://code.ihub.org.cn/projects/641/repository/revisio
 
  - Clone with `git clone --recursive git@gitlab.com:tobben/hp-mark.git`. The `--recursive`
  - If you already did `git clone` without `--recursive`, do `git submodule init && git submodule update` to get submodule code right.
+
+# How To Use This Repository
+
+## Dependencies
+This repo will (for now) assume that a number of dependencies are already installed by the user.
+ - OpenCV 4.4.0 or later
+ - g++ version 10 or later
+ - build2 version 0.13.0 or later
+ - clang++ version 10 or later (not required for build & use)
+ - clang-tidy version 10 or later (not required for build & use)
+ - clang-format version 10 or later (not required for build & use)
+ - compiledb
+ - shfmt
+
+## Target Hardware
+We will strive to provide how-tos for installing these on the Raspberry Pi 4 with 32-bit Raspberry Pi OS on it.
+How-tos will be put in the `doc/` directory as they are created.
+
+Even better would be to provide the complete Raspberry Pi OS image for users, with all dependencies already there.
+
+## Ubuntu Development Environment
+Since the Raspberry Pi 4 is slower than my Ubuntu laptop and desktop, most development will happen on those machines.
+I will strive to post how-tos about how to install dependencies under Ubuntu as well.
+
+## Why Are Some
+Scripts `tidy.sh`, `make-compilation-database.sh`, `format.sh` etc are there to softly enforce some coding quality and standards.
+However, they assume external dependencies are installed, like `clang-tidy-10`

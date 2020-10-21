@@ -1,0 +1,31 @@
+# build2
+# The real source for build2 install instructions is the build2 home page
+# https://build2.org/
+
+# g++-10
+sudo apt-get update && sudo apt-get install g++10
+
+# If you plan to develop hp-mark you need additional dependencies
+sudo apt-get update && sudo apt-get install \
+  clang-format-10 \
+  clang-tidy-10 \
+  clang++-10 \
+  python3-pip
+
+# Compiledb (for generating compile-commands.json)
+sudo -H pip3 install compiledb
+# Sadly, it won't recognize our beloved .c++ extension, unless we patch it
+# Filed an issue that probably ever won't get through:
+# https://github.com/nickdiego/compiledb/issues/99
+# Double check the path to parser.py before running the following command...
+# for example python3.7 could be the correct one instead of python3.6 on your system
+# It might be easier to just look inside the patch file and type it manually into parser.py
+sudo patch /usr/local/lib/python3.6/dist-packages/compiledb/parser.py ./compiledb_file_extension_regex.patch
+
+# There's also a permissions error in the pip package?
+sudo chmod o+w /usr/local/lib/python3.6/dist-packages/bashlex
+
+# shfmt (for formatting shell scripts)
+sudo snap install shfmt
+
+
