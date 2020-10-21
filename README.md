@@ -165,3 +165,8 @@ under occlusion (2014)](https://code.ihub.org.cn/projects/641/repository/revisio
  - After we've found 3 or more points individually, then we need to solve the perspective-n-point (PnP) problem.
    There's an interesting solver on its way into OpenCV that seems very good: [Added SQPnP algorithm to SolvePnP (2020)](https://github.com/opencv/opencv/pull/18371)
  - Distances between nozzle, pivot points, and on-board markers may be measured by placing markers on every point (or in the case of the nozzle, move it to one of the off-board markers), and letting hp-mark measure relative distances. This is useful for line-collision-detector, who needs those values.
+
+# How To Clone This Repository
+
+ - Clone with `git clone --recursive git@gitlab.com:tobben/hp-mark.git`. The `--recursive`
+ - If you already did `git clone` without `--recursive`, do `git submodule init && git submodule update` to get submodule code right.

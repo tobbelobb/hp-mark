@@ -1,0 +1,3 @@
+[submodule "hpm"]
+	path = hpm
+	url = git@gitlab.com:tobben/hpm.git
