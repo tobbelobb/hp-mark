@@ -7,3 +7,4 @@ hpm-gcc/build/bootstrap/*
 hpm-gcc/build/root.build
 hpm-gcc/buildfile
 hpm-gcc/hpm/build/config.build
+my-build-dir
