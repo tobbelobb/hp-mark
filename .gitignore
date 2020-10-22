@@ -2,3 +2,8 @@ hpm/hpm/hpm
 hpm-gcc/.bpkg/bpkg.sqlite3
 hpm-gcc/hpm/build/bootstrap/src-root.build
 hpm-gcc/hpm/hpm/*
+hpm-gcc/build/bootstrap.build
+hpm-gcc/build/bootstrap/*
+hpm-gcc/build/root.build
+hpm-gcc/buildfile
+hpm-gcc/hpm/build/config.build

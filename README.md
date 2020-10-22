@@ -173,7 +173,16 @@ under occlusion (2014)](https://code.ihub.org.cn/projects/641/repository/revisio
 
 # How To Use This Repository
 
-## Dependencies
+First calibrate your camera.
+How to do that is described in [the README.md in camera-calibration directory](./camera-calibration/README.md).
+
+Then compile `hpm`.
+
+# hpm
+hpm is the core part of hp-mark.
+It a is (planned to be) a program that reads data from the camera, and outputs position data of your marker(s).
+
+## hpm Dependencies
 This repo will (for now) assume that a number of dependencies are already installed by the user.
  - OpenCV 4.4.0 or later
  - g++ version 10 or later
@@ -181,19 +190,72 @@ This repo will (for now) assume that a number of dependencies are already instal
  - clang++ version 10 or later (not required for build & use)
  - clang-tidy version 10 or later (not required for build & use)
  - clang-format version 10 or later (not required for build & use)
- - compiledb
- - shfmt
+ - compiledb (not required for build & use)
+ - shfmt (not required for build & use)
 
-## Target Hardware
+## hpm Target Hardware
 We will strive to provide how-tos for installing these on the Raspberry Pi 4 with 32-bit Raspberry Pi OS on it.
 How-tos will be put in the `doc/` directory as they are created.
 
 Even better would be to provide the complete Raspberry Pi OS image for users, with all dependencies already there.
 
-## Ubuntu Development Environment
+## hpm Ubuntu Development Environment
 Since the Raspberry Pi 4 is slower than my Ubuntu laptop and desktop, most development will happen on those machines.
-I will strive to post how-tos about how to install dependencies under Ubuntu as well.
+We will strive to post how-tos about how to install dependencies under Ubuntu as well.
 
-## Why Are Some
+### Why Are Some Dependencies Not Required for hpm Build & Use?
 Scripts `tidy.sh`, `make-compilation-database.sh`, `format.sh` etc are there to softly enforce some coding quality and standards.
-However, they assume external dependencies are installed, like `clang-tidy-10`
+It you're not going to change the code anyways, then you don't need the scripts nor their dependencies.
+
+## hpm How To Build
+Before building `hpm` with build2, its recommended to create a build configuration.
+No pre-configured build configuration is shipped with this project, and build2's default configuration works poorly with hpm.
+
+### If You're a User
+```
+cd <path-to>/hp-mark/hpm
+bdep init --config-create ../my-build-dir @user cc config.cxx=g++-10
+```
+This creates a build2 config, gives it the location `../my-build-dir`, the name `@user`, and the compiler `g++-10`.
+Compile with
+```
+b
+```
+
+### If You're a Developer
+Create a configuration with some more compiler flags than the user:
+```
+cd <path-to>/hp-mark/hpm
+#in < path - to > / hp - mark / hpm
+bdep init --config-create ../my-advanced-config @developer cc config.cxx=g++-10 config.cxx.coptions="-g -Wall -Wextra -Wold-style-cast -Wnon-virtual-dtor -pedantic -Wcast-align -Wunused -Woverloaded-virtual -Wpedantic -Wconversion -Wsign-conversion -Wmisleading-indentation -Wnull-dereference -Wdouble-promotion -Werror -O2 -march=native"
+```
+You can edit your personal or compiler specific flags later, in `<path-to>/hp-mark/my-advanced-config/build/config.build`.
+Some example flags for reference can be seen in `<path-to>/hp-mark/hpm-gcc/build/config.build`.
+
+Compile with
+```
+b test
+```
+which will build and test using your default build config.
+
+Symlinks to executables end up in `<path-to>/hp-mark/hpm/hpm/`.
+The executables themselves, as well as build artifacts, end up in `../my-build-dir/hpm/hpm/` or `../my-advanced-config/hpm/hpm/`, depending on which build you updated.
+
+Create as many configs as you want.
+One that cross compiles for the Raspberry Pi 4 might be particularly useful in the later stages of this project, when build times get noticeable.
+
+You can see all your configs, and which of them is the default with
+```
+bdep config list
+```
+bdep is a very flexible and useful command. See its documentation [here](https://build2.org/bdep/doc/bdep-config.xhtml).
+
+I use [some own notes](https://gitlab.com/hangprinter/linc/-/blob/master/README.md) for remembering build2 commands.
+
+
+## How To Run
+Your executable should tell you how it wants to be used.
+Ask it like this:
+```
+<path-to>/hp-mark/hpm/hpm/hpm
+```
