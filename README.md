@@ -89,6 +89,29 @@ under occlusion (2014)](https://code.ihub.org.cn/projects/641/repository/revisio
  - [Towards vision-based control of cable-driven parallel robots (2012)](https://hal.archives-ouvertes.fr/file/index/docid/691562/filename/Iros2011_ReelAx8_Accepted_Version_04juillet-1.pdf)
    * Earlier work by the CoGiRo team who motivated the 2019 paper mentioned above
 
+### Circle and Ellipse Detection
+ - OpenCV seems to be a bit behind on circle detection. All I can find is [Circle Hough Transform](https://en.wikipedia.org/wiki/Circle_Hough_Transform) which is slow and imprecise
+ - [A Fast Operator for Detection and Precise Location of Distinct Points, Corners and Centres of Circular Features (1987)](https://cseweb.ucsd.edu/classes/sp02/cse252/foerstner/foerstner.pdf)
+   * Much cited old paper, but I can't really grasp the maths of how circles should be located according to this paper.
+ - [Circle Detection by Arc-Support Line Segments (2017)](https://alanlusun.github.io/files/ICIP%202017-Circle%20detection.pdf)
+   * Code is published [here](https://github.com/AlanLuSun/Circle-detection)
+   * Authors went on to generalize the algorithm for ellipses as well:   
+- [Arc-support Line Segments Revisited: An Efficient High-quality Ellipse Detection (2019)](https://arxiv.org/pdf/1810.03243.pdf)
+   * Code [here](https://github.com/AlanLuSun/High-quality-ellipse-detection)
+- [Arc Adjacency Matrix-Based Fast Ellipse Detection (2020)](https://ieeexplore.ieee.org/document/8972900)
+   * Code [here](https://github.com/Li-Zhaoxi/AAMED)
+   * Claims to do almost exactly the same as _Arc-support Line Segments Revisited_, it extracts contours and constructs ellipses.
+   * Also claims to be superior to all other state-of-the-art methods in all regards
+- [An occlusion-resistant circle detector using inscribed triangles (2020)](https://www.researchgate.net/profile/Mingyang_Zhao5/publication/343560841_An_Occlusion-resistant_Circle_Detector_Using_Inscribed_Triangles/links/5f55c7fda6fdcc9879d306c6/An-Occlusion-resistant-Circle-Detector-Using-Inscribed-Triangles.pdf)
+   * Also published in nice html [here](https://www.sciencedirect.com/science/article/pii/S0031320320303915?via%3Dihub)
+   * Much the same again: Extract contour arcs, then group the arcs, then refine and verify that this is a circle/ellipse.
+   * Uses tangent-triangles in both grouping and refining, and seems good at handling partial circles because of that
+ - [Fitting a Circle to a Set Of Points](https://www.dtcenter.org/sites/default/files/community-code/met/docs/write-ups/circle_fit.pdf)
+   * Just some maths, for reference
+- [An efficient circle detector not relying on edge detection (2016)](https://www.sciencedirect.com/science/article/abs/pii/S0273117716300515)
+
+
+
 ### Circular Tags & Video Work
  - [Detection and Accurate Localization of Circular Fiducials under Highly Challenging Conditions (2016)](https://hal.archives-ouvertes.fr/hal-01420665/document)
    * Introduces CCTags
