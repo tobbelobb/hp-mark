@@ -106,13 +106,17 @@ under occlusion (2014)](https://code.ihub.org.cn/projects/641/repository/revisio
 - [Circle detection on images by line segment and circle completeness (2016)](https://ieeexplore.ieee.org/abstract/document/7533040)
     * A much cited work. Code [here](https://github.com/trucleduc/Circle-Detection).
     * I have troubles finding relevant benchmarks that compare this algorithm to others
+    * This one seems to have been tested on the most images (although results are sparsely presented)
+    * Other papers refer to this algorithm as "good but complex/expensive", although I haven't seen the benchmarks for that...
 - [An occlusion-resistant circle detector using inscribed triangles (2020)](https://www.researchgate.net/profile/Mingyang_Zhao5/publication/343560841_An_Occlusion-resistant_Circle_Detector_Using_Inscribed_Triangles/links/5f55c7fda6fdcc9879d306c6/An-Occlusion-resistant-Circle-Detector-Using-Inscribed-Triangles.pdf)
-   * Also published in nice html [here](https://www.sciencedirect.com/science/article/pii/S0031320320303915?via%3Dihub)
+   * Also published in nice html [here](https://www.sciencedirect.com/science/article/pii/S0031320320303915?via%3Dihub).
+   * Test data set [here](https://github.com/zikai1/CircleDetection)
    * Much the same again: Extracts arcs, then combines and groups the arcs into circle candidates, then refines and verifies that this is a circle/ellipse.
    * Uses inscribed triangles in both grouping and refining, and seems good at handling partial circles because of that
    * Uses [Edge Drawing Parameter Free (2012)](http://c-viz.eskisehir.edu.tr/pdfs/EDPF.pdf) instead of Canny detector for defining edges, which means less parameter tuning
    * The proposed method could very well be used to extract circle-following paths in gcode
    * Achieves very similar results as [EDCircles: A real-time circle detector with a false detection control (2013)](http://c-viz.eskisehir.edu.tr/pdfs/EDCircles2013Patcog.pdf), and better than [Circle Detection by Arc-Support Line Segments (2017)](https://alanlusun.github.io/files/ICIP%202017-Circle%20detection.pdf). EDCircles has the advantage that example implementations are available [here](https://github.com/CihanTopal/ED_Lib) and [here](https://github.com/duong2179/EDCircles).
+   * These authors as well has generalized their circle detector into a very similar ellipse detector (with an additional convex hull constraint during arc grouping): [Using Convex Hull for Fast and Accurate Ellipse Detection (2020)](https://zikai1.github.io/ellDet.pdf)
  - [Circle detection using isosceles triangles sampling (2015)](https://arxiv.org/pdf/1511.00461.pdf)
    * Clearly an inspiration for [An occlusion-resistant circle detector using inscribed triangles (2020)](https://www.researchgate.net/profile/Mingyang_Zhao5/publication/343560841_An_Occlusion-resistant_Circle_Detector_Using_Inscribed_Triangles/links/5f55c7fda6fdcc9879d306c6/An-Occlusion-resistant-Circle-Detector-Using-Inscribed-Triangles.pdf)
    * I haven't found code or benchmark data for this algorithm
