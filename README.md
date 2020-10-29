@@ -90,7 +90,8 @@ under occlusion (2014)](https://code.ihub.org.cn/projects/641/repository/revisio
    * Earlier work by the CoGiRo team who motivated the 2019 paper mentioned above
 
 ### Circle and Ellipse Detection
- - OpenCV seems to be a bit behind on circle detection. All I can find is [Circle Hough Transform](https://en.wikipedia.org/wiki/Circle_Hough_Transform) which is slow and imprecise
+ - OpenCV seems to be a bit behind on circle detection. All I can find is [Circle Hough Transform](https://en.wikipedia.org/wiki/Circle_Hough_Transform) which is not good enough.
+ - OpenCV has camera calibration routines that recognize patterns of circles. When detecting those circles, it internally uses something called [SimpleBlobDetector](https://github.com/opencv/opencv/blob/3.2.0/modules/calib3d/include/opencv2/calib3d.hpp#L750), and [doesn't even filter by circularity](https://github.com/opencv/opencv/issues/8223). Could we also just use SimpleBlobDetector?
  - There are _a lot_ of paper that say "we developed a good circle detector", presents some maths, and a claim that the algorithm was thoroughly tested, but fail to present comparisons with other contemporary circle detection algorithms, and/or fails to present code, which makes them useless.
  - [A Fast Operator for Detection and Precise Location of Distinct Points, Corners and Centres of Circular Features (1987)](https://cseweb.ucsd.edu/classes/sp02/cse252/foerstner/foerstner.pdf)
    * Much cited old paper, but I can't really grasp the maths of how circles should be located according to this paper.
@@ -131,7 +132,7 @@ under occlusion (2014)](https://code.ihub.org.cn/projects/641/repository/revisio
    * Just some maths, for reference
 
 
-Note on Oct 29, 2020: It looks like hp-mark should try first to use EDCircle, and maybe adopt some ideas from [An occlusion-resistant circle detector using inscribed triangles (2020)](https://www.sciencedirect.com/science/article/pii/S0031320320303915?via%3Dihub). 
+Notes on Oct 29, 2020: It looks like hp-mark should try first to use EDCircle, and maybe adopt some ideas from [An occlusion-resistant circle detector using inscribed triangles (2020)](https://www.sciencedirect.com/science/article/pii/S0031320320303915?via%3Dihub). 
 
 I like that one project fell back to edge detection after trying region growing first.
 I like that EDCircle has example implementation from its inventor published with MIT license.
