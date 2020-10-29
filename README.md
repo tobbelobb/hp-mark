@@ -91,6 +91,7 @@ under occlusion (2014)](https://code.ihub.org.cn/projects/641/repository/revisio
 
 ### Circle and Ellipse Detection
  - OpenCV seems to be a bit behind on circle detection. All I can find is [Circle Hough Transform](https://en.wikipedia.org/wiki/Circle_Hough_Transform) which is slow and imprecise
+ - There are _a lot_ of paper that say "we developed a good circle detector", presents some maths, and a claim that the algorithm was thoroughly tested, but fail to present comparisons with other contemporary circle detection algorithms, and/or fails to present code, which makes them useless.
  - [A Fast Operator for Detection and Precise Location of Distinct Points, Corners and Centres of Circular Features (1987)](https://cseweb.ucsd.edu/classes/sp02/cse252/foerstner/foerstner.pdf)
    * Much cited old paper, but I can't really grasp the maths of how circles should be located according to this paper.
  - [Circle Detection by Arc-Support Line Segments (2017)](https://alanlusun.github.io/files/ICIP%202017-Circle%20detection.pdf)
@@ -102,6 +103,9 @@ under occlusion (2014)](https://code.ihub.org.cn/projects/641/repository/revisio
    * Code [here](https://github.com/Li-Zhaoxi/AAMED)
    * Claims to do almost exactly the same as _Arc-support Line Segments Revisited_, it extracts contours and constructs ellipses.
    * Also claims to be superior to all other state-of-the-art methods in all regards
+- [Circle detection on images by line segment and circle completeness (2016)](https://ieeexplore.ieee.org/abstract/document/7533040)
+    * A much cited work. Code [here](https://github.com/trucleduc/Circle-Detection).
+    * I have troubles finding relevant benchmarks that compare this algorithm to others
 - [An occlusion-resistant circle detector using inscribed triangles (2020)](https://www.researchgate.net/profile/Mingyang_Zhao5/publication/343560841_An_Occlusion-resistant_Circle_Detector_Using_Inscribed_Triangles/links/5f55c7fda6fdcc9879d306c6/An-Occlusion-resistant-Circle-Detector-Using-Inscribed-Triangles.pdf)
    * Also published in nice html [here](https://www.sciencedirect.com/science/article/pii/S0031320320303915?via%3Dihub)
    * Much the same again: Extracts arcs, then combines and groups the arcs into circle candidates, then refines and verifies that this is a circle/ellipse.
