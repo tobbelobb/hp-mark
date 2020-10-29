@@ -90,9 +90,10 @@ under occlusion (2014)](https://code.ihub.org.cn/projects/641/repository/revisio
    * Earlier work by the CoGiRo team who motivated the 2019 paper mentioned above
 
 ### Circle and Ellipse Detection
- - OpenCV seems to be a bit behind on circle detection. All I can find is [Circle Hough Transform](https://en.wikipedia.org/wiki/Circle_Hough_Transform) which is not good enough.
- - OpenCV has camera calibration routines that recognize patterns of circles. When detecting those circles, it internally uses something called [SimpleBlobDetector](https://github.com/opencv/opencv/blob/3.2.0/modules/calib3d/include/opencv2/calib3d.hpp#L750), and [doesn't even filter by circularity](https://github.com/opencv/opencv/issues/8223). Could we also just use SimpleBlobDetector?
+ - OpenCV has a bad, but much referred to circle detection algorithm called [Circle Hough Transform](https://en.wikipedia.org/wiki/Circle_Hough_Transform).
+ - OpenCV has camera calibration routines that recognize patterns of circles. When detecting those circles, it internally uses something called [SimpleBlobDetector](https://github.com/opencv/opencv/blob/3.2.0/modules/calib3d/include/opencv2/calib3d.hpp#L750), and [doesn't even filter by circularity](https://github.com/opencv/opencv/issues/8223). Could we also just use SimpleBlobDetector? Seems like the first thing we should try.
  - There are _a lot_ of paper that say "we developed a good circle detector", presents some maths, and a claim that the algorithm was thoroughly tested, but fail to present comparisons with other contemporary circle detection algorithms, and/or fails to present code, which makes them useless.
+ - Every algorithm compares itself with Circle Hough Transform (CHT), which so bad that a pure guessing algorithm would beat it in many situations. All other published algorithms are always better than CHT.
  - [A Fast Operator for Detection and Precise Location of Distinct Points, Corners and Centres of Circular Features (1987)](https://cseweb.ucsd.edu/classes/sp02/cse252/foerstner/foerstner.pdf)
    * Much cited old paper, but I can't really grasp the maths of how circles should be located according to this paper.
  - [Circle Detection by Arc-Support Line Segments (2017)](https://alanlusun.github.io/files/ICIP%202017-Circle%20detection.pdf)
