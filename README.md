@@ -104,11 +104,17 @@ under occlusion (2014)](https://code.ihub.org.cn/projects/641/repository/revisio
    * Also claims to be superior to all other state-of-the-art methods in all regards
 - [An occlusion-resistant circle detector using inscribed triangles (2020)](https://www.researchgate.net/profile/Mingyang_Zhao5/publication/343560841_An_Occlusion-resistant_Circle_Detector_Using_Inscribed_Triangles/links/5f55c7fda6fdcc9879d306c6/An-Occlusion-resistant-Circle-Detector-Using-Inscribed-Triangles.pdf)
    * Also published in nice html [here](https://www.sciencedirect.com/science/article/pii/S0031320320303915?via%3Dihub)
-   * Much the same again: Extract contour arcs, then group the arcs, then refine and verify that this is a circle/ellipse.
-   * Uses tangent-triangles in both grouping and refining, and seems good at handling partial circles because of that
+   * Much the same again: Extracts arcs, then combines and groups the arcs into circle candidates, then refines and verifies that this is a circle/ellipse.
+   * Uses inscribed triangles in both grouping and refining, and seems good at handling partial circles because of that
+   * Uses [Edge Drawing Parameter Free (2012)](http://c-viz.eskisehir.edu.tr/pdfs/EDPF.pdf) instead of Canny detector for defining edges, which means less parameter tuning
+   * The proposed method could very well be used to extract circle-following paths in gcode
+ - [An efficient circle detector not relying on edge detection (2016)](https://www.sciencedirect.com/science/article/abs/pii/S0273117716300515)
+ - [Experimental evaluation of a camera rig extrinsic calibration method based on retro-reflective markers detection (2019)](https://www.researchgate.net/profile/Sebastiano_Chiodini/publication/332041704_Experimental_Evaluation_of_a_Camera_Rig_Extrinsic_Calibration_Method_Based_on_Retro-reflective_Markers_Detection/links/5cb998d392851c8d22f626ee/Experimental-Evaluation-of-a-Camera-Rig-Extrinsic-Calibration-Method-Based-on-Retro-reflective-Markers-Detection.pdf)
+   * The retroreflective markers are spherical, which makes their work very similar to the initial marker ideas for hp-mark
+   * Segmentation/region growing techniques proved sensitive to sphere shading, which made researchers try edge detection instead
  - [Fitting a Circle to a Set Of Points](https://www.dtcenter.org/sites/default/files/community-code/met/docs/write-ups/circle_fit.pdf)
    * Just some maths, for reference
-- [An efficient circle detector not relying on edge detection (2016)](https://www.sciencedirect.com/science/article/abs/pii/S0273117716300515)
+
 
 
 
