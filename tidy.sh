@@ -20,12 +20,17 @@ CHECKS="-*,cppcoreguidelines-*,modernize-*,bugprone-*,clang-analyzer-*,misc-*,pe
 ./make-compilation-database.sh
 
 echo "Tidy application code"
-run-clang-tidy-10 -p=. -checks=$CHECKS -quiet $APPLICATION_CODE 2>/dev/null
+CLANG_TIDY_COMMAND="run-clang-tidy-10"
+if ! clang_tidy_loc="$(type -p "$CLANG_TIDY_COMMAND")" || [[ -z $clang_tidy_loc ]]; then
+  echo "Did not find run-clang-tidy-10. Trying run-clang-tidy-11 instead."
+  CLANG_TIDY_COMMAND="run-clang-tidy-11"
+fi
+$CLANG_TIDY_COMMAND -p=. -checks=$CHECKS -quiet $APPLICATION_CODE 2>/dev/null
 
 if [ -z "$1" ]; then
 	# Allow magic numbers in test code
 	CHECKS="$CHECKS,-readability-magic-numbers,-cppcoreguidelines-avoid-magic-numbers"
 	echo ""
 	echo "Tidy test code"
-	run-clang-tidy-10 -p=. -checks=$CHECKS -quiet $TESTS 2>/dev/null
+	$CLANG_TIDY_COMMAND -p=. -checks=$CHECKS -quiet $TESTS 2>/dev/null
 fi

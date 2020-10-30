@@ -12,6 +12,8 @@ sudo apt-get update && sudo apt-get install \
   clang++-10 \
   python3-pip
 
+# Note: If you have Ubuntu 20.04, you should install clang-format-11 clang-tidy-11 clang++-11 instead
+
 # Compiledb (for generating compile-commands.json)
 sudo -H pip3 install compiledb
 # Sadly, it won't recognize our beloved .c++ extension, unless we patch it
