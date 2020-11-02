@@ -8,3 +8,4 @@ hpm-gcc/build/root.build
 hpm-gcc/buildfile
 hpm-gcc/hpm/build/config.build
 my-build-dir
+compile_commands.json
