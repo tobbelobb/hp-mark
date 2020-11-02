@@ -22,8 +22,8 @@ CHECKS="-*,cppcoreguidelines-*,modernize-*,bugprone-*,clang-analyzer-*,misc-*,pe
 echo "Tidy application code"
 CLANG_TIDY_COMMAND="run-clang-tidy-10"
 if ! clang_tidy_loc="$(type -p "$CLANG_TIDY_COMMAND")" || [[ -z $clang_tidy_loc ]]; then
-  echo "Did not find run-clang-tidy-10. Trying run-clang-tidy-11 instead."
-  CLANG_TIDY_COMMAND="run-clang-tidy-11"
+	echo "Did not find run-clang-tidy-10. Trying run-clang-tidy-11 instead."
+	CLANG_TIDY_COMMAND="run-clang-tidy-11"
 fi
 $CLANG_TIDY_COMMAND -p=. -checks=$CHECKS -quiet $APPLICATION_CODE 2>/dev/null
 
