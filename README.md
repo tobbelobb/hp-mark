@@ -28,13 +28,13 @@ Comment on use case 2: By combining effector position data with the [auto-calibr
 This project will be all about getting good tag localization first, in terms of accuracy and precision.
 
 # Status
-The camera is calibrated. [Tweet](https://twitter.com/tobbelobb/status/1317544500332515329)
-We can not detect markers yet.
+Very basic single marker detection is in place. [Tweet](https://twitter.com/tobbelobb/status/1323682358541881344).
+We don't have good tests or benchmarks, and can not estimate poses yet.
 
  - [x] Aquire hardware
  - [x] Calibrate camera
  - [x] Aquire training/benchmark images
- - [ ] Calculate one 3D point from one marker
+ - [x] Calculate one 3D point from one marker
  - [ ] Calculate _n_ single points from _n_ markers
  - [ ] Calculate 6D pose from _n_ points (solve perspective-n-point, or PnP problem)
  - [ ] Aquire camera 6D pose (this includes defining our world coordinate system)
