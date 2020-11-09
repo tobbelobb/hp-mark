@@ -76,6 +76,9 @@ Here's an image of my "imaging lab" during calibration image grab.
 
 ![camera calibration image grab setup](./camera_calibration_image_grab_setup.jpg)
 
+If you have a large flatish screen, you may just display the pattern on that screen, instead of printing it on paper:
+
+![camera calibration pattern shown on screen](https://pbs.twimg.com/media/Ekzec4qWAAUQpaS?format=jpg&name=large).
 
 ## How To Use the Calibration Images Well
 
