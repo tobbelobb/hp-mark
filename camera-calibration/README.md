@@ -116,7 +116,13 @@ One last time, run:
 ./doit.sh
 ```
 If everything went smooth, you'll get a small reprojection error.
-I don't really know how small this value needs to be, but I would consider anything below 0.3 a success.
-
 An output file `myCamParams.xml` should have been created.
 It should now contain the intrinsic parameters for your PiCam v2.
+
+### What is a 'small' reprojection error?
+I don't really know how small this value needs to be, but I would consider anything below 0.3 a success.
+
+As a reference, I generated synthetic calibration images straight out of OpenScad.
+These images should be close to perfect, since there is no real camera involved.
+Still, when I fed these images into `calibrate_camera_charucoRO`, I still couldn't get the reprojection error below 0.2.
+
