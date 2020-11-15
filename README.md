@@ -210,6 +210,7 @@ I like the occlusion-resistant paper because it uses simple geometrical concepts
    * [Blog post announcing libcamera](https://www.raspberrypi.org/blog/an-open-source-camera-stack-for-raspberry-pi-using-libcamera/)
  - We must place markers both on the effector (on-board) and on the build plate (off-board)
  - Off-board markers must define the global coordinate system. This breaks the Hangprinter's old system where the A-anchor defines the y-axis, and that the D-anchor defines the z-axis. So all anchor positions must be described with three (possibly non-zero) coordinates (edit 20 Oct 2020: I'm not sure that we should use off-board markers anymore.)
+ - A 3d sphere projects onto the image plane as an ellipse. So there's a bit of math involved. See for example [here](http://jcgt.org/published/0002/02/05/paper.pdf#page=13&zoom=100,138,896) and [here](https://www.geometrictools.com/Documentation/PerspectiveProjectionEllipsoid.pdf) for related derivations.
 
 # Opportunities & Smaller Use Cases
  - Could spherical 3d fiducials simplify the image analysis? Their radius in pixels should translate directly to a depth. Its the simplest shape to reason about anyways. I should find some first principles based on spherical fiducials.
