@@ -10,3 +10,4 @@ hpm-gcc/hpm/build/config.build
 my-build-dir
 compile_commands.json
 output
+my-advanced-config
