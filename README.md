@@ -35,7 +35,7 @@ We don't have good tests or benchmarks, and can not estimate poses yet.
  - [x] Calibrate camera
  - [x] Aquire training/benchmark images
  - [x] Calculate one 3D point from one marker
- - [ ] Calculate _n_ single points from _n_ markers
+ - [x] Calculate _n_ single points from _n_ markers
  - [ ] Calculate 6D pose from _n_ points (solve perspective-n-point, or PnP problem)
  - [ ] Aquire camera 6D pose (this includes defining our world coordinate system)
 
@@ -98,7 +98,7 @@ under occlusion (2014)](https://code.ihub.org.cn/projects/641/repository/revisio
    * Much cited old paper, but I can't really grasp the maths of how circles should be located according to this paper.
  - [Circle Detection by Arc-Support Line Segments (2017)](https://alanlusun.github.io/files/ICIP%202017-Circle%20detection.pdf)
    * Code is published [here](https://github.com/AlanLuSun/Circle-detection)
-   * Authors went on to generalize the algorithm for ellipses as well:   
+   * Authors went on to generalize the algorithm for ellipses as well:
 - [Arc-support Line Segments Revisited: An Efficient High-quality Ellipse Detection (2019)](https://arxiv.org/pdf/1810.03243.pdf)
    * Code [here](https://github.com/AlanLuSun/High-quality-ellipse-detection)
 - [Arc Adjacency Matrix-Based Fast Ellipse Detection (2020)](https://ieeexplore.ieee.org/document/8972900)
@@ -133,7 +133,7 @@ under occlusion (2014)](https://code.ihub.org.cn/projects/641/repository/revisio
    * Just some maths, for reference
 
 
-Notes on Oct 29, 2020: It looks like hp-mark should try first to use EDCircle, and maybe adopt some ideas from [An occlusion-resistant circle detector using inscribed triangles (2020)](https://www.sciencedirect.com/science/article/pii/S0031320320303915?via%3Dihub). 
+Notes on Oct 29, 2020: It looks like hp-mark should try first to use EDCircle, and maybe adopt some ideas from [An occlusion-resistant circle detector using inscribed triangles (2020)](https://www.sciencedirect.com/science/article/pii/S0031320320303915?via%3Dihub).
 
 I like that one project fell back to edge detection after trying region growing first.
 I like that EDCircle has example implementation from its inventor published with MIT license.
