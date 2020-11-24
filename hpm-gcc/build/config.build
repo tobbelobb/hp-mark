@@ -12,10 +12,7 @@ config.cc.libs = [null]
 
 config.cxx = g++-10
 config.cxx.poptions = [null]
-# We'd like all these flags...
-#config.cxx.coptions = -g -Wall -Wextra -Wold-style-cast -Wnon-virtual-dtor -pedantic -Wcast-align -Wunused -Woverloaded-virtual -Wpedantic -Wconversion -Wsign-conversion -Wmisleading-indentation -Wnull-dereference -Wdouble-promotion -Werror -O2 -march=native
-# But let's try these ones first
-config.cxx.coptions = -g -O2 -march=native
+config.cxx.coptions = -g -Wall -Wextra -Wold-style-cast -Wnon-virtual-dtor -pedantic -Wcast-align -Wunused -Woverloaded-virtual -Wpedantic -Wconversion -Wsign-conversion -Wmisleading-indentation -Wnull-dereference -Wdouble-promotion -Werror -O2 -march=native
 config.cxx.loptions = [null]
 config.cxx.aoptions = [null]
 config.cxx.libs = [null]
