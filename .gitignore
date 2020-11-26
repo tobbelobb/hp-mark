@@ -11,3 +11,5 @@ my-build-dir
 compile_commands.json
 output
 my-advanced-config
+my-clang-config
+grid-check/tmp
