@@ -132,12 +132,32 @@ module bottom_cap() {
   }
 }
 
+lapping_helper_tool();
+module lapping_helper_tool(){
+  translate([0,0,-screw_length/2+4])
+    screw(screw_length-4);
+  plate_h = 13;
+  translate([0,0,-plate_h]){
+    difference() {
+      cylinder(r2=sphere_r, r1=sphere_r-plate_h+4.5, h=plate_h, $fn=100);
+      translate([0,0,-0.1])
+        cylinder(d=8.3, h=7, $fn=100);
+      translate([-0.2,0,5])
+        cylinder(d=14.70, h=6.5, $fn=6);
+      translate([0,-12.75/2,5])
+        cube([20, 12.75, 6.5]);
+    }
+    //cylinder(d=12.9, h=5.1, $fn=6);
+  }
+}
+
+
 //difference() {
 //  marker_slider();
 //  translate([-50,-50,0])
 //    cube(100);
 //}
-marker_slider();
+//marker_slider();
 module marker_slider() {
   zip_th = 2;
   zip_w = 4.5;
