@@ -20,7 +20,7 @@ for known_depth in 233 319 482 639 1001 1416 1687; do
 		echo "Error: found ${n_lines} lines of output. Expected 1. See the temporary file 'output' for details"
 		exit 1
 	fi
-	estimated_depth=$(sed -E 's/.*\[-?[0-9][0-9]+?\.?[0-9]+?, -?[0-9][0-9]+?\.?[0-9]+?, (.+)\],/\1/g' output)
+	estimated_depth=$(sed -E 's/.*\[-?[0-9][0-9]+?\.?[0-9]+?, -?[0-9][0-9]+?\.?[0-9]+?, (.+)\],?/\1/g' output)
 	difference=$(bc -l <<<"${known_depth} - ${estimated_depth}")
 	relative_difference=$(bc -l <<<"1-${known_depth}/${estimated_depth}")
 	echo "${known_depth} ${estimated_depth} ${difference} ${relative_difference}"
