@@ -8,19 +8,18 @@ set -o errexit
 set -o pipefail
 
 echo "known_depth estimated_depth difference relative_difference "
-#for known_depth in 1687; do
 total_difference=0
 total_relative_difference=0
 iterations=0
 
 for known_depth in 233 319 482 639 1001 1416 1687; do
-	hpm/hpm/hpm hpm/hpm/example-cam-params/myExampleCamParams.xml 25.84 hpm/hpm/test-images/ball_25_84_dist_${known_depth}_08_Z.png 2>&1 >output
+	hpm/hpm/hpm ./benchitCamParams.xml ./benchitMarkerParams.xml hpm/hpm/test-images/ball_25_84_dist_${known_depth}_08_Z.png 2>&1 >output
 	n_lines=$(wc -l output | awk '{ print $1 }')
-	if [ 1 -ne $n_lines ]; then
-		echo "Error: found ${n_lines} lines of output. Expected 1. See the temporary file 'output' for details"
+	if [ 2 -ne $n_lines ]; then
+		echo "Error: found ${n_lines} lines of output. Expected 2. See the temporary file 'output' for details"
 		exit 1
 	fi
-	estimated_depth=$(sed -E 's/.*\[-?[0-9][0-9]+?\.?[0-9]+?, -?[0-9][0-9]+?\.?[0-9]+?, (.+)\],?/\1/g' output)
+	estimated_depth=$(head -2 output | tail -1 | sed -E 's/.*\[-?[0-9][0-9]+?\.?[0-9]+?, -?[0-9][0-9]+?\.?[0-9]+?, (.+)\],?/\1/g')
 	difference=$(bc -l <<<"${known_depth} - ${estimated_depth}")
 	relative_difference=$(bc -l <<<"1-${known_depth}/${estimated_depth}")
 	echo "${known_depth} ${estimated_depth} ${difference} ${relative_difference}"
