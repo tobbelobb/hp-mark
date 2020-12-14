@@ -7,7 +7,7 @@ This is useful, but limited.
 hp-mark is a separate solution for measuring a Hangprinter's
 positions and orientations of anchors and effector.
 
-# High-Level Dream User Story
+# High-Level User-Story Dream
  1. Mount a computer-connected camera
  2. Point camera towards build area
  3. BAM! Hangprinter calibrates itself, and gets ready to start printing with fantastic accuracy & reliability
@@ -36,7 +36,7 @@ We don't have good tests or benchmarks, and can not estimate poses yet.
  - [x] Aquire training/benchmark images
  - [x] Calculate one 3D point from one marker
  - [x] Calculate _n_ single points from _n_ markers
- - [ ] Calculate 6D pose from _n_ points (solve perspective-n-point, or PnP problem)
+ - [X] Calculate 6D pose from 6 points (solve perspective-6-point, or P6P problem)
  - [ ] Aquire camera 6D pose (this includes defining our world coordinate system)
 
 A checked box above means "good enough for now".
