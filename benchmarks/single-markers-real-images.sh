@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Run like
-# $ ./single-markers-real-images.sh | column -t > plot_benchmarks/benchmarks_depth
+# $ ./single-markers-real-images.sh | column -t > plot-benchmarks/benchmarks_depth
 # or something...
 
 set -o errexit
