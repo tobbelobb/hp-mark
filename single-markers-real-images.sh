@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Run like
-# $ ./benchit.sh | column -t > plot_benchmarks/benchmarks_depth
+# $ ./single-markers-real-images.sh | column -t > plot_benchmarks/benchmarks_depth
 # or something...
 
 set -o errexit
@@ -40,3 +40,10 @@ mean_relative_difference=$(bc -l <<<"${total_relative_difference} / ${iterations
 echo ""
 echo "total_difference total_relative_difference mean_difference mean_relative_difference"
 echo "${total_difference} ${total_relative_difference} ${mean_difference} ${mean_relative_difference}"
+
+./hpm example-cam-params/openscadHandCodedCamParamsRotX30.xml example-marker-params/elevated-marker-params.xml test-images/generated_benchmark_nr6_32_elevated_150p43_0_0_0_30_0_0_1500.png 2>&1 output2
+n_lines=$(wc -l output2 | awk '{ print $1 }')
+if [ 3 -ne $n_lines ]; then
+	echo "Error: found ${n_lines} lines of output. Expected 3. See the temporary file 'output2' for details"
+	exit 1
+fi
