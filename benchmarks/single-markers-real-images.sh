@@ -18,7 +18,6 @@ pushd "${HPMPATH}"
 b
 popd
 
-
 echo "known_depth estimated_depth difference relative_difference "
 total_difference=0
 total_relative_difference=0
@@ -26,7 +25,7 @@ iterations=0
 
 for known_depth in 233 319 482 639 1001 1416 1687; do
 	COMMAND="${HPMPATH}/hpm/hpm ${BINPATH}/singleMarkersRealImagesCamParams.xml ${BINPATH}/singleMarkersRealImagesMarkerParams.xml ${HPMPATH}/hpm/test-images/ball_25_84_dist_${known_depth}_08_Z.png"
-  ${COMMAND} 2>&1 > ${TMPFILE}
+	${COMMAND} 2>&1 >${TMPFILE}
 	n_lines=$(wc -l ${TMPFILE} | awk '{ print $1 }')
 	if [ 2 -ne $n_lines ]; then
 		echo "Error: found ${n_lines} lines of output. Expected 2. See the file ${TMPFILE} for details"

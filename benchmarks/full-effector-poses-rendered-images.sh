@@ -10,9 +10,9 @@ mkdir -p "${TMPDIR}/"
 readonly TMPFILE=$(mktemp -p "${TMPDIR}/" XXXXXXXXXX)
 
 # Rebuild hpm binary
-pushd "${HPMPATH}" > /dev/null
+pushd "${HPMPATH}" >/dev/null
 b
-popd > /dev/null
+popd >/dev/null
 
 readonly IMAGE="${HPMPATH}/hpm/test-images/generated_benchmark_nr6_32_elevated_150p43_0_0_0_30_0_0_1500.png"
 readonly COMMAND="${HPMPATH}/hpm/hpm ${HPMPATH}/hpm/example-cam-params/openscadHandCodedCamParamsRotX30.xml ${HPMPATH}/hpm/example-marker-params/elevated-marker-params.xml ${IMAGE}"

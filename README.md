@@ -244,6 +244,10 @@ This repo will (for now) assume that a number of dependencies are already instal
  - clang-format version 10 or later (not required for build & use)
  - compiledb (not required for build & use)
  - shfmt (not required for build & use)
+ - python3 (not required for build & use)
+ - black (not required for build & use)
+ - scipy (not required for build & use)
+ - numpy (not required for build & use)
 
 ## hpm Target Hardware
 We will strive to provide how-tos for installing these on the Raspberry Pi 4 with 32-bit Raspberry Pi OS on it.

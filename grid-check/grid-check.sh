@@ -21,7 +21,7 @@ mkdir -p "${TMPDIR}/"
 readonly TMPFILE=$(mktemp -p "${TMPDIR}/" XXXXXXXXXX.scad)
 cp "${HPMPATH}/hpm/test-images/geodesic_sphere.scad" "${TMPDIR}/"
 cp "${HPMPATH}/hpm/test-images/sphere-grid.scad" "${TMPFILE}"
-cat << EOF >> "${TMPFILE}"
+cat <<EOF >>"${TMPFILE}"
 for (position = [${POSITIONS}])
   translate([position[0], -position[1], 2000-position[2]])
     geodesic_sphere(d=32);
