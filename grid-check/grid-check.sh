@@ -13,7 +13,8 @@ b
 popd
 
 # Run hpm
-readonly POSITIONS=$("${HPMPATH}/hpm/hpm" "${HPMPATH}/hpm/example-cam-params/openscadHandCodedCamParamsSixtupled.xml" 32 "${HPMPATH}/hpm/test-images/grid-red-2000.png")
+readonly COMMAND="${HPMPATH}/hpm/hpm ${BINPATH}/openscadHandCodedCamParamsSixtupled.xml ${BINPATH}/grid-check-marker-params.xml ${HPMPATH}/hpm/test-images/grid-red-2000.png"
+readonly POSITIONS=$(${COMMAND} | tail -n +2)
 
 # Build OpenScad source file, including the hpm results
 mkdir -p "${TMPDIR}/"
