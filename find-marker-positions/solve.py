@@ -2,7 +2,7 @@
 
 """For finding hp-marker positions.
    Use for example like
-   $ ./solve.py --measurements 213.0 209.0 216.0 218.0 210.0 213.0 123.0 235.0 288.0 236.5 142.0 138.0 260.0 276.0 243.0 176.0 262.5 306.0 144.0 269.5 154.0
+   $ ./solve.py --measurements 209.0 206.5 216.0 218.0 212.5 225.5 123.0 235.0 288.0 236.5 142.0 138.0 260.0 276.0 243.0 176.0 262.5 306.0 144.0 269.5 154.0
 
     measurements : The 21 distance measurements between pairs of markers.
                    Pairs are in the usual ccw order:
@@ -209,7 +209,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "-m",
         "--method",
-        help="Available methods are SLSQP (0), L-BFGS-B (1), PowellDirectionalSolver (2).",
+        help="Available methods are SLSQP (0, default), L-BFGS-B (1), PowellDirectionalSolver (2), and differentialEvolutionSolver (3). SLSQP and L-BFGS-B require scipy to be installed. The others require mystic to be installed.",
         default="SLSQP",
     )
     parser.add_argument(
@@ -222,7 +222,7 @@ if __name__ == "__main__":
         default=np.array([]),
     )
     args = vars(parser.parse_args())
-    if args["method"] == "0":
+    if args["method"] == "0" or args["method"] == "default":
         args["method"] = "SLSQP"
     if args["method"] == "1":
         args["method"] = "L-BFGS-B"
@@ -242,12 +242,12 @@ if __name__ == "__main__":
         measurements = np.array(
             # You might want to manually input positions where you made samples here like
             [
-                213.0,
                 209.0,
+                206.5,
                 216.0,
                 218.0,
-                212.0,
-                213.0,
+                212.5,
+                225.5,
                 123.0,
                 235.0,
                 288.0,
