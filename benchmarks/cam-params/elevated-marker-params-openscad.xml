@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<opencv_storage>
+<marker_positions type_id="opencv-matrix">
+  <rows>6</rows>
+  <cols>3</cols>
+  <dt>d</dt>
+  <data>
+ -72.4478 -125.483 150.43
+  72.4478 -125.483 150.43
+ 144.8960    0.0   150.43
+  72.4478  125.483 150.43
+ -72.4478  125.483 150.43
+-144.8960    0.0   150.43
+  </data></marker_positions>
+<marker_diameter>32.0</marker_diameter>
+</opencv_storage>

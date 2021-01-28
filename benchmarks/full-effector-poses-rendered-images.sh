@@ -15,7 +15,7 @@ b
 popd >/dev/null
 
 readonly IMAGE="${HPMPATH}/hpm/test-images/generated_benchmark_nr6_32_elevated_150p43_0_0_0_30_0_0_1500.png"
-readonly COMMAND="${HPMPATH}/hpm/hpm ${HPMPATH}/hpm/example-cam-params/openscadHandCodedCamParamsRotX30.xml ${HPMPATH}/hpm/example-marker-params/elevated-marker-params.xml ${IMAGE}"
+readonly COMMAND="${HPMPATH}/hpm/hpm ${HPMPATH}/hpm/example-cam-params/openscadHandCodedCamParamsRotX30.xml ${BINPATH}/cam-params/elevated-marker-params-openscad.xml ${IMAGE}"
 readonly OUT=$(${COMMAND} 2>&1 | tee ${TMPFILE})
 
 n_lines=$(wc -l ${TMPFILE} | awk '{ print $1 }')
