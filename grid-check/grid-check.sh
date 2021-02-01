@@ -27,5 +27,6 @@ for (position = [${POSITIONS}])
     geodesic_sphere(d=32);
 EOF
 
+echo "Produced ${TMPFILE}"
 # Inspect results in OpenScad
 openscad "${TMPFILE}"
