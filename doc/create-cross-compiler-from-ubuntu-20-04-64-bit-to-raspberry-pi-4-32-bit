@@ -1,0 +1,41 @@
+So, we are going to cross-compile from Ubuntu 20.04 64-bit to
+Raspberry Pi OS 32-bit
+Because we cannot use Raspberry Pi OS 64-bit (MMAL doesn't work there)
+and because build2 can't build itself on Raspberry Pi OS 32-bit.
+So here we are.
+Cross-compiling with build2.
+We need a toolchain first.
+
+Used this:
+https://ilyas-hamadouche.medium.com/creating-a-cross-platform-toolchain-for-raspberry-pi-4-5c626d908b9d
+no I used this:
+https://medium.com/@stonepreston/how-to-cross-compile-a-cmake-c-application-for-the-raspberry-pi-4-on-ubuntu-20-04-bac6735d36df
+
+sudo apt-get install automake bison chrpath flex g++ git gperf gawk help2man libexpat1-dev libncurses5-dev libsdl1.2-dev libtool libtool-bin libtool-doc python2.7-dev texinfo
+git clone https://github.com/crosstool-ng/crosstool-ng.git
+cd crosstool-ng
+git checkout 30316 # This happened to be the commit on top of master when I cloned
+./bootstrap
+./configure --prefix=/home/torbjorn/.local
+make
+make install
+ct-ng list-samples
+mkdir -p ~/raspberry_pi/toolchain_staging
+cd ~/raspberry_pi/toolchain_staging
+
+## ON THE PI ##
+sudo apt install binutils-source
+uname -r
+ld --version
+gcc --version
+ldd --version
+sudo apt install symlinks
+sudo symlinks -rc /. # This changes all symlinks in the whole OS to relative ones. Crazy.
+
+# Menu Preferences -> Raspberry Pi Configuration -> Interfaces -> Enable ssh
+
+## ON THE HOST ##
+mkdir src
+mkdir -p patches/binutils/2.31.1/ # or whatever version you got from ld --version
+cd patches/binutils/2.31.1/
+scp pi@raspberrypi:/usr/src/binutils/patches/129_multiarch_libpath.patch ./
