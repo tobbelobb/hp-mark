@@ -37,7 +37,7 @@ We don't have good tests or benchmarks, and can not estimate poses yet.
  - [x] Calculate one 3D point from one marker
  - [x] Calculate _n_ single points from _n_ markers
  - [X] Calculate 6D pose from 6 points (solve perspective-6-point, or P6P problem)
- - [ ] Aquire camera 6D pose (this includes defining our world coordinate system)
+ - [x] Aquire camera 6D pose (this includes defining our world coordinate system)
 
 A checked box above means "good enough for now".
 
@@ -51,7 +51,7 @@ A checked box above means "good enough for now".
    * Vertical field of view: 48.8 degrees
  - 32GB U3 SD card
  - Default recommended Raspberry Pi OS, 32-bit
- - Library choice OpenCV and/or ViSP and/or Vuforia has not been decided
+ - OpenCV
 
 # Reading List
  - [Motion tracking: No silver bullet, but a respectable arsenal (2002)](https://my.eng.utah.edu/~cs6360/Readings/cga02_welch_tracking.pdf)
