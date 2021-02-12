@@ -225,32 +225,49 @@ module bg_plate(width=55){
   //    cylinder(d=4.8, h=1.8, $fn=20);
   //}
   //difference(){
-  //  cylinder(d=width*2/sqrt(3), h=0.5,$fn=6);
+  //  union() {
+  //    cylinder(d=width*sqrt(5)/sqrt(4), h=0.5,$fn=6);
+  //    rotate([0,0,360/6/2])
+  //      cylinder(d=width*sqrt(5)/sqrt(4), h=0.5,$fn=6);
+  //  }
   //  translate([0,0,-0.1])
   //    cylinder(d=4.8, h=1.8, $fn=20);
   //}
-  //difference(){
-  //  cylinder(d=width*sqrt(7)/sqrt(6), h=0.5,$fn=8);
-  //  translate([0,0,-0.1])
-  //    cylinder(d=4.8, h=1.8, $fn=20);
-  //}
-
   difference(){
-    intersection(){
-      difference(){
-        translate([0,0,110/2])
-          sphere(d=110);
-        translate([0,0,110/2])
-          sphere(d=108.5,$fn=70);
-      }
-      rotate([0,0,45/2])
-      cylinder(d=width*sqrt(7)/sqrt(6), h=50.5,$fn=8);
-      //translate([-width/2,-width/2,-1])
-      //  cube([width, width, 50]);
+    union() {
+      cylinder(d=width*sqrt(7)/sqrt(6), h=0.5,$fn=8);
+      rotate([0,0,360/8/2])
+        cylinder(d=width*sqrt(7)/sqrt(6), h=0.5,$fn=8);
     }
     translate([0,0,-0.1])
       cylinder(d=4.8, h=1.8, $fn=20);
   }
+
+  //difference(){
+  //  intersection(){
+  //    difference(){
+  //      translate([0,0,110/2])
+  //        sphere(d=110);
+  //      translate([0,0,110/2])
+  //        sphere(d=108.5,$fn=70);
+  //    }
+  //    //rotate([0,0,45/2]) {
+  //    //  cylinder(d=width*sqrt(5)/sqrt(4), h=50.5,$fn=6);
+  //    //  rotate([0,0,360/8/2])
+  //    //    cylinder(d=width*sqrt(5)/sqrt(4), h=50.5,$fn=6);
+  //    //}
+  //    rotate([0,0,45/2]) {
+  //      cylinder(d=width*sqrt(7)/sqrt(6), h=50.5,$fn=8);
+  //      rotate([0,0,360/8/2])
+  //        cylinder(d=width*sqrt(7)/sqrt(6), h=50.5,$fn=8);
+  //    }
+  //    //translate([-width/2,-width/2,-1])
+  //    //  cube([width, width, 50]);
+  //  }
+  //  translate([0,0,-0.1]) {
+  //    cylinder(d=4.8, h=1.8, $fn=20);
+  //  }
+  //}
 }
 
 show();
