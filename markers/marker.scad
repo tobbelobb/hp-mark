@@ -132,7 +132,7 @@ module bottom_cap() {
   }
 }
 
-lapping_helper_tool();
+//lapping_helper_tool();
 module lapping_helper_tool(){
   translate([0,0,-screw_length/2+4])
     screw(screw_length-4);
@@ -216,19 +216,57 @@ module marker_slider() {
     }
 }
 
-//show();
+//!bg_plate();
+module bg_plate(width=55){
+  //difference(){
+  //  %translate([-width/2, -width/2, 0])
+  //    cube([width, width, 0.5]);
+  //  translate([0,0,-0.1])
+  //    cylinder(d=4.8, h=1.8, $fn=20);
+  //}
+  //difference(){
+  //  cylinder(d=width*2/sqrt(3), h=0.5,$fn=6);
+  //  translate([0,0,-0.1])
+  //    cylinder(d=4.8, h=1.8, $fn=20);
+  //}
+  //difference(){
+  //  cylinder(d=width*sqrt(7)/sqrt(6), h=0.5,$fn=8);
+  //  translate([0,0,-0.1])
+  //    cylinder(d=4.8, h=1.8, $fn=20);
+  //}
+
+  difference(){
+    intersection(){
+      difference(){
+        translate([0,0,110/2])
+          sphere(d=110);
+        translate([0,0,110/2])
+          sphere(d=108.5,$fn=70);
+      }
+      rotate([0,0,45/2])
+      cylinder(d=width*sqrt(7)/sqrt(6), h=50.5,$fn=8);
+      //translate([-width/2,-width/2,-1])
+      //  cube([width, width, 50]);
+    }
+    translate([0,0,-0.1])
+      cylinder(d=4.8, h=1.8, $fn=20);
+  }
+}
+
+show();
 module show(){
   translate([0,0,sphere_r+4])
     difference() {
       rotate([0,0,45])
-        union() {
-          translate([0,0,-screw_length/2])
-            scale([(screw_r-0.05)/screw_r,(screw_r-0.05)/screw_r,1])
-            screw();
-          top_cap();
-          rotate([0,180,0])
-            bottom_cap();
-        }
+        color("red")
+          union() {
+            translate([0,0,-screw_length/2])
+              scale([(screw_r-0.05)/screw_r,(screw_r-0.05)/screw_r,1])
+              screw();
+            top_cap();
+            rotate([0,180,0])
+              bottom_cap();
+          }
       translate([0, -4*screw_r, -4*screw_r])
         cube(8*screw_r);
     }
@@ -239,4 +277,7 @@ module show(){
   translate([0,0,-5])
     rotate([0,90,0])
     marker_slider();
+  color([0.2,0.2,0.2])
+    translate([0,0,4.0])
+    bg_plate();
 }
