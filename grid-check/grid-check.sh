@@ -3,9 +3,9 @@
 set -o errexit
 set -o pipefail
 
-readonly BINPATH="$(dirname "$0")"
-readonly HPMPATH="${BINPATH}/../hpm"
-readonly TMPDIR="${BINPATH}/tmp"
+readonly THISPATH="$(dirname "$0")"
+readonly HPMPATH="${THISPATH}/../hpm"
+readonly TMPDIR="${THISPATH}/tmp"
 
 # Rebuild hpm binary
 pushd "${HPMPATH}"
@@ -13,7 +13,7 @@ b
 popd
 
 # Run hpm
-readonly COMMAND="${HPMPATH}/hpm/hpm ${BINPATH}/openscadHandCodedCamParamsSixtupled.xml ${BINPATH}/grid-check-marker-params.xml ${HPMPATH}/hpm/test-images/grid-red-2000.png --no-fit-by-distance"
+readonly COMMAND="${HPMPATH}/hpm/hpm ${THISPATH}/openscadHandCodedCamParamsSixtupled.xml ${THISPATH}/grid-check-marker-params.xml ${HPMPATH}/hpm/test-images/grid-red-2000.png --no-fit-by-distance"
 readonly POSITIONS=$(${COMMAND} | tail -n +2)
 
 # Build OpenScad source file, including the hpm results
