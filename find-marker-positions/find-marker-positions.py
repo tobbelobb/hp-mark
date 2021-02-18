@@ -229,6 +229,7 @@ def solve(measurements, method):
     print("Best intermediate cost: ", intermediate_cost)
     print("Best intermediate positions: \n%s" % posvec2matrix_no_nozzle(intermediate_solution))
     if np.size(measurements) == 15:
+        print("Got only 15 samples, so will not try to find nozzle position\n")
         return
     nozzle_measurements = measurements[: (21 - 15)]
     # Look for nozzle's xyz-offset relative to marker 0
@@ -308,7 +309,12 @@ def solve(measurements, method):
         final_solution = solver.bestSolution
 
     print("Best final cost: ", final_cost)
-    print("Best final positions: \n%s" % posvec2matrix_nozzle(final_solution, intermediate_solution))
+    print("Best final positions:")
+    final = posvec2matrix_nozzle(final_solution, intermediate_solution)[1:]
+    for num in range(0, 6):
+        print(
+            "{0: 7.2f} {1: 7.2f} {2: 7.2f} <!-- Marker {3} -->".format(final[num][0], final[num][1], final[num][2], num)
+        )
 
 
 class Store_as_array(argparse._StoreAction):
@@ -330,7 +336,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "-e",
         "--measurements",
-        help="Specify the 15 measurements of distances between pairs of markers. Separate numbers by spaces.",
+        help="Specify the 6 measurements of distances between nozzle and marker centers, followed by the 15 measurements of distances between pairs of markers. The latter 15 measurements are the most important ones. Separate numbers by spaces.",
         action=Store_as_array,
         type=float,
         nargs="+",
@@ -347,13 +353,7 @@ if __name__ == "__main__":
         args["method"] = "differentialEvolutionSolver"
 
     measurements = args["measurements"]
-    if np.size(measurements) != 0:
-        if np.size(measurements) != 15 and np.size(measurements) != 21:
-            print(
-                "Error: You specified %d numbers after your -e/--measurements option, which is not 15 or 21 numbers. It must be 15 or 21 numbers."
-            )
-            sys.exit(1)
-    else:
+    if np.size(measurements) == 0:
         measurements = np.array(
             # You might want to manually input positions where you made samples here like
             [
@@ -380,4 +380,9 @@ if __name__ == "__main__":
                 241.75,  # 241.0, # 242.5,
             ]
         )
+    if np.size(measurements) != 15 and np.size(measurements) != 21:
+        print(
+            "Error: You specified %d numbers after your -e/--measurements option, which is not 15 or 21 numbers. It must be 15 or 21 numbers."
+        )
+        sys.exit(1)
     solve(measurements, args["method"])
