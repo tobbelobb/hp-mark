@@ -313,7 +313,7 @@ def solve(measurements, method):
     final = posvec2matrix_nozzle(final_solution, intermediate_solution)[1:]
     for num in range(0, 6):
         print(
-            "{0: 7.2f} {1: 7.2f} {2: 7.2f} <!-- Marker {3} -->".format(final[num][0], final[num][1], final[num][2], num)
+            "{0: 8.3f} {1: 8.3f} {2: 8.3f} <!-- Marker {3} -->".format(final[num][0], final[num][1], final[num][2], num)
         )
 
 
