@@ -14,6 +14,7 @@
                    blue0-blue1.
 
 """
+
 from __future__ import division  # Always want 3/2 = 1.5
 import numpy as np
 import scipy.optimize
@@ -22,26 +23,31 @@ import timeit
 import sys
 
 
-def posvec2matrix(posvec):
+def posvec2matrix_nozzle(posvec, intermediate_solution):
+    return np.append(
+        np.array([[0.0, 0.0, 0.0]]), posvec2matrix_no_nozzle(intermediate_solution) - posvec, axis=0  # Nozzle
+    )
+
+
+def posvec2matrix_no_nozzle(posvec):
     return np.array(
         [
-            [0.0, 0.0, 0.0],  # Nozzle
-            [posvec[0], posvec[1], posvec[2]],  # Red0
-            [posvec[3], posvec[1], posvec[2]],  # Red1 same y coord as Red0
-            [posvec[4], posvec[5], posvec[2]],  # Green0
-            [posvec[6], posvec[7], posvec[2]],  # Green1
-            [posvec[8], posvec[9], posvec[2]],  # Blue0
-            [posvec[10], posvec[11], posvec[2]],
+            [0.0, 0.0, 0.0],  # Red0
+            [posvec[0], 0.0, 0.0],
+            [posvec[1], posvec[2], 0.0],
+            [posvec[3], posvec[4], 0.0],
+            [posvec[5], posvec[6], 0.0],
+            [posvec[7], posvec[8], 0.0],
         ]
-    )  # Blue1
+    )
 
 
-def cost(positions, measurements):
+def cost_nozzle(positions, measurements):
     """The cost function.
 
     Parameters
     ----------
-    positions : A 6x2 matrix of marker positions.
+    positions : A 7x2 matrix of marker positions.
                 Nozzle is first.
                 Markers are in the usual ccw order:
                 red0, red1, green0, green1, blue0, blue1
@@ -79,81 +85,107 @@ def cost(positions, measurements):
     )
 
 
+def cost_no_nozzle(positions, measurements):
+    """The cost function.
+
+    Parameters
+    ----------
+    positions : A 6x2 matrix of marker positions.
+                Markers are in the usual ccw order:
+                red0, red1, green0, green1, blue0, blue1
+    measurements : The 15 distance measurements between pairs of markers.
+                   Pairs are in the usual ccw order:
+                   red0-red1, red0-green0, red0-green1, red0-blue0, red0-blue1,
+                   red1-green0, red1-green1, red1-blue0, red1-blue1,
+                   green0-green1, green0-blue0, green0-blue1,
+                   green1-blue0, green1-blue1,
+                   blue0-blue1.
+    """
+    return (
+        +pow(np.linalg.norm(positions[0] - positions[1], 2) - measurements[0], 2)
+        + pow(np.linalg.norm(positions[0] - positions[2], 2) - measurements[1], 2)
+        + pow(np.linalg.norm(positions[0] - positions[3], 2) - measurements[2], 2)
+        + pow(np.linalg.norm(positions[0] - positions[4], 2) - measurements[3], 2)
+        + pow(np.linalg.norm(positions[0] - positions[5], 2) - measurements[4], 2)
+        + pow(np.linalg.norm(positions[1] - positions[2], 2) - measurements[5], 2)
+        + pow(np.linalg.norm(positions[1] - positions[3], 2) - measurements[6], 2)
+        + pow(np.linalg.norm(positions[1] - positions[4], 2) - measurements[7], 2)
+        + pow(np.linalg.norm(positions[1] - positions[5], 2) - measurements[8], 2)
+        + pow(np.linalg.norm(positions[2] - positions[3], 2) - measurements[9], 2)
+        + pow(np.linalg.norm(positions[2] - positions[4], 2) - measurements[10], 2)
+        + pow(np.linalg.norm(positions[2] - positions[5], 2) - measurements[11], 2)
+        + pow(np.linalg.norm(positions[3] - positions[4], 2) - measurements[12], 2)
+        + pow(np.linalg.norm(positions[3] - positions[5], 2) - measurements[13], 2)
+        + pow(np.linalg.norm(positions[4] - positions[5], 2) - measurements[14], 2)
+    )
+
+
 def solve(measurements, method):
     """Find reasonable marker positions based on a set of measurements."""
     print(method)
 
-    # Nozzle has known position (0, 0, 0)
-    # Red0 has unknown position (r0x, r0y, r0z)
-    # Red1 has the same unknown y-position and z-position as Red0 (r1x, r0y, r0z)
-    # Green and blue markers have unknown x-positions and y-positions, and same z-positions as Red0.
-    num_params = 3 + 1 + 4 * 2
+    marker_measurements = measurements
+    if np.size(measurements) == 21:
+        marker_measurements = measurements[(21 - 15) :]
+    # Red0 has known positions (0, 0, 0)
+    # Red 1 has unknown x-position
+    # All others have unknown xy-positions
+    num_params = 0 + 1 + 2 + 2 + 2 + 2
 
     bound = 400.0
-    # lower_bound = [-bound]*num_params
-    # upper_bound = [bound]*num_params
     lower_bound = [
-        -bound,  # Red0 X
-        -bound,  # Red0 and Red1 Y
-        0.0,  # All Z
-        0.0,  # Red1 X
-        0.0,  # Green0 X
-        -bound,  # Green0 Y
-        0.0,  # Green1 X
-        0.0,  # Green1 Y
-        -bound,  # Blue0 X
-        0.0,  # Blue0 Y
-        -bound,  # Blue1 X
-        -bound,  # Blue1 Y
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        -bound,
+        0.0,
+        -bound,
+        0.0,
     ]
     upper_bound = [
-        0.0,  # Red0 X
-        0.0,  # Red0 and Red1 Y
-        bound,  # All Z,
-        bound,  # Red1 X
-        bound,  # Green0 X
-        bound,  # Green0 Y
-        bound,  # Green1 X
-        bound,  # Green1 Y
-        0.0,  # Blue0 X
-        bound,  # Blue0 Y
-        0.0,  # Blue1 X
-        bound,  # Blue1 Y
+        bound,
+        bound,
+        bound,
+        bound,
+        bound,
+        bound,
+        bound,
+        bound,
+        bound,
     ]
 
-    def costx(posvec):
-        """Identical to cost, except the shape of inputs and capture of samp, xyz_of_samp, ux, and u
-
-        Parameters
-        ----------
-        posvec : [r1x, g0x, g0y, g1x, g1y, b0x, b0y, b1x, b1y]
-        """
-        positions = posvec2matrix(posvec)
-        return cost(positions, measurements)
+    def costx_no_nozzle(posvec):
+        """Identical to cost_no_nozzle, except the shape of inputs"""
+        positions = posvec2matrix_no_nozzle(posvec)
+        return cost_no_nozzle(positions, marker_measurements)
 
     guess_0 = [0.0] * num_params
 
+    intermediate_cost = 0.0
+    intermediate_solution = []
     if method == "SLSQP":
         sol = scipy.optimize.minimize(
-            costx,
+            costx_no_nozzle,
             guess_0,
             method="SLSQP",
             bounds=list(zip(lower_bound, upper_bound)),
             tol=1e-20,
             options={"disp": True, "ftol": 1e-40, "eps": 1e-10, "maxiter": 500},
         )
-        print("Best cost: ", sol.fun)
-        print("Best positions: \n%s" % posvec2matrix(sol.x))
+        intermediate_cost = sol.fun
+        intermediate_solution = sol.x
     elif method == "L-BFGS-B":
         sol = scipy.optimize.minimize(
-            costx,
+            costx_no_nozzle,
             guess_0,
             method="L-BFGS-B",
             bounds=list(zip(lower_bound, upper_bound)),
             options={"disp": True, "ftol": 1e-12, "gtol": 1e-12, "maxiter": 50000, "maxfun": 1000000},
         )
-        print("Best cost: ", sol.fun)
-        print("Best positions: \n%s" % posvec2matrix(sol.x))
+        intermediate_cost = sol.fun
+        intermediate_solution = sol.x
     elif method == "PowellDirectionalSolver":
         from mystic.solvers import PowellDirectionalSolver
         from mystic.termination import Or, CollapseAt, CollapseAs
@@ -167,9 +199,9 @@ def solve(measurements, method):
         solver.SetTermination(Or(VTR(1e-25), COG(1e-10, 20)))
         solver.SetStrictRanges(lower_bound, upper_bound)
         solver.SetGenerationMonitor(VerboseMonitor(5))
-        solver.Solve(costx)
-        print("Best cost: ", solver.bestEnergy)
-        print("Best positions: \n%s" % posvec2matrix(solver.bestSolution))
+        solver.Solve(costx_no_nozzle)
+        intermediate_cost = solver.bestEnergy
+        intermediate_solution = solver.bestSolution
     elif method == "differentialEvolutionSolver":
         from mystic.solvers import DifferentialEvolutionSolver2
         from mystic.monitors import VerboseMonitor
@@ -185,15 +217,98 @@ def solve(measurements, method):
         solver.SetStrictRanges(lower_bound, upper_bound)
         solver.SetGenerationMonitor(stepmon)
         solver.Solve(
-            costx,
+            costx_no_nozzle,
             termination=stop,
             strategy=Best1Bin,
         )
-        print("Best cost: ", solver.bestEnergy)
-        print("Best positions: \n%s" % posvec2matrix(solver.bestSolution))
+        intermediate_cost = solver.bestEnergy
+        intermediate_solution = solver.bestSolution
     else:
         print("Method %s is not supported!" % method)
         sys.exit(1)
+    print("Best intermediate cost: ", intermediate_cost)
+    print("Best intermediate positions: \n%s" % posvec2matrix_no_nozzle(intermediate_solution))
+    if np.size(measurements) == 15:
+        return
+    nozzle_measurements = measurements[: (21 - 15)]
+    # Look for nozzle's xyz-offset relative to marker 0
+    num_params = 3
+    lower_bound = [
+        0.0,
+        0.0,
+        -bound,
+    ]
+    upper_bound = [bound, bound, 0.0]
+
+    def costx_nozzle(posvec):
+        """Identical to cost_nozzle, except the shape of inputs"""
+        positions = posvec2matrix_nozzle(posvec, intermediate_solution)
+        return cost_nozzle(positions, measurements)
+
+    guess_0 = [0.0, 0.0, 0.0]
+    final_cost = 0.0
+    final_solution = []
+    if method == "SLSQP":
+        sol = scipy.optimize.minimize(
+            costx_nozzle,
+            guess_0,
+            method="SLSQP",
+            bounds=list(zip(lower_bound, upper_bound)),
+            tol=1e-20,
+            options={"disp": True, "ftol": 1e-40, "eps": 1e-10, "maxiter": 500},
+        )
+        final_cost = sol.fun
+        final_solution = sol.x
+    elif method == "L-BFGS-B":
+        sol = scipy.optimize.minimize(
+            costx_nozzle,
+            guess_0,
+            method="L-BFGS-B",
+            bounds=list(zip(lower_bound, upper_bound)),
+            options={"disp": True, "ftol": 1e-12, "gtol": 1e-12, "maxiter": 50000, "maxfun": 1000000},
+        )
+        final_cost = sol.fun
+        final_solution = sol.x
+    elif method == "PowellDirectionalSolver":
+        from mystic.solvers import PowellDirectionalSolver
+        from mystic.termination import Or, CollapseAt, CollapseAs
+        from mystic.termination import ChangeOverGeneration as COG
+        from mystic.monitors import VerboseMonitor
+        from mystic.termination import VTR, And, Or
+
+        solver = PowellDirectionalSolver(num_params)
+        solver.SetRandomInitialPoints(lower_bound, upper_bound)
+        solver.SetEvaluationLimits(evaluations=3200000, generations=100000)
+        solver.SetTermination(Or(VTR(1e-25), COG(1e-10, 20)))
+        solver.SetStrictRanges(lower_bound, upper_bound)
+        solver.SetGenerationMonitor(VerboseMonitor(5))
+        solver.Solve(costx_nozzle)
+        final_cost = solver.bestEnergy
+        final_solution = solver.bestSolution
+    elif method == "differentialEvolutionSolver":
+        from mystic.solvers import DifferentialEvolutionSolver2
+        from mystic.monitors import VerboseMonitor
+        from mystic.termination import VTR, ChangeOverGeneration, And, Or
+        from mystic.strategy import Best1Exp, Best1Bin
+
+        stop = Or(VTR(1e-18), ChangeOverGeneration(1e-9, 500))
+        npop = 3
+        stepmon = VerboseMonitor(100)
+        solver = DifferentialEvolutionSolver2(num_params, npop)
+        solver.SetEvaluationLimits(evaluations=3200000, generations=100000)
+        solver.SetRandomInitialPoints(lower_bound, upper_bound)
+        solver.SetStrictRanges(lower_bound, upper_bound)
+        solver.SetGenerationMonitor(stepmon)
+        solver.Solve(
+            costx_nozzle,
+            termination=stop,
+            strategy=Best1Bin,
+        )
+        final_cost = solver.bestEnergy
+        final_solution = solver.bestSolution
+
+    print("Best final cost: ", final_cost)
+    print("Best final positions: \n%s" % posvec2matrix_nozzle(final_solution, intermediate_solution))
 
 
 class Store_as_array(argparse._StoreAction):
@@ -233,36 +348,36 @@ if __name__ == "__main__":
 
     measurements = args["measurements"]
     if np.size(measurements) != 0:
-        if np.size(measurements) != 15:
+        if np.size(measurements) != 15 and np.size(measurements) != 21:
             print(
-                "Error: You specified %d numbers after your -e/--measurements option, which is not 15 numbers. It must be 15 numbers."
+                "Error: You specified %d numbers after your -e/--measurements option, which is not 15 or 21 numbers. It must be 15 or 21 numbers."
             )
             sys.exit(1)
     else:
         measurements = np.array(
             # You might want to manually input positions where you made samples here like
             [
-                209.0,
-                206.5,
-                216.0,
-                218.0,
-                212.5,
-                225.5,
-                123.0,
-                235.0,
-                288.0,
-                236.5,
-                142.0,
-                138.0,
-                260.0,
-                276.0,
-                243.0,
-                176.0,
-                262.5,
-                306.0,
-                144.0,
-                269.5,
-                154.0,
+                210.0,  # 212.0,
+                213.0,  # 210.0,
+                223.0,  # 226.0,
+                238.0,  # 235.0,
+                239.0,  # 241.0,
+                239.0,  # 241.0,
+                120.5,  # 121.0, # 120.0,
+                233.0,  #
+                306.0,  # 305.0, # 307.0,
+                288.1,  #
+                139.0,  # 139.0, # 140.0,
+                137.0,  # 135.0, # 137.0,
+                287.2,  #
+                310.0,  # 309.0, # 311.0,
+                247.5,  # 246.0, # 247.5,
+                208.5,  # 211.0, # 208.0,
+                271.1,  #
+                323.0,  # 322.0, # 324.0,
+                98.0,  # 99.0,  # 97.5,
+                302.0,  # 301.0, # 303.0,
+                241.75,  # 241.0, # 242.5,
             ]
         )
     solve(measurements, args["method"])
