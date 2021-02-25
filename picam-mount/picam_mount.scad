@@ -102,8 +102,9 @@ module lens_hood_legs() {
 
 //!lens_hood();
 module lens_hood() {
+  // Magic numbers almost copied picam v2 spec.
   hood_height = 16;
-  v = 65/2;
+  v = 66/2;
   a = 3.68/2;
   b = tan(v)*hood_height - a;
   s = b/a;
