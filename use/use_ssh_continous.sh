@@ -78,7 +78,7 @@ while true; do
 		PI_CMD+=" && pwd"
 	fi
 	PI_CMD+=" && mkdir -p \"${IMAGESERIES_ON_PI}/\""
-	PI_CMD+=" && raspistill --quality 100 -o \"${IMAGE_ON_PI}\" --width 3280 --height 2464"
+	PI_CMD+=" && raspistill --quality 100 --timeout 400 -o \"${IMAGE_ON_PI}\" --width 3280 --height 2464"
 	if [ ${VERBOSE} ]; then
 		PI_CMD+=" && echo Captured image remotely: \"${IMAGE_ON_PI}\""
 	fi
@@ -101,4 +101,5 @@ while true; do
 	$COMMAND 2>&1 | tee /dev/fd/3
 
 	let "INC=INC+1"
+	sleep 2
 done
