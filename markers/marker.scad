@@ -46,7 +46,7 @@ screw_r=4.5;
 //}
 
 // It can be a good idea to scale down screw xy before exporting.
-//scale([(screw_r-0.05)/screw_r,(screw_r-0.05)/screw_r,1])
+//scale([(screw_r-0.15)/screw_r,(screw_r-0.15)/screw_r,1])
 //screw();
 module screw(h=screw_length) {
 
