@@ -64,6 +64,7 @@ readonly IMAGESERIES_ON_PI="${USEPATH_ON_PI}/images/${SERIESNAME}"
 
 let "INC=1"
 COUNT=""
+echo "First ten images should be thrown away, since the image sensor warps slightly as it heats up"
 while true; do
 	printf -v COUNT "%04d" ${INC}
 	IMAGE="${IMAGESERIES}/${COUNT}.jpg"
@@ -78,7 +79,7 @@ while true; do
 		PI_CMD+=" && pwd"
 	fi
 	PI_CMD+=" && mkdir -p \"${IMAGESERIES_ON_PI}/\""
-	PI_CMD+=" && raspistill --quality 100 --timeout 5000 -o \"${IMAGE_ON_PI}\" --width 3280 --height 2464"
+	PI_CMD+=" && raspistill --quality 100 --timeout 300 -o \"${IMAGE_ON_PI}\" --width 3280 --height 2464"
 	if [ ${VERBOSE} ]; then
 		PI_CMD+=" && echo Captured image remotely: \"${IMAGE_ON_PI}\""
 	fi
@@ -101,5 +102,5 @@ while true; do
 	$COMMAND 2>&1 | tee /dev/fd/3
 
 	let "INC=INC+1"
-	sleep 2
+	#sleep 2
 done
