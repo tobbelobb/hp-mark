@@ -16,7 +16,7 @@
 # VERBOSE=true ./use_ssh_continous.sh
 #
 # Your will get images saved into a subdirectory ./images/<something>
-# You will also get a log file called ./<something>.log
+# You will also get a log file called ./logs/<something>.log
 # By default, <something> will be set to a random six character name.
 # If you want to set it explicitly do:
 # DATA_SERIES_NAME="my-awesome-data-collection" ./use_ssh_continous.ssh
@@ -53,7 +53,7 @@ SERIESNAME=$(mktemp --dry-run XXXXX)
 if [ ${DATA_SERIES_NAME} ]; then
 	SERIESNAME="${DATA_SERIES_NAME}"
 fi
-readonly LOGFILE="${SERIESNAME}.log"
+readonly LOGFILE="logs/${SERIESNAME}.log"
 touch ${LOGFILE}
 exec 3>&1 1>>${LOGFILE} 2>&1
 
