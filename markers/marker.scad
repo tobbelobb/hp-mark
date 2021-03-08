@@ -236,16 +236,79 @@ module marker_slider() {
     }
 }
 
-//!bg_plate();
-module bg_plate(width=63){
+//bg_plate();
+module bg_plate(width=70){
   difference(){
-    cylinder(d=width, h=0.5,$fn=100);
+    cylinder(d=width, h=0.7,$fn=100);
     translate([0,0,-0.1])
       cylinder(d=3.0, h=1.8, $fn=20);
   }
 }
 
-show();
+biggest_shadow=58;
+jump=4;
+//translate([0,0,0.7])
+//color([0.1,0.1,0.1])
+//center_shadow(biggest_shadow - 0*jump);
+center_shadow(biggest_shadow - 1*jump);
+//center_shadow(biggest_shadow - 2*jump);
+//center_shadow(biggest_shadow - 3*jump);
+//center_shadow(biggest_shadow - 4*jump);
+//center_shadow(biggest_shadow - 5*jump);
+//echo(biggest_shadow - 0*jump);
+echo(biggest_shadow - 1*jump);
+//echo(biggest_shadow - 2*jump);
+//echo(biggest_shadow - 3*jump);
+//echo(biggest_shadow - 4*jump);
+//echo(biggest_shadow - 5*jump);
+
+module center_shadow(width=58) {
+  difference(){
+    cylinder(d=width, h=0.25,$fn=100);
+    translate([0,0,-0.1])
+      cylinder(d=3.0, h=1.8, $fn=20);
+  }
+}
+
+//!tapestrip_template();
+module tapestrip_template() {
+  $fn=300;
+  plate_dia = 270; // Increase plate_dia for thinner strips
+  strip_height = sphere_r*PI;
+  x = sqrt(plate_dia*plate_dia/4 - strip_height*strip_height/4);
+  difference() {
+    intersection(){
+      translate([-x,0,0])
+        cylinder(d=plate_dia+2*10, h=1.5);
+      translate([x,0,0])
+        cylinder(d=plate_dia+2*10, h=1.5);
+    }
+    translate([0,0,-1]) {
+      intersection(){
+        translate([-x,0,0])
+          cylinder(d=plate_dia, h=3);
+        translate([x,0,0])
+          cylinder(d=plate_dia, h=3);
+      }
+      translate([0,strip_height/2, 0])
+        cylinder(d=3, h=3);
+      translate([0,-strip_height/2, 0])
+        cylinder(d=3, h=3);
+      for( k = [0,1])
+      mirror([0,k,0])
+        difference(){
+          translate([0,-strip_height/2, 0])
+            translate([-20,-40,-1])
+            cube([40,40,6]);
+          translate([0,,-strip_height/2+1,-2])
+            cylinder(r=10.21, h=8);
+        }
+    }
+  }
+}
+
+
+//show();
 module show(){
   translate([0,0,sphere_r+4])
     difference() {
