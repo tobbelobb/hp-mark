@@ -1,5 +1,16 @@
 use <revolve2.scad>
 
+module inner_round_corner(r, h, ang=90, back = 0.1){
+  cx = r*(1-cos(ang/2+45));
+  translate([-r*(1-sin(ang/2+45)), -r*(1-sin(ang/2+45)),0])
+  difference(){
+    translate([-back, -back, 0])
+    cube([cx+back, cx+back, h]);
+    translate([r,r,-1])
+      cylinder(r=r, h=h+2);
+  }
+}
+
 module standing_ls_tri(l, h){
   difference(){
     cube([l,l,h]);
@@ -162,7 +173,7 @@ module marker_slider() {
   zip_th = 2;
   zip_w = 4.5;
   wall_th = 2.7;
-  h = 2*zip_w + 3 + 2;
+  h = 2*zip_w + 3 + 6;
   extra_length = 6;
   w = 12.5 + wall_th;
 
@@ -201,6 +212,15 @@ module marker_slider() {
         //translate([0, -w/2-1.8+0.001, h-0.8])
         //  cube([2, 1.8, 0.8]);
       }
+      translate([-w/2-0.01-3, -w/2-1, 0.8]){
+        cube([1.2+3, w+2, zip_w]);
+      }
+      translate([-w/2-0.01+1.2, -w/2, 0.8])
+        inner_round_corner(2, zip_w,$fn=16);
+      translate([-w/2-0.01-3, -w/2-1, h-zip_w-0.8])
+        cube([1.2+3, w+2, zip_w]);
+      translate([-w/2-0.01+1.2, -w/2, h-zip_w-0.8])
+        inner_round_corner(2, zip_w,$fn=16);
       // inner corner cutout
       translate([-w/2+wall_th+0.50, -w/2+wall_th+0.50, -1])
         cylinder(r=0.75, h=h+2, $fn=15);
