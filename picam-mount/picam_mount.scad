@@ -61,7 +61,7 @@ module snurreskive_plate_plupp() {
   }
 }
 
-//snurreskive();
+//!snurreskive();
 module snurreskive() {
   snurreskive_plate();
   snurreskive_plate_plupp();
@@ -112,17 +112,36 @@ module lens_hood() {
     union(){
       translate([-5, -height/2, 0])
         cube([10,height,  1]);
-      cylinder(d=7.18+2.5, h = hood_height-4);
+      rotate([0,2,0])
+        cylinder(d=7.18+2.5, h = hood_height-4);
     }
-    translate([0,height/2-screw_offs,-1])
-      cylinder(d=2.1, h=10);
-    translate([0,-(height/2-screw_offs),-1])
-      cylinder(d=2.1, h=10);
-    translate([0,0,-2])
-      cylinder(d=7.18, h = hood_height+2);
-    translate([0,0,-1.75])
-      linear_extrude(height=hood_height, scale=s)
-        square([2.76, 3.68], center=true);
+    translate([0,0,-50])
+      cube(100, center=true);
+    rotate([0,2,0]){
+      translate([0,height/2-screw_offs,-1])
+        cylinder(d=2.1, h=10);
+      translate([0,-(height/2-screw_offs),-1])
+        cylinder(d=2.1, h=10);
+      translate([0,0,-2])
+        cylinder(d=7.18, h = hood_height+2);
+      translate([0,0,-1.75])
+        linear_extrude(height=hood_height, scale=s)
+          square([2.76, 3.68], center=true);
+    }
+    for (k = [0,1]) {
+      mirror([0,k,0]) {
+        translate([-2.5,7,-1])
+          cube([5,0.5,3]);
+        translate([2.5,7.25,-1]){
+          rotate([0,0,135])
+            translate([-0.25,-0.25,0])
+            cube([2,0.5,3]);
+          rotate([0,0,-135])
+            translate([-0.25,-0.25,0])
+            cube([2,0.5,3]);
+        }
+      }
+    }
   }
 }
 
@@ -154,8 +173,8 @@ module snurreskive2_inner() {
 }
 
 
-//translate([(31)/2+3.5,0,-2]) {
-//snurreskive2();
+//!translate([(31)/2+3.5,0,-2]) {
+//  snurreskive2();
 //translate([-2-12.5/2, -25/2, 9.6])
 //  %picam();
 //}
@@ -179,16 +198,15 @@ module snurreskive2() {
 
 }
 
-
-//vippeplate();
+//!vippeplate();
 module vippeplate(){
     difference() {
       hull() {
         rotate([90,0,0])
-          cylinder(d=6, h=35, center=true);
+          cylinder(d=6, h=37, center=true);
         translate([23,0,0])
           rotate([90,0,0])
-            cylinder(d=6, h=35, center=true);
+            cylinder(d=6, h=37, center=true);
       }
       rotate([90,0,0])
          cylinder(d=3.1, h=100, center=true);
@@ -218,17 +236,15 @@ module vippeplate(){
     }
 }
 
-//base();
+!base();
 module base() {
   difference() {
     translate([0,0,-2])
       cylinder(d = 25 + 4, h=8);
     hull() {
-      scale([1.01, 1.01, 1])
-        snurreskive_plate();
+      snurreskive_plate();
       translate([0,-10,0])
-        scale([1.01, 1.01, 1])
-          snurreskive_plate();
+        snurreskive_plate();
     }
     rotate([0,0,90])
       translate([0,0,3.5])
@@ -242,6 +258,9 @@ module base() {
       translate([0,0,3.5])
         rotate([0,90,0])
           cylinder(d=2.7, h=50);
+    cylinder(d=3, h=10, center=true);
+    translate([0,0,-2+0.01])
+      cylinder(d1=3, d2=7, h=2);
   }
 }
 
