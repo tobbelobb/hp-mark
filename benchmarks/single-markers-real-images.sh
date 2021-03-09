@@ -7,6 +7,9 @@
 set -o errexit
 set -o pipefail
 
+echo "This old test uses the wrong type of markers"
+exit 1
+
 readonly BINPATH="$(dirname "$0")"
 readonly HPMPATH="${BINPATH}/../hpm"
 readonly TMPDIR="${BINPATH}/tmp"

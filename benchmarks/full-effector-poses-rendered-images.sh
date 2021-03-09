@@ -23,6 +23,6 @@ if [ 1 -ne $n_lines ]; then
 	echo "Error: found ${n_lines} lines of output. Expected 1. See the temporary file ${TMPFILE} for details"
 	exit 1
 fi
-error=$(octave --eval "norm(${OUT})" | sed -E 's/ans = (.+)/\1/g')
+error=$(octave --eval "norm(${OUT::-1})" | sed -E 's/ans = (.+)/\1/g')
 echo "Analyzed image ${IMAGE}:"
 echo "Found a position ${error} mm from the origin"
