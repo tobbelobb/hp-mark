@@ -13,7 +13,7 @@ b
 popd
 
 # Run hpm
-readonly COMMAND="${HPMPATH}/hpm/hpm ${THISPATH}/openscadHandCodedCamParamsSixtupled.xml ${THISPATH}/grid-check-marker-params.xml ${HPMPATH}/hpm/test-images/grid-red-2000.png --no-fit-by-distance"
+readonly COMMAND="${HPMPATH}/hpm/hpm ${THISPATH}/openscadHandCodedCamParamsSixtupled.xml ${THISPATH}/grid-check-marker-params.xml ${THISPATH}/grid-red-2000.png --no-fit-by-distance"
 readonly POSITIONS=$(${COMMAND} | tail -n +2)
 
 # Build OpenScad source file, including the hpm results
