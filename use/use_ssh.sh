@@ -26,7 +26,7 @@ readonly IMAGE_ON_PI="${USEPATH_ON_PI}/images/${IMAGENAME}"
 ssh pi@rpi USEPATH_ON_PI=${USEPATH_ON_PI} IMAGE_ON_PI=${IMAGE_ON_PI} 'bash -s' <<'ENDSSH'
 cd "${USEPATH_ON_PI}" && pwd && \
 mkdir -p "${USEPATH_ON_PI}/images" && \
-raspistill --quality 100 --timeout 300 --shutter 1000 --ISO 50 -o "${IMAGE_ON_PI}" --width 3280 --height 2464 && \
+raspistill --quality 100 --timeout 300 --shutter 10000 --ISO 50 -o "${IMAGE_ON_PI}" --width 3280 --height 2464 && \
 echo Captured image remotely: "${IMAGE_ON_PI}".
 ENDSSH
 
