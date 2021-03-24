@@ -6,8 +6,8 @@ let "INC=1"
 PADDED_COUNT=""
 while [ ${INC} -le ${MAX_NUM} ]; do
 	printf -v PADDED_COUNT "%04d" ${INC}
-  echo -n "${PADDED_COUNT} "
-  ${HPM}${SERIES_NAME}/${PADDED_COUNT}.jpg
+	echo -n "${PADDED_COUNT} "
+	${HPM}${SERIES_NAME}/${PADDED_COUNT}.jpg
 	let "INC=INC+1"
 done
 
