@@ -84,14 +84,15 @@ module picam_die(){
     }
 }
 
-//!rotate([180,0,0]) lens_hood_legs();
+!rotate([180,0,0]) lens_hood_legs();
+//!lens_hood_legs();
 module lens_hood_legs() {
   difference(){
     translate([-10/2,-height/2,  0])
-      cube([10,height,  6.7]);
-    cylinder(d = 7.8, h=10);
+      cube([10,height,  6.9]);
+    cylinder(d = 8.0, h=10);
     translate([-die_w, -die_w, -0.1])
-      cube([2*die_w, 2*die_w, 3.8]);
+      cube([2*die_w, 2*die_w, 4.0]);
 
     translate([0,height/2-screw_offs,-1])
       cylinder(d=2.1, h=10);
@@ -108,10 +109,20 @@ module lens_hood() {
   a = 3.68/2;
   b = tan(v)*hood_height - a;
   s = b/a;
+  led_ring_1_rotation = -18;
+  led_ring_2_rotation = 18;
   difference() {
     union(){
       translate([-5, -height/2, 0])
         cube([10,height,  1]);
+      rotate([0,0,led_ring_1_rotation])
+        rotate([0,0,90])
+          translate([-35/2, -10/2, 0])
+            rounded_cube2([35,10,1], 10/2);
+      rotate([0,0,led_ring_2_rotation])
+        rotate([0,0,90])
+          translate([-42/2, -10/2, 0])
+            rounded_cube2([42,10,1], 10/2);
       rotate([0,2,0])
         cylinder(d=7.18+2.5, h = hood_height-4);
     }
@@ -122,6 +133,18 @@ module lens_hood() {
         cylinder(d=2.1, h=10);
       translate([0,-(height/2-screw_offs),-1])
         cylinder(d=2.1, h=10);
+      rotate([0,0,led_ring_1_rotation])
+        translate([0,-29/2,-1])
+          cylinder(d=2.1, h=10);
+      rotate([0,0,led_ring_1_rotation])
+        translate([0,29/2,-1])
+          cylinder(d=2.1, h=10);
+      rotate([0,0,led_ring_2_rotation])
+        translate([0,-34.8/2,-1])
+          cylinder(d=2.1, h=10);
+      rotate([0,0,led_ring_2_rotation])
+        translate([0,34.8/2,-1])
+          cylinder(d=2.1, h=10);
       translate([0,0,-2])
         cylinder(d=7.18, h = hood_height+2);
       translate([0,0,-1.75])
@@ -236,7 +259,7 @@ module vippeplate(){
     }
 }
 
-!base();
+//!base();
 module base() {
   difference() {
     translate([0,0,-2])
