@@ -1,6 +1,6 @@
-SERIES_NAME="3YIsz"
+SERIES_NAME=$1
 HPM="../hpm/hpm/hpm ../hpm/hpm/example-cam-params/myExampleCamParams.xml ../hpm/hpm/example-marker-params/my-marker-params.xml ./images/"
-MAX_NUM=81
+MAX_NUM=$2
 
 let "INC=1"
 PADDED_COUNT=""
