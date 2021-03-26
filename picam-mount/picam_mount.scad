@@ -84,12 +84,15 @@ module picam_die(){
     }
 }
 
-!rotate([180,0,0]) lens_hood_legs();
+
+lower_lens_hood_base = 2.0;
+
+//!rotate([180,0,0]) lens_hood_legs();
 //!lens_hood_legs();
 module lens_hood_legs() {
   difference(){
     translate([-10/2,-height/2,  0])
-      cube([10,height,  6.9]);
+      cube([10,height,  6.9-lower_lens_hood_base]);
     cylinder(d = 8.0, h=10);
     translate([-die_w, -die_w, -0.1])
       cube([2*die_w, 2*die_w, 4.0]);
@@ -101,7 +104,18 @@ module lens_hood_legs() {
   }
 }
 
-//!lens_hood();
+//translate([0,0,-6.9])
+//lens_hood_legs();
+//%difference(){
+//  cylinder(d = 33, h=2);
+//  translate([0,0,-2])
+//    cylinder(d = 25, h=5.1);
+//
+//}
+
+
+//translate([0,0,-lower_lens_hood_base])
+lens_hood();
 module lens_hood() {
   // Magic numbers almost copied picam v2 spec.
   hood_height = 16;
@@ -124,7 +138,7 @@ module lens_hood() {
           translate([-42/2, -10/2, 0])
             rounded_cube2([42,10,1], 10/2);
       rotate([0,2,0])
-        cylinder(d=7.18+2.5, h = hood_height-4);
+        cylinder(d=7.18+2.5, h = hood_height-8.6);
     }
     translate([0,0,-50])
       cube(100, center=true);
@@ -147,7 +161,7 @@ module lens_hood() {
           cylinder(d=2.1, h=10);
       translate([0,0,-2])
         cylinder(d=7.18, h = hood_height+2);
-      translate([0,0,-1.75])
+      translate([0,0,-1.75+lower_lens_hood_base])
         linear_extrude(height=hood_height, scale=s)
           square([2.76, 3.68], center=true);
     }
@@ -287,7 +301,7 @@ module base() {
   }
 }
 
-assembly();
+//assembly();
 module assembly() {
   translate([0,0,14.3-3]) {
     vippeplate();
