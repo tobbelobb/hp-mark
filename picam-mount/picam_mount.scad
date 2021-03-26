@@ -138,7 +138,7 @@ module lens_hood() {
           translate([-42/2, -10/2, 0])
             rounded_cube2([42,10,1], 10/2);
       rotate([0,2,0])
-        cylinder(d=7.18+2.5, h = hood_height-8.6);
+        cylinder(d=7.18+2.5, h = hood_height-11);
     }
     translate([0,0,-50])
       cube(100, center=true);
