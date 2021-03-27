@@ -39,9 +39,9 @@ We sometimes don't detect all the markers.
  - [X] Calculate 6D pose from 6 points (solve perspective-6-point, or P6P problem)
  - [x] Aquire camera 6D pose (this includes defining our world coordinate system)
  - [x] Aquire effector 6D pose
- - [ ] Detect all markers on 95% of training images
+ - [x] Detect all markers on 95% of training images
  - [ ] Take image ourselves upon request, don't rely on other programs to take image first
- - [ ] Create a continous stream of position measurements (video?)
+ - [x] Create a continous stream of position measurements (video?)
  - [ ] Get a statistical idea about size of error
  - [ ] Respond to RepRapFirmware/Duet request for position measurement
  - [ ] Integrate a second camera, to reduce error
@@ -58,7 +58,7 @@ A checked box above means "good enough for now".
    * Vertical field of view: 48.8 degrees
  - 32GB U3 SD card
  - Default recommended Raspberry Pi OS, 32-bit
- - OpenCV
+ - OpenCV 4.4.0
 
 # Reading List
  - [Motion tracking: No silver bullet, but a respectable arsenal (2002)](https://my.eng.utah.edu/~cs6360/Readings/cga02_welch_tracking.pdf)
