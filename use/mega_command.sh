@@ -1,5 +1,5 @@
 SERIES_NAME=$1
-HPM="../hpm/hpm/hpm ../hpm/hpm/example-cam-params/myExampleCamParams.xml ../hpm/hpm/example-marker-params/my-marker-params.xml ./images/"
+HPM="../hpm/hpm/hpm ../hpm/hpm/example-cam-params/loDistCamParams2.xml ../hpm/hpm/example-marker-params/my-marker-params.xml ./images/"
 MAX_NUM=$2
 
 let "INC=1"

@@ -46,9 +46,11 @@ readonly IMAGES="${THISPATH}/images"
 readonly USEPATH_ON_PI="/home/pi/repos/hp-mark/use"
 
 readonly HPM="../hpm/hpm/hpm"
-readonly CAMPARAMS="../hpm/hpm/example-cam-params/myExampleCamParams.xml"
+#readonly CAMPARAMS="../hpm/hpm/example-cam-params/myExampleCamParams.xml"
+readonly CAMPARAMS="../hpm/hpm/example-cam-params/loDistCamParams2.xml"
 readonly MARKERPARAMS="../hpm/hpm/example-marker-params/my-marker-params.xml"
 
+readonly RASPISTILL="/home/pi/repos/NativePiCamera/bin/raspistill_CS_lens"
 SERIESNAME=$(mktemp --dry-run XXXXX)
 if [ ${DATA_SERIES_NAME} ]; then
 	SERIESNAME="${DATA_SERIES_NAME}"
@@ -72,14 +74,14 @@ while true; do
 
 	rm -f ${SSH_PIPE}
 	mkfifo ${SSH_PIPE}
-	tail -f ${SSH_PIPE} | ssh pi@rpi USEPATH_ON_PI=${USEPATH_ON_PI} IMAGE_ON_PI=${IMAGE_ON_PI} 'bash -s' 2>&1 | tee /dev/fd/3 &
+	tail -f ${SSH_PIPE} | ssh pi@rpi RASPISTILL=${RASPISTILL} USEPATH_ON_PI=${USEPATH_ON_PI} IMAGE_ON_PI=${IMAGE_ON_PI} 'bash -s' 2>&1 | tee /dev/fd/3 &
 	SSH_PID=$!
 	PI_CMD="cd \"${USEPATH_ON_PI}\""
 	if [ ${VERBOSE} ]; then
 		PI_CMD+=" && pwd"
 	fi
 	PI_CMD+=" && mkdir -p \"${IMAGESERIES_ON_PI}/\""
-	PI_CMD+=" && raspistill --quality 100 --timeout 300 --shutter 10000 --ISO 50 -o \"${IMAGE_ON_PI}\" --width 3280 --height 2464"
+	PI_CMD+=" && "${RASPISTILL}" --quality 100 --timeout 300 --shutter 40000 --ISO 50 -o \"${IMAGE_ON_PI}\" --width 3280 --height 2464"
 	if [ ${VERBOSE} ]; then
 		PI_CMD+=" && echo Captured image remotely: \"${IMAGE_ON_PI}\""
 	fi

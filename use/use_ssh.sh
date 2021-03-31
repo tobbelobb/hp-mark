@@ -23,10 +23,11 @@ readonly IMAGE="${IMAGES}/${IMAGENAME}"
 readonly USEPATH_ON_PI="/home/pi/repos/hp-mark/use"
 readonly IMAGE_ON_PI="${USEPATH_ON_PI}/images/${IMAGENAME}"
 
-ssh pi@rpi USEPATH_ON_PI=${USEPATH_ON_PI} IMAGE_ON_PI=${IMAGE_ON_PI} 'bash -s' <<'ENDSSH'
+readonly RASPISTILL="/home/pi/repos/NativePiCamera/bin/raspistill_CS_lens"
+ssh pi@rpi RASPISTILL=${RASPISTILL} USEPATH_ON_PI=${USEPATH_ON_PI} IMAGE_ON_PI=${IMAGE_ON_PI} 'bash -s' <<'ENDSSH'
 cd "${USEPATH_ON_PI}" && pwd && \
 mkdir -p "${USEPATH_ON_PI}/images" && \
-raspistill --quality 100 --timeout 300 --shutter 10000 --ISO 50 -o "${IMAGE_ON_PI}" --width 3280 --height 2464 && \
+"${RASPISTILL}" --quality 100 --timeout 300 --shutter 40000 --ISO 50 -o "${IMAGE_ON_PI}" --width 3280 --height 2464 && \
 echo Captured image remotely: "${IMAGE_ON_PI}".
 ENDSSH
 
@@ -37,7 +38,8 @@ scp pi@rpi:${IMAGE_ON_PI} .
 cd -
 
 readonly HPM="../hpm/hpm/hpm"
-readonly CAMPARAMS="../hpm/hpm/example-cam-params/myExampleCamParams.xml"
+#readonly CAMPARAMS="../hpm/hpm/example-cam-params/myExampleCamParams.xml"
+readonly CAMPARAMS="../hpm/hpm/example-cam-params/loDistCamParams2.xml"
 readonly MARKERPARAMS="../hpm/hpm/example-marker-params/my-marker-params.xml"
 
 readonly COMMAND="${HPM} ${CAMPARAMS} ${MARKERPARAMS} ${IMAGE} $@"

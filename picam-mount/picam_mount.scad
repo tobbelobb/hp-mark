@@ -115,7 +115,7 @@ module lens_hood_legs() {
 
 
 //translate([0,0,-lower_lens_hood_base])
-lens_hood();
+//lens_hood();
 module lens_hood() {
   // Magic numbers almost copied picam v2 spec.
   hood_height = 16;
@@ -123,8 +123,6 @@ module lens_hood() {
   a = 3.68/2;
   b = tan(v)*hood_height - a;
   s = b/a;
-  led_ring_1_rotation = -18;
-  led_ring_2_rotation = 18;
   difference() {
     union(){
       translate([-5, -height/2, 0])
@@ -183,7 +181,7 @@ module lens_hood() {
 }
 
 //translate([9, -24/2, -7])
-//!picam();
+//picam();
 module picam() {
   difference() {
     cube([width, height, th]);
@@ -200,9 +198,33 @@ module picam() {
   color("grey")
     picam_die();
     lens_hood_legs();
-    translate([0,0,7])
+    translate([0,0,7-lower_lens_hood_base])
+      rotate([0,0,180])
       lens_hood();
   }
+}
+
+//arducam();
+module arducam() {
+  screw_offs = 3.5;
+  side_l = 36.1;
+  difference(){
+    color("green")
+    cube([side_l, side_l, 1.5]);
+    for(k = [0, 1]) {
+      for(l = [0, 1]) {
+        translate([screw_offs + k*(side_l - 2*screw_offs),
+                   screw_offs + l*(side_l - 2*screw_offs), -1])
+          cylinder(d=3.1, h=4);
+      }
+    }
+  }
+  translate([side_l/2, side_l/2, 1])
+    color([0.2,0.2,0.2])
+    cylinder(d=14, h=24);
+  translate([2*screw_offs, side_l-5.5, 1])
+    color("white")
+    cube([side_l-4*screw_offs, 5.5, 4.25-1]);
 }
 
 module snurreskive2_inner() {
@@ -211,11 +233,11 @@ module snurreskive2_inner() {
 
 
 //!translate([(31)/2+3.5,0,-2]) {
-//  snurreskive2();
-//translate([-2-12.5/2, -25/2, 9.6])
-//  %picam();
+//  snurreskive2_picam();
+//  translate([-2-12.5/2, -25/2, 9.6])
+//    %picam();
 //}
-module snurreskive2() {
+module snurreskive2_picam() {
   difference() {
     union() {
       snurreskive2_inner();
@@ -232,7 +254,169 @@ module snurreskive2() {
           //cylinder(d=4/cos(30), h=2, $fn=6);
         }
   }
+}
 
+led_ring_1_rotation = -18;
+module led_ring_1() {
+  difference(){
+    cylinder(d=32, h=3);
+    translate([0,0,-1])
+      cylinder(d=18, h=5);
+    rotate([0,0,led_ring_1_rotation])
+      for (k = [0,1])
+        mirror([k,0,0])
+          translate([(32/2)-2, 0, -1])
+            cylinder(d=2.5, h=5);
+  }
+}
+
+led_ring_2_rotation = 18;
+module led_ring_2() {
+  difference(){
+    cylinder(d=39, h=3);
+    translate([0,0,-1])
+      cylinder(d=27, h=5);
+    rotate([0,0,led_ring_2_rotation])
+      for (k = [0,1])
+        mirror([k,0,0])
+          translate([(39/2)-2, 0, -1])
+            cylinder(d=2.5, h=5);
+  }
+}
+
+fan();
+module fan(){
+  translate([-20,-11-36/2,7])
+    difference(){
+      cube([40, 11, 40]);
+      translate([-32/2+20, 0, (40-32)/2])
+        rotate([90,0,0])
+          cylinder(d=4, h=25, center=true);
+      translate([32/2+20, 0, (40-32)/2])
+        rotate([90,0,0])
+          cylinder(d=4, h=25, center=true);
+    }
+}
+
+fan_block();
+module fan_block(){
+  translate([-20,-11-36/2,7])
+      translate([-32/2+20, 17, (40-32)/2])
+        rotate([90,0,0])
+          difference(){
+            cylinder(d=4, h=20);
+            translate([-11,-23,-1])
+              cube(22);
+            translate([-11,1,6-22])
+              cube(22);
+          }
+}
+
+//led_ring_holder_arducam2();
+module led_ring_holder_arducam2() {
+  difference(){
+    union(){
+      translate([0, 0, 21])
+        cylinder(d1=60, d2=20, h=18);
+      translate([0, 0, 10])
+        cylinder(d=19, h=35);
+    }
+    for(k=[0,1]) mirror([k,0,0])
+    translate([8.5,-1,37])
+      cube([4,2,10]);
+    translate([0, 0, -1])
+      cylinder(d=14, h=100);
+    translate([0,0,37])
+      led_ring_1();
+    translate([0,0,40.5])
+      led_ring_2();
+  }
+}
+
+//!rotate([180,0,0])
+//led_ring_holder_arducam();
+module led_ring_holder_arducam() {
+  difference(){
+    union(){
+      translate([-40/2, -20/2, 27+7.5+2.5-2])
+        cube([40, 20, 2]);
+      for (k = [0,1])
+        mirror([k,0,0]) {
+          translate([-40/2+3,0,27+7.5+2.5-2])
+            rotate([-90,0,0])
+              translate([0,0,-20/2])
+                inner_round_corner(3, 20);
+          translate([-40/2, -20/2, 9])
+            difference(){
+              cube([3, 20, 26]);
+              translate([2,-1,1])
+                cube([3, 22, 1.7]);
+            }
+        }
+    }
+    rotate([0,0,led_ring_1_rotation])
+      for (k = [0,1])
+        mirror([k,0,0])
+          translate([(32/2)-2, 0, 36])
+            cylinder(d=2.5, h=11, center=true);
+    rotate([0,0,led_ring_2_rotation])
+      for (k = [0,1])
+        mirror([k,0,0])
+          translate([(39/2)-2-1, 0, 36])
+            rotate([0,45,0])
+              cylinder(d=2.5, h=11, center=true);
+    hull(){
+      cylinder(d=15, h=38);
+      translate([0,20,0])
+        cylinder(d=15, h=38);
+    }
+  }
+
+}
+
+
+//rotate([0,180,0])
+snurreskive2_arducam();
+translate([0,0,7.5+2.5]) {
+  translate([-36.1/2,-18,2]) {
+    arducam();
+  }
+  color([0.5,0.5,0.5]){
+    translate([0,0,27])
+      led_ring_1();
+    translate([0,0,30.5])
+      led_ring_2();
+  }
+}
+module snurreskive2_arducam() {
+  screw_offs = 3.5;
+  cyl_height = 7.3+2.5;
+  difference(){
+    union(){
+      snurreskive2_inner();
+      cylinder(d=28.5, h=cyl_height);
+      translate([-36/2, 28.5/2-3.5, cyl_height-2])
+        rounded_cube2([36, 7, 2], 3.5);
+      for(k = [1,0]) {
+        mirror([k,0,0]){
+          translate([-36/2+3.5, 28.5/2 -36 + 7, 0])
+            rotate([0,0,45])
+            translate([-3.5, -3.5, cyl_height-2])
+            rounded_cube2([36, 7, 2], 3.5);
+        }
+      }
+    }
+    for(k = [1,0]) {
+      mirror([k,0,0]){
+        translate([-36/2+3.5,28.5/2,cyl_height-2.1])
+          cylinder(d=3, h=5);
+        translate([-36/2+3.5,28.5/2-36+7,cyl_height-2.1])
+          cylinder(d=3, h=5);
+        translate([18.8/2,0,7.3-2])
+          cylinder(d=5, h=3);
+      }
+    }
+  }
 }
 
 //!vippeplate();
