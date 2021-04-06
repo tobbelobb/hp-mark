@@ -26,6 +26,11 @@ set -o pipefail
 SSH_PID=0
 readonly SSH_PIPE="/tmp/ssh-input-for-pi"
 
+XYZ_OF_SAMP=""
+XYZ_OF_SAMPS=""
+MOTOR_POS_SAMP=""
+MOTOR_POS_SAMPS=""
+
 cleanup() {
 	if [ ${VERBOSE} ]; then
 		echo "Running cleanup" 2>&1 | tee /dev/fd/3
@@ -35,6 +40,15 @@ cleanup() {
 		wait ${SSH_PID}
 		rm -f ${SSH_PIPE}
 	fi
+
+	echo "" | tee /dev/fd/3
+	echo "xyz_of_samp = np.array([" | tee /dev/fd/3
+	echo -n "${XYZ_OF_SAMPS}" | tee /dev/fd/3
+	echo "])" | tee /dev/fd/3
+
+	echo "motor_pos_samp = np.array([" | tee /dev/fd/3
+	echo -n "${MOTOR_POS_SAMPS}" | tee /dev/fd/3
+	echo "])" | tee /dev/fd/3
 	exit 0
 }
 
@@ -66,8 +80,26 @@ readonly IMAGESERIES_ON_PI="${USEPATH_ON_PI}/images/${SERIESNAME}"
 
 let "INC=1"
 COUNT=""
-echo "First ten images should be thrown away, since the image sensor warps slightly as it heats up"
+
 while true; do
+
+	if [ ${CALIBRATE} ]; then
+		### M114 S2 ###
+		# Send the http request.
+		# On RRF3 this needs to be changed to
+		# - url: http://hp4test.local/machine/code/
+		# - data: "M114 S2"
+		curl --silent -X GET -H "application/json, text/plain, */*" http://hp4test.local/rr_gcode?gcode=M114%20S2 >/dev/null
+		# It takes a little while for the Duet to process that
+		sleep 0.1
+
+		# Get the response
+		MOTOR_POS_SAMP="$(curl --silent -X GET -H "application/json, text/plain, */*" http://hp4test.local/rr_reply 2>&1 | tr -d '\n')"
+		echo -n ${MOTOR_POS_SAMP} | tee /dev/fd/3
+		MOTOR_POS_SAMPS+="${MOTOR_POS_SAMP}
+"
+	fi
+
 	printf -v COUNT "%04d" ${INC}
 	IMAGE="${IMAGESERIES}/${COUNT}.jpg"
 	IMAGE_ON_PI="${IMAGESERIES_ON_PI}/${COUNT}.jpg"
@@ -101,8 +133,11 @@ while true; do
 	if [ ${VERBOSE} ]; then
 		echo "${COMMAND}" 2>&1 | tee /dev/fd/3
 	fi
-	$COMMAND 2>&1 | tee /dev/fd/3
+	XYZ_OF_SAMP="$($COMMAND 2>&1)"
+	XYZ_OF_SAMP_WITH_COMMA_NEWLINE="${XYZ_OF_SAMP%?},
+"
+	echo ${XYZ_OF_SAMP} | tee /dev/fd/3
+	XYZ_OF_SAMPS+=${XYZ_OF_SAMP_WITH_COMMA_NEWLINE}
 
 	let "INC=INC+1"
-	#sleep 2
 done
