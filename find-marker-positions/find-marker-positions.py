@@ -2,16 +2,16 @@
 
 """For finding hp-marker positions.
    Use for example like
-   $ ./solve.py --measurements 209.0 206.5 216.0 218.0 212.5 225.5 123.0 235.0 288.0 236.5 142.0 138.0 260.0 276.0 243.0 176.0 262.5 306.0 144.0 269.5 154.0
+   $ ./find-marker-positions.py --measurements 209.0 206.5 216.0 218.0 212.5 225.5 123.0 235.0 288.0 236.5 142.0 138.0 260.0 276.0 243.0 176.0 262.5 306.0 144.0 269.5 154.0
 
     measurements : The 21 distance measurements between pairs of markers.
                    Pairs are in the usual ccw order:
-                   nozzle-red0, nozzle-red1, nozzle-green0, nozzle-green1, nozzle-blue0, nozzle-blue1
-                   red0-red1, red0-green0, red0-green1, red0-blue0, red0-blue1,
-                   red1-green0, red1-green1, red1-blue0, red1-blue1,
-                   green0-green1, green0-blue0, green0-blue1,
-                   green1-blue0, green1-blue1,
-                   blue0-blue1.
+                   nozzle-m0, nozzle-m1, nozzle-m2, nozzle-m3, nozzle-m4, nozzle-m5
+                   m0-m1, m0-m2, m0-m3, m0-m4, m0-m5,
+                   m1-m2, m1-m3, m1-m4, m1-m5,
+                   m2-m3, m2-m4, m2-m5,
+                   m3-m4, m3-m5,
+                   m4-m5.
 
 """
 
@@ -32,7 +32,7 @@ def posvec2matrix_nozzle(posvec, intermediate_solution):
 def posvec2matrix_no_nozzle(posvec):
     return np.array(
         [
-            [0.0, 0.0, 0.0],  # Red0
+            [0.0, 0.0, 0.0],  # m0
             [posvec[0], 0.0, 0.0],
             [posvec[1], posvec[2], 0.0],
             [posvec[3], posvec[4], 0.0],
@@ -50,15 +50,15 @@ def cost_nozzle(positions, measurements):
     positions : A 7x2 matrix of marker positions.
                 Nozzle is first.
                 Markers are in the usual ccw order:
-                red0, red1, green0, green1, blue0, blue1
+                m0, m1, m2, m3, m4, m5
     measurements : The 21 distance measurements between pairs of markers.
                    Pairs are in the usual ccw order:
-                   nozzle-red0, nozzle-red1, nozzle-green0, nozzle-green1, nozzle-blue0, nozzle-blue1
-                   red0-red1, red0-green0, red0-green1, red0-blue0, red0-blue1,
-                   red1-green0, red1-green1, red1-blue0, red1-blue1,
-                   green0-green1, green0-blue0, green0-blue1,
-                   green1-blue0, green1-blue1,
-                   blue0-blue1.
+                   nozzle-m0, nozzle-m1, nozzle-m2, nozzle-m3, nozzle-m4, nozzle-m5
+                   m0-m1, m0-m2, m0-m3, m0-m4, m0-m5,
+                   m1-m2, m1-m3, m1-m4, m1-m5,
+                   m2-m3, m2-m4, m2-m5,
+                   m3-m4, m3-m5,
+                   m4-m5.
     """
     return (
         +pow(np.linalg.norm(positions[0] - positions[1], 2) - measurements[0], 2)
@@ -91,15 +91,14 @@ def cost_no_nozzle(positions, measurements):
     Parameters
     ----------
     positions : A 6x2 matrix of marker positions.
-                Markers are in the usual ccw order:
-                red0, red1, green0, green1, blue0, blue1
+                Markers are in the usual ccw order.
     measurements : The 15 distance measurements between pairs of markers.
                    Pairs are in the usual ccw order:
-                   red0-red1, red0-green0, red0-green1, red0-blue0, red0-blue1,
-                   red1-green0, red1-green1, red1-blue0, red1-blue1,
-                   green0-green1, green0-blue0, green0-blue1,
-                   green1-blue0, green1-blue1,
-                   blue0-blue1.
+                   m0-m1, m0-m2, m0-m3, m0-m4, m0-m5,
+                   m1-m2, m1-m3, m1-m4, m1-m5,
+                   m2-m3, m2-m4, m2-m5,
+                   m3-m4, m3-m5,
+                   m4-m5.
     """
     return (
         +pow(np.linalg.norm(positions[0] - positions[1], 2) - measurements[0], 2)
@@ -127,8 +126,8 @@ def solve(measurements, method):
     marker_measurements = measurements
     if np.size(measurements) == 21:
         marker_measurements = measurements[(21 - 15) :]
-    # Red0 has known positions (0, 0, 0)
-    # Red 1 has unknown x-position
+    # m0 has known positions (0, 0, 0)
+    # m1 has unknown x-position
     # All others have unknown xy-positions
     num_params = 0 + 1 + 2 + 2 + 2 + 2
 
@@ -357,27 +356,27 @@ if __name__ == "__main__":
         measurements = np.array(
             # You might want to manually input positions where you made samples here like
             [
-                210.0,  # 212.0,
-                213.0,  # 210.0,
-                223.0,  # 226.0,
-                238.0,  # 235.0,
-                239.0,  # 241.0,
-                239.0,  # 241.0,
-                120.5,  # 121.0, # 120.0,
-                233.0,  #
-                306.0,  # 305.0, # 307.0,
-                288.1,  #
-                139.0,  # 139.0, # 140.0,
-                137.0,  # 135.0, # 137.0,
-                287.2,  #
-                310.0,  # 309.0, # 311.0,
-                247.5,  # 246.0, # 247.5,
-                208.5,  # 211.0, # 208.0,
-                271.1,  #
-                323.0,  # 322.0, # 324.0,
-                98.0,  # 99.0,  # 97.5,
-                302.0,  # 301.0, # 303.0,
-                241.75,  # 241.0, # 242.5,
+                211.0, #210.0, # 212.0,
+                212.0, #213.0, # 210.0,
+                222.0, #223.0, # 226.0,
+                239.0, #238.0, # 235.0,
+                240.0, #239.0, # 241.0,
+                242.5, #239.0, # 241.0,
+                120.0, #120.5, # 120.5, # 121.0, # 120.0,
+                231.6, #233.0, # 233.0,  #
+                306.0, #306.0, # 306.0,  # 305.0, # 307.0,
+                287.0, #288.1, # 288.1,  #
+                139.0, #139.0, # 139.0,  # 139.0, # 140.0,
+                136.0, #137.0, # 137.0,  # 135.0, # 137.0,
+                286.5, #287.2, # 287.2,  #
+                308.0, #310.0, # 310.0,  # 309.0, # 311.0,
+                248.2, #247.5, # 247.5,  # 246.0, # 247.5,
+                209.0, #208.5, # 208.5,  # 211.0, # 208.0,
+                271.0, #271.1, # 271.1,  #
+                323.5, #323.0, # 323.0,  # 322.0, # 324.0,
+                 97.0, # 98.0, #  98.0,  # 99.0,  # 97.5,
+                303.5, #302.0, # 302.0,  # 301.0, # 303.0,
+                243.9, #241.75,# 241.75,  # 241.0, # 242.5,
             ]
         )
     if np.size(measurements) != 15 and np.size(measurements) != 21:
