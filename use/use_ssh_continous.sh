@@ -41,14 +41,16 @@ cleanup() {
 		rm -f ${SSH_PIPE}
 	fi
 
-	echo "" | tee /dev/fd/3
-	echo "xyz_of_samp = np.array([" | tee /dev/fd/3
-	echo -n "${XYZ_OF_SAMPS}" | tee /dev/fd/3
-	echo "])" | tee /dev/fd/3
+	if [ ${CALIBRATE} ]; then
+		echo "" | tee /dev/fd/3
+		echo "xyz_of_samp = np.array([" | tee /dev/fd/3
+		echo -n "${XYZ_OF_SAMPS}" | tee /dev/fd/3
+		echo "])" | tee /dev/fd/3
 
-	echo "motor_pos_samp = np.array([" | tee /dev/fd/3
-	echo -n "${MOTOR_POS_SAMPS}" | tee /dev/fd/3
-	echo "])" | tee /dev/fd/3
+		echo "motor_pos_samp = np.array([" | tee /dev/fd/3
+		echo -n "${MOTOR_POS_SAMPS}" | tee /dev/fd/3
+		echo "])" | tee /dev/fd/3
+	fi
 	exit 0
 }
 
@@ -85,6 +87,7 @@ while true; do
 
 	if [ ${CALIBRATE} ]; then
 		### M114 S2 ###
+		# WARNING: This does not work if the web interface is running... Close the tab first.
 		# Send the http request.
 		# On RRF3 this needs to be changed to
 		# - url: http://hp4test.local/machine/code/
@@ -113,7 +116,7 @@ while true; do
 		PI_CMD+=" && pwd"
 	fi
 	PI_CMD+=" && mkdir -p \"${IMAGESERIES_ON_PI}/\""
-	PI_CMD+=" && "${RASPISTILL}" --quality 100 --timeout 300 --shutter 40000 --ISO 50 -o \"${IMAGE_ON_PI}\" --width 3280 --height 2464"
+	PI_CMD+=" && "${RASPISTILL}" --quality 100 --timeout 300 --shutter 250000 --ISO 50 -o \"${IMAGE_ON_PI}\" --width 3280 --height 2464"
 	if [ ${VERBOSE} ]; then
 		PI_CMD+=" && echo Captured image remotely: \"${IMAGE_ON_PI}\""
 	fi
