@@ -116,7 +116,9 @@ while true; do
 		PI_CMD+=" && pwd"
 	fi
 	PI_CMD+=" && mkdir -p \"${IMAGESERIES_ON_PI}/\""
+	PI_CMD+=" && sudo python3 /home/pi/repos/rpi_ws281x/python/examples/tobben_constant_light.py > /dev/null"
 	PI_CMD+=" && "${RASPISTILL}" --quality 100 --timeout 300 --shutter 250000 --ISO 50 -o \"${IMAGE_ON_PI}\" --width 3280 --height 2464"
+	PI_CMD+=" && sudo python3 /home/pi/repos/rpi_ws281x/python/examples/lights_off.py > /dev/null"
 	if [ ${VERBOSE} ]; then
 		PI_CMD+=" && echo Captured image remotely: \"${IMAGE_ON_PI}\""
 	fi
