@@ -1,13 +1,15 @@
 SERIES_NAME=$1
 HPM="../hpm/hpm/hpm ../hpm/hpm/example-cam-params/loDistCamParams2.xml ../hpm/hpm/example-marker-params/my-marker-params.xml ./images/"
 MAX_NUM=$2
+shift
+shift
 
 let "INC=1"
 PADDED_COUNT=""
 while [ ${INC} -le ${MAX_NUM} ]; do
 	printf -v PADDED_COUNT "%04d" ${INC}
 	echo -n "${PADDED_COUNT} "
-	${HPM}${SERIES_NAME}/${PADDED_COUNT}.jpg
+	${HPM}${SERIES_NAME}/${PADDED_COUNT}.jpg $@
 	let "INC=INC+1"
 done
 
