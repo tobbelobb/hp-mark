@@ -31,8 +31,8 @@ hp-mark was developed as a separate measurement system, with no Hangprinter-spec
 
 We have now started manually executing Hangprinter use cases, like homing and anchor calibration.
 See <a href="https://www.youtube.com/watch?v=o8oXp44mtUU">demo 0</a>,
-See <a href="https://www.youtube.com/watch?v=m9qjuZQowCE">demo 1</a>, and
-See <a href="https://www.youtube.com/watch?v=yRF-zevGHlQ">demo 2</a>.
+<a href="https://www.youtube.com/watch?v=m9qjuZQowCE">demo 1</a>, and
+<a href="https://www.youtube.com/watch?v=yRF-zevGHlQ">demo 2</a>.
 
 Ahead of us now, is integration with RepRapFirmware, so that we can achieve automation.
 
