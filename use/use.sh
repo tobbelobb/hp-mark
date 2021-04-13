@@ -13,8 +13,9 @@ readonly THISPATH="$(dirname "$0")"
 readonly IMAGES="${THISPATH}/images"
 mkdir -p "${IMAGES}/"
 
+readonly RASPISTILL="/home/pi/repos/NativePiCamera/bin/raspistill_CS_lens"
 readonly IMAGE=$(mktemp -p "${IMAGES}/" XXXXXXXXXX.jpg)
-raspistill --quality 100 -o "${IMAGE}" --width 3280 --height 2464
+${RASPISTILL} --quality 100 -o "${IMAGE}" --width 3280 --height 2464
 echo "Captured image ${IMAGE}."
 
 readonly HPM="/home/pi/repos/hp-mark/hpm/hpm/hpm"

@@ -43,10 +43,12 @@ cleanup() {
 
 	if [ ${CALIBRATE} ]; then
 		echo "" | tee /dev/fd/3
+		echo "" | tee /dev/fd/3
 		echo "xyz_of_samp = np.array([" | tee /dev/fd/3
 		echo -n "${XYZ_OF_SAMPS}" | tee /dev/fd/3
 		echo "])" | tee /dev/fd/3
 
+		echo "" | tee /dev/fd/3
 		echo "motor_pos_samp = np.array([" | tee /dev/fd/3
 		echo -n "${MOTOR_POS_SAMPS}" | tee /dev/fd/3
 		echo "])" | tee /dev/fd/3
@@ -95,7 +97,11 @@ while true; do
 		curl --silent -X GET -H "application/json, text/plain, */*" http://hp4test.local/rr_gcode?gcode=M114%20S2 >/dev/null
 		# It takes a little while for the Duet to process that
 		sleep 0.1
-
+		# Get the response
+		MOTOR_POS_SAMP="$(curl --silent -X GET -H "application/json, text/plain, */*" http://hp4test.local/rr_reply 2>&1 | tr -d '\n')"
+		curl --silent -X GET -H "application/json, text/plain, */*" http://hp4test.local/rr_gcode?gcode=M114%20S2 >/dev/null
+		# It takes a little while for the Duet to process that
+		sleep 0.1
 		# Get the response
 		MOTOR_POS_SAMP="$(curl --silent -X GET -H "application/json, text/plain, */*" http://hp4test.local/rr_reply 2>&1 | tr -d '\n')"
 		echo -n ${MOTOR_POS_SAMP} | tee /dev/fd/3
