@@ -236,8 +236,8 @@ module marker_slider() {
     }
 }
 
-//bg_plate();
-module bg_plate(width=70){
+bg_plate();
+module bg_plate(width=90){
   difference(){
     cylinder(d=width, h=0.7,$fn=100);
     translate([0,0,-0.1])
@@ -250,13 +250,13 @@ jump=4;
 //translate([0,0,0.7])
 //color([0.1,0.1,0.1])
 //center_shadow(biggest_shadow - 0*jump);
-center_shadow(biggest_shadow - 1*jump);
+//center_shadow(biggest_shadow - 1*jump);
 //center_shadow(biggest_shadow - 2*jump);
 //center_shadow(biggest_shadow - 3*jump);
 //center_shadow(biggest_shadow - 4*jump);
 //center_shadow(biggest_shadow - 5*jump);
 //echo(biggest_shadow - 0*jump);
-echo(biggest_shadow - 1*jump);
+//echo(biggest_shadow - 1*jump);
 //echo(biggest_shadow - 2*jump);
 //echo(biggest_shadow - 3*jump);
 //echo(biggest_shadow - 4*jump);
