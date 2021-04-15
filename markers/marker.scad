@@ -236,12 +236,21 @@ module marker_slider() {
     }
 }
 
-bg_plate();
+//%bg_plate();
 module bg_plate(width=90){
   difference(){
     cylinder(d=width, h=0.7,$fn=100);
     translate([0,0,-0.1])
       cylinder(d=3.0, h=1.8, $fn=20);
+  }
+}
+
+bg_plate_background();
+module bg_plate_background(width1=100, width2=80){
+  difference(){
+    cylinder(d=width1, h=0.5,$fn=100);
+    translate([0,0,-0.1])
+      cylinder(d=width2, h=1.8, $fn=100);
   }
 }
 
