@@ -144,12 +144,14 @@ while true; do
 	XYZ_OF_SAMP="$($COMMAND 2>&1)"
 	echo ${XYZ_OF_SAMP} | tee /dev/fd/3
 
-	if [ "${XYZ_OF_SAMP}" != "Could not identify markers" ]; then
-		MOTOR_POS_SAMPS+="${MOTOR_POS_SAMP}
+	if ! [[ "${XYZ_OF_SAMP}" =~ .*Warning.* ]]; then
+		if [ "${XYZ_OF_SAMP}" != "Could not identify markers" ]; then
+			MOTOR_POS_SAMPS+="${MOTOR_POS_SAMP}
 "
-		XYZ_OF_SAMP_WITH_COMMA_NEWLINE="${XYZ_OF_SAMP%?},
+			XYZ_OF_SAMP_WITH_COMMA_NEWLINE="${XYZ_OF_SAMP%?},
 "
-		XYZ_OF_SAMPS+=${XYZ_OF_SAMP_WITH_COMMA_NEWLINE}
+			XYZ_OF_SAMPS+=${XYZ_OF_SAMP_WITH_COMMA_NEWLINE}
+		fi
 	fi
 
 	let "INC=INC+1"
