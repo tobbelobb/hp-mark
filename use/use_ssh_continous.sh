@@ -99,14 +99,11 @@ while true; do
 		sleep 0.1
 		# Get the response
 		MOTOR_POS_SAMP="$(curl --silent -X GET -H "application/json, text/plain, */*" http://hp4test.local/rr_reply 2>&1 | tr -d '\n')"
+		# Do it again. Sometimes the first one fails
 		curl --silent -X GET -H "application/json, text/plain, */*" http://hp4test.local/rr_gcode?gcode=M114%20S2 >/dev/null
-		# It takes a little while for the Duet to process that
 		sleep 0.1
-		# Get the response
 		MOTOR_POS_SAMP="$(curl --silent -X GET -H "application/json, text/plain, */*" http://hp4test.local/rr_reply 2>&1 | tr -d '\n')"
 		echo -n ${MOTOR_POS_SAMP} | tee /dev/fd/3
-		MOTOR_POS_SAMPS+="${MOTOR_POS_SAMP}
-"
 	fi
 
 	printf -v COUNT "%04d" ${INC}
@@ -145,10 +142,15 @@ while true; do
 		echo "${COMMAND}" 2>&1 | tee /dev/fd/3
 	fi
 	XYZ_OF_SAMP="$($COMMAND 2>&1)"
-	XYZ_OF_SAMP_WITH_COMMA_NEWLINE="${XYZ_OF_SAMP%?},
-"
 	echo ${XYZ_OF_SAMP} | tee /dev/fd/3
-	XYZ_OF_SAMPS+=${XYZ_OF_SAMP_WITH_COMMA_NEWLINE}
+
+	if [ "${XYZ_OF_SAMP}" != "Could not identify markers" ]; then
+		MOTOR_POS_SAMPS+="${MOTOR_POS_SAMP}
+"
+		XYZ_OF_SAMP_WITH_COMMA_NEWLINE="${XYZ_OF_SAMP%?},
+"
+		XYZ_OF_SAMPS+=${XYZ_OF_SAMP_WITH_COMMA_NEWLINE}
+	fi
 
 	let "INC=INC+1"
 done
