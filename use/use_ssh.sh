@@ -28,7 +28,7 @@ ssh pi@rpi RASPISTILL=${RASPISTILL} USEPATH_ON_PI=${USEPATH_ON_PI} IMAGE_ON_PI=$
 cd "${USEPATH_ON_PI}" && pwd && \
 mkdir -p "${USEPATH_ON_PI}/images" && \
 sudo python3 /home/pi/repos/rpi_ws281x/python/examples/tobben_constant_light.py > /dev/null && \
-"${RASPISTILL}" --quality 100 --timeout 300 --shutter 50000 --ISO 50 -o "${IMAGE_ON_PI}" --width 3280 --height 2464 && \
+"${RASPISTILL}" --quality 100 --timeout 300 --shutter 150000 --ISO 50 -o "${IMAGE_ON_PI}" --width 3280 --height 2464 && \
 sudo python3 /home/pi/repos/rpi_ws281x/python/examples/lights_off.py > /dev/null && \
 echo Captured image remotely: "${IMAGE_ON_PI}".
 ENDSSH

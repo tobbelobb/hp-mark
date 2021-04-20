@@ -1,25 +1,28 @@
 #!/usr/bin/env bash
 
-# For quick hpm usage from non-pi host
-#  - Ssh into the rpi4
-#  - Take an image
-#  - Exit ssh
-#  - Download the image
-#  - Runs hpm on the image
+# This script tries to move the Hangprinter around and collect auto calibration data.
+# It sends gcodes to the Hangprinter, and collects images from Raspberry pi.
+# It then runs hpm locally on the image.
+
+# WARNING! Before you run this command, it is assumet that you have put your effector
+# in the home position, with the nozzle at the origin, and with all lines non-slack.
+
+# hpm is given --try-hard option by default
+# You can append the command with other hpm options if you want, like
 #
-# Doesn't compile hpm.
-# Invokes raspistill and creates random filename for the image.
-# Reads the example params.
-# Forwards -v, -s, -c or any other trailing arguments to hpm.
+# $get_auto_calibration_data_automatically.sh --show result
 #
-# If you want this script to be verbose, say
-# VERBOSE=true ./use_ssh_continous.sh
-#
+# ... whill stop to show result during each invocation of hpm.
+
 # Your will get images saved into a subdirectory ./images/<something>
 # You will also get a log file called ./logs/<something>.log
 # By default, <something> will be set to a random six character name.
 # If you want to set it explicitly do:
-# DATA_SERIES_NAME="my-awesome-data-collection" ./use_ssh_continous.ssh
+# DATA_SERIES_NAME="my-awesome-data-collection" ./get_auto_calibration_data_automatically.sh
+
+# Copy/paste friendly, filtered versions of the data strings will be printed out at the end.
+
+# Stop the program with ctrl-C, or by waiting until it finishes by itself
 
 set -o pipefail
 
@@ -41,18 +44,16 @@ cleanup() {
 		rm -f ${SSH_PIPE}
 	fi
 
-	if [ ${CALIBRATE} ]; then
-		echo "" | tee /dev/fd/3
-		echo "" | tee /dev/fd/3
-		echo "xyz_of_samp = np.array([" | tee /dev/fd/3
-		echo -n "${XYZ_OF_SAMPS}" | tee /dev/fd/3
-		echo "])" | tee /dev/fd/3
+	echo "" | tee /dev/fd/3
+	echo "" | tee /dev/fd/3
+	echo "xyz_of_samp = np.array([" | tee /dev/fd/3
+	echo -n "${XYZ_OF_SAMPS}" | tee /dev/fd/3
+	echo "])" | tee /dev/fd/3
 
-		echo "" | tee /dev/fd/3
-		echo "motor_pos_samp = np.array([" | tee /dev/fd/3
-		echo -n "${MOTOR_POS_SAMPS}" | tee /dev/fd/3
-		echo "])" | tee /dev/fd/3
-	fi
+	echo "" | tee /dev/fd/3
+	echo "motor_pos_samp = np.array([" | tee /dev/fd/3
+	echo -n "${MOTOR_POS_SAMPS}" | tee /dev/fd/3
+	echo "])" | tee /dev/fd/3
 	exit 0
 }
 
@@ -85,28 +86,52 @@ readonly IMAGESERIES_ON_PI="${USEPATH_ON_PI}/images/${SERIESNAME}"
 let "INC=1"
 COUNT=""
 
-while true; do
 
-	if [ ${CALIBRATE} ]; then
-		### M114 S2 ###
-		# WARNING: This does not work if the web interface is running... Close the tab first.
-		# Send the http request.
-		# On RRF3 this needs to be changed to
-		# - url: http://hp4test.local/machine/code/
-		# - data: "M114 S2"
-		curl --silent -X GET -H "application/json, text/plain, */*" http://hp4test.local/rr_gcode?gcode=M114%20S2 >/dev/null
-		# It takes a little while for the Duet to process that
-		sleep 0.1
-		# Get the response
-		MOTOR_POS_SAMP="$(curl --silent -X GET -H "application/json, text/plain, */*" http://hp4test.local/rr_reply 2>&1 | tr -d '\n')"
-		# Do it again. Sometimes the first one fails
-		curl --silent -X GET -H "application/json, text/plain, */*" http://hp4test.local/rr_gcode?gcode=M114%20S2 >/dev/null
-		sleep 0.1
-		MOTOR_POS_SAMP="$(curl --silent -X GET -H "application/json, text/plain, */*" http://hp4test.local/rr_reply 2>&1 | tr -d '\n')"
-		echo -n ${MOTOR_POS_SAMP} | tee /dev/fd/3
-	fi
+for G95 in "G95 A30 B34 C5 D0" \
+	"G95 A30 B5 C28 D0" \
+	"G95 A5 B30 C30 D0" \
+	"G95 A15 B5 C5 D24" \
+	"G95 A30 B34 C5 D0" \
+	"G95 A30 B5 C28 D0" \
+	"G95 A5 B30 C30 D0" \
+	"G95 A15 B5 C5 D27" \
+	"G95 A30 B34 C5 D0" \
+	"G95 A30 B5 C28 D0" \
+	"G95 A5 B30 C30 D0" \
+	"G95 A15 B5 C5 D35" \
+	"G95 A30 B34 C5 D0" \
+	"G95 A28 B6 C26 D0" \
+	"G95 A5 B5 C5 D42" \
+	"G95 A20 B20 C20 D15" \
+	"G95 A20 B20 C20 D7"; do
 
 	printf -v COUNT "%04d" ${INC}
+
+	# Set torque
+	curl --silent -X GET -H "application/json, text/plain, */*" http://hp4test.local/rr_gcode?gcode="${G95// /%20}" >/dev/null
+
+
+	### M114 S2 ###
+	# WARNING: This does not work if the web interface is running... Close the tab first.
+	# Send the http request.
+	# On RRF3 this needs to be changed to
+	# - url: http://hp4test.local/machine/code/
+	# - data: "M114 S2"
+  MOTOR_POS_SAMP="0"
+  MOTOR_POS_SAMP2="1"
+  while [ "${MOTOR_POS_SAMP}" != "${MOTOR_POS_SAMP2}" ]; do
+		curl --silent -X GET -H "application/json, text/plain, */*" http://hp4test.local/rr_gcode?gcode=M114%20S2 >/dev/null
+		sleep 0.1 # It takes a little while for the Duet to process M114 S2
+		MOTOR_POS_SAMP="$(curl --silent -X GET -H "application/json, text/plain, */*" http://hp4test.local/rr_reply 2>&1 | tr -d '\n')"
+
+    sleep 1 # Let motors move
+
+		curl --silent -X GET -H "application/json, text/plain, */*" http://hp4test.local/rr_gcode?gcode=M114%20S2 >/dev/null
+		sleep 0.1
+		MOTOR_POS_SAMP2="$(curl --silent -X GET -H "application/json, text/plain, */*" http://hp4test.local/rr_reply 2>&1 | tr -d '\n')"
+  done
+	echo -n ${MOTOR_POS_SAMP} | tee /dev/fd/3
+
 	IMAGE="${IMAGESERIES}/${COUNT}.jpg"
 	IMAGE_ON_PI="${IMAGESERIES_ON_PI}/${COUNT}.jpg"
 
@@ -137,7 +162,7 @@ while true; do
 		scp -q pi@rpi:${IMAGE_ON_PI} ${IMAGE} 2>&1 | tee /dev/fd/3
 	fi
 
-	COMMAND="${HPM} ${CAMPARAMS} ${MARKERPARAMS} ${IMAGE} $@"
+	COMMAND="${HPM} ${CAMPARAMS} ${MARKERPARAMS} ${IMAGE} --try-hard $@"
 	if [ ${VERBOSE} ]; then
 		echo "${COMMAND}" 2>&1 | tee /dev/fd/3
 	fi
@@ -156,3 +181,4 @@ while true; do
 
 	let "INC=INC+1"
 done
+cleanup
