@@ -87,6 +87,9 @@ let "INC=1"
 COUNT=""
 
 
+# We assume nozzle is at the origin. Set motor encoder reference point.
+curl --silent -X GET -H "application/json, text/plain, */*" http://hp4test.local/rr_gcode?gcode=G96 >/dev/null
+
 for G95 in "G95 A30 B34 C5 D0" \
 	"G95 A30 B5 C28 D0" \
 	"G95 A5 B30 C30 D0" \
