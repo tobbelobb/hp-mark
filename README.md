@@ -73,7 +73,7 @@ Nice-to-haves:
 
 # How To Clone This Repository
 
- - Clone with `git clone --recursive git@gitlab.com:tobben/hp-mark.git`. The `--recursive`
+ - Clone with `git clone --recursive https://gitlab.com/tobben/hp-mark.git`. The `--recursive`
  - If you already did `git clone` without `--recursive`, do `git submodule init && git submodule update` to get submodule code right.
 
 # How To Use This Repository
