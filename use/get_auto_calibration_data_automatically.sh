@@ -26,6 +26,8 @@
 
 set -o pipefail
 
+readonly GCODE_ENDPOINT="http://duet3.local/machine/code/"
+
 SSH_PID=0
 readonly SSH_PIPE="/tmp/ssh-input-for-pi"
 
@@ -65,7 +67,6 @@ readonly IMAGES="${THISPATH}/images"
 readonly USEPATH_ON_PI="/home/pi/repos/hp-mark/use"
 
 readonly HPM="../hpm/hpm/hpm"
-#readonly CAMPARAMS="../hpm/hpm/example-cam-params/myExampleCamParams.xml"
 readonly CAMPARAMS="../hpm/hpm/example-cam-params/loDistCamParams2.xml"
 readonly MARKERPARAMS="../hpm/hpm/example-marker-params/my-marker-params.xml"
 
@@ -86,52 +87,57 @@ readonly IMAGESERIES_ON_PI="${USEPATH_ON_PI}/images/${SERIESNAME}"
 let "INC=1"
 COUNT=""
 
+readonly SET_ENCODER_REFERENCE_POINT="M98 P\"/macros/Set_encoder_reference_point\""
+readonly READ_ENCODERS="M98 P\"/macros/Read_encoders\""
 
 # We assume nozzle is at the origin. Set motor encoder reference point.
-curl --silent -X GET -H "application/json, text/plain, */*" http://hp4test.local/rr_gcode?gcode=G96 >/dev/null
+curl --silent ${GCODE_ENDPOINT} -d "${SET_ENCODER_REFERENCE_POINT}" >/dev/null
 
-for G95 in "G95 A30 B34 C5 D0" \
-	"G95 A30 B5 C28 D0" \
-	"G95 A5 B30 C30 D0" \
-	"G95 A15 B5 C5 D24" \
-	"G95 A30 B34 C5 D0" \
-	"G95 A30 B5 C28 D0" \
-	"G95 A5 B30 C30 D0" \
-	"G95 A15 B5 C5 D27" \
-	"G95 A30 B34 C5 D0" \
-	"G95 A30 B5 C28 D0" \
-	"G95 A5 B30 C30 D0" \
-	"G95 A15 B5 C5 D35" \
-	"G95 A30 B34 C5 D0" \
-	"G95 A28 B6 C26 D0" \
-	"G95 A5 B5 C5 D42" \
-	"G95 A20 B20 C20 D15" \
-	"G95 A20 B20 C20 D7"; do
+for SET_TORQUES in "M98 P\"/macros/Torque_mode\" A0.08 B0.08 C0.01 D0" \
+  "M98 P\"/macros/Torque_mode\" A0.08  B0.025 C0.08  D0"       \
+  "M98 P\"/macros/Torque_mode\" A0.025 B0.08  C0.08  D0"       \
+  "M98 P\"/macros/Torque_mode\" A0.08  B0.025 C0.01  D0.055"   \
+  "M98 P\"/macros/Torque_mode\" A0.08  B0.09  C0.01  D0"       \
+  "M98 P\"/macros/Torque_mode\" A0.08  B0.025 C0.08  D0"       \
+  "M98 P\"/macros/Torque_mode\" A0.025 B0.09  C0.08  D0"       \
+  "M98 P\"/macros/Torque_mode\" A0.04  B0.025 C0.02  D0.065"   \
+  "M98 P\"/macros/Torque_mode\" A0.085 B0.095 C0.02  D0"       \
+  "M98 P\"/macros/Torque_mode\" A0.085 B0.02  C0.09  D0"       \
+  "M98 P\"/macros/Torque_mode\" A0.025 B0.1   C0.1   D0"       \
+  "M98 P\"/macros/Torque_mode\" A0.025 B0.025 C0.025 D0.085"   \
+  "M98 P\"/macros/Torque_mode\" A0.1   B0.1   C0.01  D0"       \
+  "M98 P\"/macros/Torque_mode\" A0.1   B0.01   C0.1  D0"       \
+  "M98 P\"/macros/Torque_mode\" A0.01   B0.1   C0.1  D0"       \
+  "M98 P\"/macros/Torque_mode\" A0.02   B0.02  C0.02 D0.095"   \
+  "M98 P\"/macros/Torque_mode\" A0.08   B0.08  C0.08 D0.015"   \
+  "M98 P\"/macros/Torque_mode\" A0.09   B0.09  C0.09 D0.001"; do
 
 	printf -v COUNT "%04d" ${INC}
 
 	# Set torque
-	curl --silent -X GET -H "application/json, text/plain, */*" http://hp4test.local/rr_gcode?gcode="${G95// /%20}" >/dev/null
+	curl --silent ${GCODE_ENDPOINT} -d "${SET_TORQUES}" >/dev/null
 
 
 	### M114 S2 ###
 	# WARNING: This does not work if the web interface is running... Close the tab first.
 	# Send the http request.
 	# On RRF3 this needs to be changed to
-	# - url: http://hp4test.local/machine/code/
+	# - url: http://${DUET_URL}/machine/code/
 	# - data: "M114 S2"
   MOTOR_POS_SAMP="0"
   MOTOR_POS_SAMP2="1"
   while [ "${MOTOR_POS_SAMP}" != "${MOTOR_POS_SAMP2}" ]; do
-		curl --silent -X GET -H "application/json, text/plain, */*" http://hp4test.local/rr_gcode?gcode=M114%20S2 >/dev/null
-		sleep 0.1 # It takes a little while for the Duet to process M114 S2
-		MOTOR_POS_SAMP="$(curl --silent -X GET -H "application/json, text/plain, */*" http://hp4test.local/rr_reply 2>&1 | tr -d '\n')"
+		curl --silent ${GCODE_ENDPOINT} -d "${READ_ENCODERS}" >/dev/null
+		sleep 0.1 # It takes a little while for the Duet to read the encoders
+    # TODO
+		MOTOR_POS_SAMP="$(curl --silent -X GET -H "application/json, text/plain, */*" http://${DUET_URL}/rr_reply 2>&1 | tr -d '\n')"
 
-    sleep 1 # Let motors move
+    sleep 0.5 # Let motors move
 
-		curl --silent -X GET -H "application/json, text/plain, */*" http://hp4test.local/rr_gcode?gcode=M114%20S2 >/dev/null
+		curl --silent ${GCODE_ENDPOINT} -d "${READ_ENCODERS}" >/dev/null
 		sleep 0.1
-		MOTOR_POS_SAMP2="$(curl --silent -X GET -H "application/json, text/plain, */*" http://hp4test.local/rr_reply 2>&1 | tr -d '\n')"
+    # TODO
+		MOTOR_POS_SAMP2="$(curl --silent -X GET -H "application/json, text/plain, */*" http://${DUET_URL}/rr_reply 2>&1 | tr -d '\n')"
   done
 	echo -n ${MOTOR_POS_SAMP} | tee /dev/fd/3
 

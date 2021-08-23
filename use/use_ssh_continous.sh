@@ -15,7 +15,7 @@
 # If you want this script to be verbose, say
 # VERBOSE=true ./use_ssh_continous.sh
 #
-# Your will get images saved into a subdirectory ./images/<something>
+# Your images will get saved into a subdirectory ./images/<something>
 # You will also get a log file called ./logs/<something>.log
 # By default, <something> will be set to a random six character name.
 # If you want to set it explicitly do:
@@ -92,17 +92,17 @@ while true; do
 		# WARNING: This does not work if the web interface is running... Close the tab first.
 		# Send the http request.
 		# On RRF3 this needs to be changed to
-		# - url: http://hp4test.local/machine/code/
+		# - url: http://duet3.local/machine/code/
 		# - data: "M114 S2"
-		curl --silent -X GET -H "application/json, text/plain, */*" http://hp4test.local/rr_gcode?gcode=M114%20S2 >/dev/null
+		curl --silent -X GET -H "application/json, text/plain, */*" http://duet3.local/rr_gcode?gcode=M114%20S2 >/dev/null
 		# It takes a little while for the Duet to process that
 		sleep 0.1
 		# Get the response
-		MOTOR_POS_SAMP="$(curl --silent -X GET -H "application/json, text/plain, */*" http://hp4test.local/rr_reply 2>&1 | tr -d '\n')"
+		MOTOR_POS_SAMP="$(curl --silent -X GET -H "application/json, text/plain, */*" http://duet3.local/rr_reply 2>&1 | tr -d '\n')"
 		# Do it again. Sometimes the first one fails
-		curl --silent -X GET -H "application/json, text/plain, */*" http://hp4test.local/rr_gcode?gcode=M114%20S2 >/dev/null
+		curl --silent -X GET -H "application/json, text/plain, */*" http://duet3.local/rr_gcode?gcode=M114%20S2 >/dev/null
 		sleep 0.1
-		MOTOR_POS_SAMP="$(curl --silent -X GET -H "application/json, text/plain, */*" http://hp4test.local/rr_reply 2>&1 | tr -d '\n')"
+		MOTOR_POS_SAMP="$(curl --silent -X GET -H "application/json, text/plain, */*" http://duet3.local/rr_reply 2>&1 | tr -d '\n')"
 		echo -n ${MOTOR_POS_SAMP} | tee /dev/fd/3
 	fi
 
