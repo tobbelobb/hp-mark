@@ -71,6 +71,8 @@ readonly CAMPARAMS="../hpm/hpm/example-cam-params/loDistCamParams2.xml"
 readonly MARKERPARAMS="../hpm/hpm/example-marker-params/my-marker-params.xml"
 
 readonly RASPISTILL="/home/pi/repos/NativePiCamera/bin/raspistill_CS_lens"
+readonly SHUTTER="15000" # In daylight
+#readonly SHUTTER="150000" # In low light
 SERIESNAME=$(mktemp --dry-run XXXXX)
 if [ ${DATA_SERIES_NAME} ]; then
 	SERIESNAME="${DATA_SERIES_NAME}"
@@ -87,57 +89,43 @@ readonly IMAGESERIES_ON_PI="${USEPATH_ON_PI}/images/${SERIESNAME}"
 let "INC=1"
 COUNT=""
 
-readonly SET_ENCODER_REFERENCE_POINT="M98 P\"/macros/Set_encoder_reference_point\""
-readonly READ_ENCODERS="M98 P\"/macros/Read_encoders\""
+readonly SET_ENCODER_REFERENCE_POINT="M569.3 P40.0:41.0:42.0:43.0 S"
+readonly READ_ENCODERS="M569.3 P40.0:41.0:42.0:43.0"
 
 # We assume nozzle is at the origin. Set motor encoder reference point.
 curl --silent ${GCODE_ENDPOINT} -d "${SET_ENCODER_REFERENCE_POINT}" >/dev/null
 
-for SET_TORQUES in "M98 P\"/macros/Torque_mode\" A0.08 B0.08 C0.01 D0" \
+for SET_TORQUES in "M98 P\"/macros/Torque_mode\" A0.09 B0.09 C0.01 D0" \
   "M98 P\"/macros/Torque_mode\" A0.08  B0.025 C0.08  D0"       \
   "M98 P\"/macros/Torque_mode\" A0.025 B0.08  C0.08  D0"       \
-  "M98 P\"/macros/Torque_mode\" A0.08  B0.025 C0.01  D0.055"   \
+  "M98 P\"/macros/Torque_mode\" A0.08  B0.03  C0.02  D0.065"   \
   "M98 P\"/macros/Torque_mode\" A0.08  B0.09  C0.01  D0"       \
   "M98 P\"/macros/Torque_mode\" A0.08  B0.025 C0.08  D0"       \
   "M98 P\"/macros/Torque_mode\" A0.025 B0.09  C0.08  D0"       \
-  "M98 P\"/macros/Torque_mode\" A0.04  B0.025 C0.02  D0.065"   \
+  "M98 P\"/macros/Torque_mode\" A0.04  B0.025 C0.02  D0.075"   \
   "M98 P\"/macros/Torque_mode\" A0.085 B0.095 C0.02  D0"       \
   "M98 P\"/macros/Torque_mode\" A0.085 B0.02  C0.09  D0"       \
   "M98 P\"/macros/Torque_mode\" A0.025 B0.1   C0.1   D0"       \
   "M98 P\"/macros/Torque_mode\" A0.025 B0.025 C0.025 D0.085"   \
   "M98 P\"/macros/Torque_mode\" A0.1   B0.1   C0.01  D0"       \
-  "M98 P\"/macros/Torque_mode\" A0.1   B0.01   C0.1  D0"       \
-  "M98 P\"/macros/Torque_mode\" A0.01   B0.1   C0.1  D0"       \
-  "M98 P\"/macros/Torque_mode\" A0.02   B0.02  C0.02 D0.095"   \
-  "M98 P\"/macros/Torque_mode\" A0.08   B0.08  C0.08 D0.015"   \
-  "M98 P\"/macros/Torque_mode\" A0.09   B0.09  C0.09 D0.001"; do
+  "M98 P\"/macros/Torque_mode\" A0.1   B0.01  C0.1   D0"       \
+  "M98 P\"/macros/Torque_mode\" A0.01  B0.1   C0.1   D0"       \
+  "M98 P\"/macros/Torque_mode\" A0.02  B0.02  C0.02  D0.095"   \
+  "M98 P\"/macros/Torque_mode\" A0.08  B0.08  C0.08  D0.015"   \
+  "M98 P\"/macros/Torque_mode\" A0.085 B0.085 C0.085 D0.005"; do
 
 	printf -v COUNT "%04d" ${INC}
 
 	# Set torque
 	curl --silent ${GCODE_ENDPOINT} -d "${SET_TORQUES}" >/dev/null
 
-
-	### M114 S2 ###
-	# WARNING: This does not work if the web interface is running... Close the tab first.
-	# Send the http request.
-	# On RRF3 this needs to be changed to
-	# - url: http://${DUET_URL}/machine/code/
-	# - data: "M114 S2"
+	### Read encoders ###
   MOTOR_POS_SAMP="0"
   MOTOR_POS_SAMP2="1"
   while [ "${MOTOR_POS_SAMP}" != "${MOTOR_POS_SAMP2}" ]; do
-		curl --silent ${GCODE_ENDPOINT} -d "${READ_ENCODERS}" >/dev/null
-		sleep 0.1 # It takes a little while for the Duet to read the encoders
-    # TODO
-		MOTOR_POS_SAMP="$(curl --silent -X GET -H "application/json, text/plain, */*" http://${DUET_URL}/rr_reply 2>&1 | tr -d '\n')"
-
+		MOTOR_POS_SAMP="$(curl --silent ${GCODE_ENDPOINT} -d "${READ_ENCODERS}" 2>&1 | tr -d '\n')"
     sleep 0.5 # Let motors move
-
-		curl --silent ${GCODE_ENDPOINT} -d "${READ_ENCODERS}" >/dev/null
-		sleep 0.1
-    # TODO
-		MOTOR_POS_SAMP2="$(curl --silent -X GET -H "application/json, text/plain, */*" http://${DUET_URL}/rr_reply 2>&1 | tr -d '\n')"
+		MOTOR_POS_SAMP2="$(curl --silent ${GCODE_ENDPOINT} -d "${READ_ENCODERS}" 2>&1 | tr -d '\n')"
   done
 	echo -n ${MOTOR_POS_SAMP} | tee /dev/fd/3
 
@@ -154,7 +142,7 @@ for SET_TORQUES in "M98 P\"/macros/Torque_mode\" A0.08 B0.08 C0.01 D0" \
 	fi
 	PI_CMD+=" && mkdir -p \"${IMAGESERIES_ON_PI}/\""
 	PI_CMD+=" && sudo python3 /home/pi/repos/rpi_ws281x/python/examples/tobben_constant_light.py > /dev/null"
-	PI_CMD+=" && "${RASPISTILL}" --quality 100 --timeout 300 --shutter 150000 --ISO 50 -o \"${IMAGE_ON_PI}\" --width 3280 --height 2464"
+	PI_CMD+=" && "${RASPISTILL}" --quality 100 --timeout 300 --shutter "${SHUTTER}" --ISO 50 -o \"${IMAGE_ON_PI}\" --width 3280 --height 2464"
 	PI_CMD+=" && sudo python3 /home/pi/repos/rpi_ws281x/python/examples/lights_off.py > /dev/null"
 	if [ ${VERBOSE} ]; then
 		PI_CMD+=" && echo Captured image remotely: \"${IMAGE_ON_PI}\""
