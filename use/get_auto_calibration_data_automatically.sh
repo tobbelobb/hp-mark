@@ -96,23 +96,23 @@ readonly READ_ENCODERS="M569.3 P40.0:41.0:42.0:43.0"
 curl --silent ${GCODE_ENDPOINT} -d "${SET_ENCODER_REFERENCE_POINT}" >/dev/null
 
 for SET_TORQUES in "M98 P\"/macros/Torque_mode\" A0.09 B0.09 C0.01 D0" \
-  "M98 P\"/macros/Torque_mode\" A0.08  B0.025 C0.08  D0"       \
-  "M98 P\"/macros/Torque_mode\" A0.025 B0.08  C0.08  D0"       \
-  "M98 P\"/macros/Torque_mode\" A0.08  B0.03  C0.02  D0.065"   \
-  "M98 P\"/macros/Torque_mode\" A0.08  B0.09  C0.01  D0"       \
-  "M98 P\"/macros/Torque_mode\" A0.08  B0.025 C0.08  D0"       \
-  "M98 P\"/macros/Torque_mode\" A0.025 B0.09  C0.08  D0"       \
-  "M98 P\"/macros/Torque_mode\" A0.04  B0.025 C0.02  D0.075"   \
-  "M98 P\"/macros/Torque_mode\" A0.085 B0.095 C0.02  D0"       \
-  "M98 P\"/macros/Torque_mode\" A0.085 B0.02  C0.09  D0"       \
-  "M98 P\"/macros/Torque_mode\" A0.025 B0.1   C0.1   D0"       \
-  "M98 P\"/macros/Torque_mode\" A0.025 B0.025 C0.025 D0.085"   \
-  "M98 P\"/macros/Torque_mode\" A0.1   B0.1   C0.01  D0"       \
-  "M98 P\"/macros/Torque_mode\" A0.1   B0.01  C0.1   D0"       \
-  "M98 P\"/macros/Torque_mode\" A0.01  B0.1   C0.1   D0"       \
-  "M98 P\"/macros/Torque_mode\" A0.02  B0.02  C0.02  D0.095"   \
-  "M98 P\"/macros/Torque_mode\" A0.08  B0.08  C0.08  D0.015"   \
-  "M98 P\"/macros/Torque_mode\" A0.085 B0.085 C0.085 D0.005"; do
+	"M98 P\"/macros/Torque_mode\" A0.08  B0.025 C0.08  D0" \
+	"M98 P\"/macros/Torque_mode\" A0.025 B0.08  C0.08  D0" \
+	"M98 P\"/macros/Torque_mode\" A0.08  B0.03  C0.02  D0.065" \
+	"M98 P\"/macros/Torque_mode\" A0.08  B0.09  C0.01  D0" \
+	"M98 P\"/macros/Torque_mode\" A0.08  B0.025 C0.08  D0" \
+	"M98 P\"/macros/Torque_mode\" A0.025 B0.09  C0.08  D0" \
+	"M98 P\"/macros/Torque_mode\" A0.04  B0.025 C0.02  D0.075" \
+	"M98 P\"/macros/Torque_mode\" A0.085 B0.095 C0.02  D0" \
+	"M98 P\"/macros/Torque_mode\" A0.085 B0.02  C0.09  D0" \
+	"M98 P\"/macros/Torque_mode\" A0.025 B0.1   C0.1   D0" \
+	"M98 P\"/macros/Torque_mode\" A0.025 B0.025 C0.025 D0.085" \
+	"M98 P\"/macros/Torque_mode\" A0.1   B0.1   C0.01  D0" \
+	"M98 P\"/macros/Torque_mode\" A0.1   B0.01  C0.1   D0" \
+	"M98 P\"/macros/Torque_mode\" A0.01  B0.1   C0.1   D0" \
+	"M98 P\"/macros/Torque_mode\" A0.02  B0.02  C0.02  D0.095" \
+	"M98 P\"/macros/Torque_mode\" A0.08  B0.08  C0.08  D0.015" \
+	"M98 P\"/macros/Torque_mode\" A0.085 B0.085 C0.085 D0.005"; do
 
 	printf -v COUNT "%04d" ${INC}
 
@@ -120,13 +120,13 @@ for SET_TORQUES in "M98 P\"/macros/Torque_mode\" A0.09 B0.09 C0.01 D0" \
 	curl --silent ${GCODE_ENDPOINT} -d "${SET_TORQUES}" >/dev/null
 
 	### Read encoders ###
-  MOTOR_POS_SAMP="0"
-  MOTOR_POS_SAMP2="1"
-  while [ "${MOTOR_POS_SAMP}" != "${MOTOR_POS_SAMP2}" ]; do
+	MOTOR_POS_SAMP="0"
+	MOTOR_POS_SAMP2="1"
+	while [ "${MOTOR_POS_SAMP}" != "${MOTOR_POS_SAMP2}" ]; do
 		MOTOR_POS_SAMP="$(curl --silent ${GCODE_ENDPOINT} -d "${READ_ENCODERS}" 2>&1 | tr -d '\n')"
-    sleep 0.5 # Let motors move
+		sleep 0.5 # Let motors move
 		MOTOR_POS_SAMP2="$(curl --silent ${GCODE_ENDPOINT} -d "${READ_ENCODERS}" 2>&1 | tr -d '\n')"
-  done
+	done
 	echo -n ${MOTOR_POS_SAMP} | tee /dev/fd/3
 
 	IMAGE="${IMAGESERIES}/${COUNT}.jpg"
