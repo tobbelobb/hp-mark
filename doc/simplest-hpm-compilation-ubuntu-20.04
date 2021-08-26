@@ -1,0 +1,28 @@
+# First, install a pre-compiled opencv 4.2.0
+sudo apt install libopencv-dev
+
+# Then fix a missing link in the OS
+cd /usr/include
+sudo ln -s opencv4/opencv2/ opencv2
+
+# Clone the repo if you haven't already
+git clone --recursive https://gitlab.com/tobben/hp-mark.git
+
+# Build!
+cd hp-mark/hpm/hpm
+./rpi_build.sh
+
+# If you want, you can run the tests
+./find.test
+./hpm.test
+./marks.test
+./solve-pnp.test
+./util.test
+
+# Run hpm!
+./hpm
+
+# It will tell you how it wants to be used.
+# I'm not using it directly most of the time.
+# Rather, I'm using it via the scripts found in
+cd ../../use
