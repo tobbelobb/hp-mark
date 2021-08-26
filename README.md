@@ -15,7 +15,7 @@ positions and orientations of anchors and effector.
 That user experience might be impossible to achieve, but let's get as close as we can.
 
 # Use Cases by Priority
- 0. Establish a coordinate system, with z-axis normal to the build plate (?)
+ 0. Establish a coordinate system, with z-axis normal to the build plate
  1. The effector as a measurement device: Measure the effector's position and orientation
  2. Calibrate perfect anchor positions
  3. Measure Hangprinter's positional precision and accuracy
@@ -32,9 +32,10 @@ hp-mark was developed as a separate measurement system, with no Hangprinter-spec
 We have now started manually executing Hangprinter use cases, like homing and anchor calibration.
 See <a href="https://www.youtube.com/watch?v=o8oXp44mtUU">demo 0</a>,
 <a href="https://www.youtube.com/watch?v=m9qjuZQowCE">demo 1</a>, and
-<a href="https://www.youtube.com/watch?v=yRF-zevGHlQ">demo 2</a>.
+<a href="https://www.youtube.com/watch?v=yRF-zevGHlQ">demo 2</a>, and
+<a href="https://youtu.be/As3Y5J2NTGA">demo 3</a>.
 
-Ahead of us now, is integration with RepRapFirmware, so that we can achieve automation.
+Ahead of us now, is automating it more.
 
 # Status
 We can estimate poses with one camera, stably and reliably. [Tweet](https://twitter.com/tobbelobb/status/1377256553665990659).
@@ -62,14 +63,14 @@ Nice-to-haves:
 
 
 # Equipment
- - Raspberry Pi 4, Model B, 2GB RAM
-   * Processor (BCM2837) has an [Image Processor](https://en.wikipedia.org/wiki/Image_processor)
+ - Raspberry Pi 4 (mine is Model B, 2GB RAM)
  - Arducam 8 MP Sony IMX219 camera module
  - Lens: M2504ZH05 Arducam lens
  - 32GB U3 SD card
  - Default recommended Raspberry Pi OS, 32-bit
  - OpenCV 4.4.0
  - EDLib for ellipse detection
+ - Probably a separate computer ("desktop" or "laptop" or "main computer") for running hpm. You can run hpm directly on the Raspberry Pi, but it's slow.
 
 # How To Clone This Repository
 
@@ -89,9 +90,11 @@ It is a program that reads data from the camera, and outputs a pose (three rotat
 
 ## hpm Dependencies
 This repo will (for now) assume that a number of dependencies are already installed by the user.
- - OpenCV 4.4.0 or later
+
+#### Main Computer
+ - OpenCV 4.2.0 or later
  - g++ version 10 or later
- - build2 version 0.13.0 or later
+ - build2 version 0.13.0 or later (not required if you're only going to build once)
  - clang++ version 10 or later (not required for build & use)
  - clang-tidy version 10 or later (not required for build & use)
  - clang-format version 10 or later (not required for build & use)
@@ -101,27 +104,51 @@ This repo will (for now) assume that a number of dependencies are already instal
  - black (not required for build & use)
  - scipy (not required for build & use)
  - numpy (not required for build & use)
- - raspistill (shading fix required if you don't use Picam. For why, see [here](https://www.arducam.com/docs/cameras-for-raspberry-pi/native-raspberry-pi-cameras/lens-shading-calibration/).)
 
-## hpm Target Hardware
-We will strive to provide how-tos for installing these on the Raspberry Pi 4 with 32-bit Raspberry Pi OS on it.
-How-tos will be put in the `doc/` directory as they are created.
-
-Even better would be to provide the complete Raspberry Pi OS image for users, with all dependencies already there.
-
-## hpm Ubuntu Development Environment
-Since the Raspberry Pi 4 is slower than my Ubuntu laptop and desktop, most development will happen on those machines.
-We will strive to post how-tos about how to install dependencies under Ubuntu as well.
+#### Raspberry Pi 4
+ - raspistill (shading fix required if you don't use standard Raspberry Pi Picam. For why, and how to get the right shading fixes for Arducam lenses see [here](https://www.arducam.com/docs/cameras-for-raspberry-pi/native-raspberry-pi-cameras/lens-shading-calibration/).)
 
 ### Why Are Some Dependencies Not Required for hpm Build & Use?
 Scripts `tidy.sh`, `make-compilation-database.sh`, `format.sh` etc are there to softly enforce some coding quality and standards.
 It you're not going to change the code anyways, then you don't need the scripts nor their dependencies.
 
+### Why Is build2 Not Required Always?
+build2 is a fast build system, but it takes a while to get it.
+If you only need to build once, you can build without any build system, and use the script `hpm/hpm/slow_build.sh` instead.
+
+It will be a very slow build, but it will take less time than it would have taken
+to first acquire build2 and then build with it.
+
 ## hpm How To Build
+First, you need a fairly recent version of OpenCV installed somewhere in your C++ compilers' search path.
+
+If you're on Ubuntu 20.04,
+see <href="./doc/simplest-hpm-compilation-ubuntu-20.04">simplest-hpm-compilation-ubuntu-20.04</a>
+
+If you're on another system, see OpenCV's or your operating system's official build/install instructions.
+
+### For Users Who Only Build Once
+```
+cd hp-mark/hpm/hpm
+./slow_build.sh --no-tests
+```
+
+Run the program:
+```
+./hpm
+```
+
+It will tell you how it wants to be used.
+I'm not using it directly most of the time.
+Rather, I'm using it via the scripts found in
+the  hp-mark/use directory
+
+### For An Advanced User Who Wants To Build Repeatedly
+Build with build2. See <a href="https://build2.org">build2.org</a> for install instructions.
+
 Before building `hpm` with build2, its recommended to create a build configuration.
 No pre-configured build configuration is shipped with this project, and build2's default configuration works poorly with hpm.
 
-### If You're a User
 ```
 cd <path-to>/hp-mark/hpm
 bdep init --config-create ../my-build-dir @user cc config.cxx=g++-10
@@ -132,7 +159,7 @@ Compile with
 b
 ```
 
-### If You're a Developer
+### If You're a Developer Making a Pull Request
 Create a configuration with some more compiler flags than the user:
 ```
 cd <path-to>/hp-mark/hpm
@@ -177,14 +204,13 @@ There's also a few scripts that try to be helpful in
 
 # Remaining Challenges
  - The cameras' positions are estimated from images of known patterns. The results' accuracy are limited by errors in the markers and errors in the camera calibration values
- - We must measure and compensate for optical distortion
+ - We must calibrate the camera lens to compensate for optical distortion. This is time consuming and hard. The lo-distortion lens from Arducam helps a bit, but not all
+   the way.
 
 # Opportunities & Smaller Use Cases
- - After we've found 3 or more points individually, then we need to solve the perspective-n-point (PnP) problem.
-   There's an interesting solver on its way into OpenCV that seems very good: [Added SQPnP algorithm to SolvePnP (2020)](https://github.com/opencv/opencv/pull/18371)
+ - There's an interesting PnP solver on its way into OpenCV that seems very good: [Added SQPnP algorithm to SolvePnP (2020)](https://github.com/opencv/opencv/pull/18371)
  - Distances between nozzle and markers may be measured by placing the nozzle on a marker, and letting hp-mark measure relative distances.
- - These distances are useful for line-collision-detector also.
- - We might need to control the image processor (to compensate distortion predictably, or for other tasks). An image processor can do [lots of things](https://webpages.uncc.edu/jfan/isp.pdf). But the Raspberry pi 4 and libcamera gives us the perfect tools for the job:
+ - We can add features in the future that control the image processor (to compensate distortion predictably, or for other tasks). An image processor can do [lots of things](https://webpages.uncc.edu/jfan/isp.pdf). The Raspberry pi 4 and libcamera gives us the perfect tools for the job:
    * [raspberrypi.org page about libcamera](https://www.raspberrypi.org/documentation/linux/software/libcamera/)
    * [libcamera's own home page](http://www.libcamera.org/)
    * [Blog post announcing libcamera](https://www.raspberrypi.org/blog/an-open-source-camera-stack-for-raspberry-pi-using-libcamera/)

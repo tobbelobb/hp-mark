@@ -10,7 +10,7 @@ git clone --recursive https://gitlab.com/tobben/hp-mark.git
 
 # Build!
 cd hp-mark/hpm/hpm
-./rpi_build.sh
+./slow_build.sh
 
 # If you want, you can run the tests
 ./find.test
