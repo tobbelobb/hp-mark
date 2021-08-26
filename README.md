@@ -72,10 +72,18 @@ Nice-to-haves:
  - EDLib for ellipse detection
  - Probably a separate computer ("desktop" or "laptop" or "main computer") for running hpm. You can run hpm directly on the Raspberry Pi, but it's slow.
 
-# How To Clone This Repository
+# How To Clone/Pull This Repository
 
- - Clone with `git clone --recursive https://gitlab.com/tobben/hp-mark.git`. The `--recursive`
+ - Clone with `git clone --recursive https://gitlab.com/tobben/hp-mark.git`. The `--recursive` is there to make sure you get the `hpm` submodule.
  - If you already did `git clone` without `--recursive`, do `git submodule init && git submodule update` to get submodule code right.
+ - When you pull the hp-mark repo, since the `hpm` submodule might also have changed since last time, do either one of
+   ```
+   git pull; cd hpm; git pull; cd ..
+   ```
+   or
+   ```
+   git pull --recurse-submodules
+   ```
 
 # How To Use This Repository
 
