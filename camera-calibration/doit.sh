@@ -7,7 +7,6 @@
 		--images_list=./pics_list.xml \
 		--refind_strategy \
 		--detector_params=detector_params.yml \
-		--focal_length=2714.286 \
 		--grid_width=253.8 \
 		--verbose \
 		myCamParams.xml
