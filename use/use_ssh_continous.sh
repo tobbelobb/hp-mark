@@ -40,19 +40,6 @@ cleanup() {
 		wait ${SSH_PID}
 		rm -f ${SSH_PIPE}
 	fi
-
-	if [ ${CALIBRATE} ]; then
-		echo "" | tee /dev/fd/3
-		echo "" | tee /dev/fd/3
-		echo "xyz_of_samp = np.array([" | tee /dev/fd/3
-		echo -n "${XYZ_OF_SAMPS}" | tee /dev/fd/3
-		echo "])" | tee /dev/fd/3
-
-		echo "" | tee /dev/fd/3
-		echo "motor_pos_samp = np.array([" | tee /dev/fd/3
-		echo -n "${MOTOR_POS_SAMPS}" | tee /dev/fd/3
-		echo "])" | tee /dev/fd/3
-	fi
 	exit 0
 }
 
@@ -87,25 +74,6 @@ COUNT=""
 
 while true; do
 
-	if [ ${CALIBRATE} ]; then
-		### M114 S2 ###
-		# WARNING: This does not work if the web interface is running... Close the tab first.
-		# Send the http request.
-		# On RRF3 this needs to be changed to
-		# - url: http://duet3.local/machine/code/
-		# - data: "M114 S2"
-		curl --silent -X GET -H "application/json, text/plain, */*" http://duet3.local/rr_gcode?gcode=M114%20S2 >/dev/null
-		# It takes a little while for the Duet to process that
-		sleep 0.1
-		# Get the response
-		MOTOR_POS_SAMP="$(curl --silent -X GET -H "application/json, text/plain, */*" http://duet3.local/rr_reply 2>&1 | tr -d '\n')"
-		# Do it again. Sometimes the first one fails
-		curl --silent -X GET -H "application/json, text/plain, */*" http://duet3.local/rr_gcode?gcode=M114%20S2 >/dev/null
-		sleep 0.1
-		MOTOR_POS_SAMP="$(curl --silent -X GET -H "application/json, text/plain, */*" http://duet3.local/rr_reply 2>&1 | tr -d '\n')"
-		echo -n ${MOTOR_POS_SAMP} | tee /dev/fd/3
-	fi
-
 	printf -v COUNT "%04d" ${INC}
 	IMAGE="${IMAGESERIES}/${COUNT}.jpg"
 	IMAGE_ON_PI="${IMAGESERIES_ON_PI}/${COUNT}.jpg"
@@ -114,7 +82,7 @@ while true; do
 	mkfifo ${SSH_PIPE}
 	tail -f ${SSH_PIPE} | ssh pi@rpi RASPISTILL=${RASPISTILL} USEPATH_ON_PI=${USEPATH_ON_PI} IMAGE_ON_PI=${IMAGE_ON_PI} 'bash -s' 2>&1 | tee /dev/fd/3 &
 	SSH_PID=$!
-	PI_CMD="cd \"${USEPATH_ON_PI}\""
+	PI_CMD="mkdir -p \"${USEPATH_ON_PI}\" && cd \"${USEPATH_ON_PI}\""
 	if [ ${VERBOSE} ]; then
 		PI_CMD+=" && pwd"
 	fi

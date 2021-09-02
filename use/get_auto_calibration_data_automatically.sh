@@ -136,7 +136,7 @@ for SET_TORQUES in "M98 P\"/macros/Torque_mode\" A0.09 B0.09 C0.01 D0" \
 	mkfifo ${SSH_PIPE}
 	tail -f ${SSH_PIPE} | ssh pi@rpi RASPISTILL=${RASPISTILL} USEPATH_ON_PI=${USEPATH_ON_PI} IMAGE_ON_PI=${IMAGE_ON_PI} 'bash -s' 2>&1 | tee /dev/fd/3 &
 	SSH_PID=$!
-	PI_CMD="cd \"${USEPATH_ON_PI}\""
+	PI_CMD="mkdir -p \"${USEPATH_ON_PI}\" && cd \"${USEPATH_ON_PI}\""
 	if [ ${VERBOSE} ]; then
 		PI_CMD+=" && pwd"
 	fi
