@@ -125,7 +125,7 @@ build2 is a fast build system, but it takes a while to get it.
 If you only need to build once, you can build without any build system, and use the script `hpm/hpm/slow_build.sh` instead.
 
 It will be a very slow build, but it will take less time than it would have taken
-to first acquire build2 and then build with it.
+to acquire build2.
 
 ## hpm How To Build
 First, you need a fairly recent version of OpenCV installed somewhere in your C++ compilers' search path.
@@ -139,11 +139,6 @@ If you're on another system, see OpenCV's or your operating system's official bu
 ```
 cd hp-mark/hpm/hpm
 ./slow_build.sh --no-tests
-```
-
-Run the program:
-```
-./hpm
 ```
 
 It will tell you how it wants to be used.
@@ -204,13 +199,97 @@ Ask it like this:
 ```
 <path-to>/hp-mark/hpm/hpm/hpm
 ```
-
-There's also a few scripts that try to be helpful in
+or, like this:
 ```
-<path-to>/hp-mark/use/
+cd <path-to>/hp-mark/hpm/hpm/
+./hpm
 ```
 
-# Remaining Challenges
+The executable will tell you that it wants some camera parameters (a config file).
+Examples of camera parameter configs are given in `hp-mark/hpm/hpm/example-cam-params/`.
+They contain the outputs of your camera calibration, as well as `camera-rotation` and
+`camera-translation` that are created by `hpm` itself, if it's executed with the `-c/--camera-position-calibration` flag.
+
+To get the correct `camera-rotation` and `camera-translation`:
+
+ 1. Place your effector at home position (nozzle in origin, lines tight, effector horizontal).
+ 2. Mount your camera in it's final position, pointing towards the effector.
+ 3. Take the image (and maybe download to your main computer, if that's where you execute `hpm`).
+ 4. Run `$ ./hpm <your-half-finished-camera-parameters-file> <marker-parameters> <image-file> --camera-calibration`
+
+### But Wait, We Don't Have The Correct Marker Parameters Yet!
+True. Marker parameters is another config file, that describes your markers.
+Examples of such configs are found in `hp-mark/hpm/hpm/example-marker-params/`.
+They contain:
+
+ * Maker positions
+ * Marker type
+ * Marker size
+ * A topleft marker center value that's unused for now
+
+Your marker type is most probably disk, but hpm also supports sphere.
+Your marker diameter is 90 mm if you follow my standard example. Bigger is generally better.
+Your marker positions are a bit more complicated.
+We want their xyz positions relative to the tip of the nozzle, in a coordinate system that looks like this:
+
+
+![markers principal sketch](./doc/images/markers_principal_sketch.png)
+
+
+It's very hard to take these xyz measurements directly, so I've made a little script that lets you
+take easier measurements, and find the correct xyz positions based on the easier measurements.
+
+So, there will be 21 measurements.
+They are all either between the center of a marker to the tip of the nozzle,
+or between two centers of markers.
+Referring to the image, Make the following measurements in the following order:
+
+ * nozzle-m0, nozzle-m1, nozzle-m2, nozzle-m3, nozzle-m4, nozzle-m5
+ * m0-m1, m0-m2, m0-m3, m0-m4, m0-m5,
+ * m1-m2, m1-m3, m1-m4, m1-m5,
+ * m2-m3, m2-m4, m2-m5,
+ * m3-m4, m3-m5,
+ * m4-m5.
+
+Armed with these 21 values (in units of millimeters), do
+```
+cd hp-mark/find-marker-positions
+./find-marker-positions.py --measurements <all measurements here in correct order, separated by spaces>
+```
+Alternatively, you can type in your 21 values into the `find-marker-positions.py` script directly. It's near the bottom of the file.
+I you do type in directly into the file, you can execute the script with no arguments:
+```
+./find-marker-positions.py
+```
+
+If you get a cost below ca 3, you're probably good.
+Copy/paste the final values you get into your marker-params config file.
+
+Congrats! You should now be able to measure the position of your effector with hp-mark.
+Take a few test images and see if it works.
+
+After a while, it gets cumbersome to always have to download the image from the Raspberry Pi to the main computer manually,
+so I've written some scripts to speed that up.
+
+Look into:
+
+```
+<path-to>/hp-mark/use/use_ssh_continuous.sh
+```
+
+Open it, change `CAMPARAMS` and `MARKERPARAMS` variables so they point to your two new config files.
+It accepts the same flags as `hpm` does, so take it for a ride for example like
+```
+./use_ssh_continuous.sh --show result
+```
+... and press Enter to get another image, or ctrl-C to exit.
+
+Another important script, which also tries to move the Hangprinter's effector around between images is called
+`get_auto_calibration_data_automatically.sh`.
+I won't get into detail about that here. Some detail is offered in the hangprinter.org docs.
+
+
+# Remaining Development Challenges
  - The cameras' positions are estimated from images of known patterns. The results' accuracy are limited by errors in the markers and errors in the camera calibration values
  - We must calibrate the camera lens to compensate for optical distortion. This is time consuming and hard. The lo-distortion lens from Arducam helps a bit, but not all
    the way.
