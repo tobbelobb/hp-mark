@@ -13,13 +13,13 @@
 # Forwards -v, -s, -c or any other trailing arguments to hpm.
 #
 # If you want this script to be verbose, say
-# VERBOSE=true ./use_ssh_continous.sh
+# VERBOSE=true ./use_ssh_continuous.sh
 #
 # Your images will get saved into a subdirectory ./images/<something>
 # You will also get a log file called ./logs/<something>.log
 # By default, <something> will be set to a random six character name.
 # If you want to set it explicitly do:
-# DATA_SERIES_NAME="my-awesome-data-collection" ./use_ssh_continous.ssh
+# DATA_SERIES_NAME="my-awesome-data-collection" ./use_ssh_continuous.ssh
 
 set -o pipefail
 
