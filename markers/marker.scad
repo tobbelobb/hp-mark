@@ -236,40 +236,19 @@ module marker_slider() {
     }
 }
 
-//%bg_plate();
+bg_plate();
 module bg_plate(width=90){
   difference(){
-    cylinder(d=width, h=0.7,$fn=100);
+    cylinder(d=width+10, h=0.7,$fn=100);
     translate([0,0,-0.1])
       cylinder(d=3.0, h=1.8, $fn=20);
+    translate([0,0,0.35])
+    difference(){
+      cylinder(d=width+1, h=1, $fn=100);
+      cylinder(d=width, h=2, center=true, $fn=100);
+    }
   }
 }
-
-bg_plate_background();
-module bg_plate_background(width1=100, width2=80){
-  difference(){
-    cylinder(d=width1, h=0.5,$fn=100);
-    translate([0,0,-0.1])
-      cylinder(d=width2, h=1.8, $fn=100);
-  }
-}
-
-biggest_shadow=58;
-jump=4;
-//translate([0,0,0.7])
-//color([0.1,0.1,0.1])
-//center_shadow(biggest_shadow - 0*jump);
-//center_shadow(biggest_shadow - 1*jump);
-//center_shadow(biggest_shadow - 2*jump);
-//center_shadow(biggest_shadow - 3*jump);
-//center_shadow(biggest_shadow - 4*jump);
-//center_shadow(biggest_shadow - 5*jump);
-//echo(biggest_shadow - 0*jump);
-//echo(biggest_shadow - 1*jump);
-//echo(biggest_shadow - 2*jump);
-//echo(biggest_shadow - 3*jump);
-//echo(biggest_shadow - 4*jump);
-//echo(biggest_shadow - 5*jump);
 
 module center_shadow(width=58) {
   difference(){
