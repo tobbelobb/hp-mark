@@ -23,8 +23,9 @@
 
 set -o pipefail
 
+source "./use_params.sh"
+
 SSH_PID=0
-readonly SSH_PIPE="/tmp/ssh-input-for-pi"
 
 XYZ_OF_SAMP=""
 XYZ_OF_SAMPS=""
@@ -45,29 +46,10 @@ cleanup() {
 
 trap cleanup SIGINT SIGTERM
 
-readonly THISPATH="$(dirname "$0")"
-readonly IMAGES="${THISPATH}/images"
-
-readonly USEPATH_ON_PI="/home/pi/repos/hp-mark/use"
-
-readonly HPM="../hpm/hpm/hpm"
-#readonly CAMPARAMS="../hpm/hpm/example-cam-params/myExampleCamParams.xml"
-readonly CAMPARAMS="../hpm/hpm/example-cam-params/loDistCamParams2.xml"
-readonly MARKERPARAMS="../hpm/hpm/example-marker-params/my-marker-params.xml"
-
-readonly RASPISTILL="/home/pi/repos/NativePiCamera/bin/raspistill_CS_lens"
-SERIESNAME=$(mktemp --dry-run XXXXX)
-if [ ${DATA_SERIES_NAME} ]; then
-	SERIESNAME="${DATA_SERIES_NAME}"
-fi
-readonly LOGFILE="logs/${SERIESNAME}.log"
 touch ${LOGFILE}
 exec 3>&1 1>>${LOGFILE} 2>&1
 
-readonly IMAGESERIES="${IMAGES}/${SERIESNAME}"
 mkdir -p "${IMAGESERIES}/"
-
-readonly IMAGESERIES_ON_PI="${USEPATH_ON_PI}/images/${SERIESNAME}"
 
 let "INC=1"
 COUNT=""
@@ -80,16 +62,12 @@ while true; do
 
 	rm -f ${SSH_PIPE}
 	mkfifo ${SSH_PIPE}
-	tail -f ${SSH_PIPE} | ssh pi@rpi RASPISTILL=${RASPISTILL} USEPATH_ON_PI=${USEPATH_ON_PI} IMAGE_ON_PI=${IMAGE_ON_PI} 'bash -s' 2>&1 | tee /dev/fd/3 &
+	tail -f ${SSH_PIPE} | ssh pi@rpi 'bash -s' 2>&1 | tee /dev/fd/3 &
 	SSH_PID=$!
-	PI_CMD="mkdir -p \"${USEPATH_ON_PI}\" && cd \"${USEPATH_ON_PI}\""
-	if [ ${VERBOSE} ]; then
-		PI_CMD+=" && pwd"
-	fi
-	PI_CMD+=" && mkdir -p \"${IMAGESERIES_ON_PI}/\""
-	PI_CMD+=" && sudo python3 /home/pi/repos/rpi_ws281x/python/examples/tobben_constant_light.py > /dev/null"
-	PI_CMD+=" && "${RASPISTILL}" --quality 100 --timeout 300 --shutter 150000 --ISO 50 -o \"${IMAGE_ON_PI}\" --width 3280 --height 2464"
-	PI_CMD+=" && sudo python3 /home/pi/repos/rpi_ws281x/python/examples/lights_off.py > /dev/null"
+	PI_CMD="mkdir -p \"${IMAGESERIES_ON_PI}/\""
+	PI_CMD+=" && ${LIGHTS_ON_CMD}"
+	PI_CMD+=" && "${IMAGE_COMMAND_EXCEPT_O}" -o \"${IMAGE_ON_PI}\""
+	PI_CMD+=" && ${LIGHTS_OFF_CMD}"
 	if [ ${VERBOSE} ]; then
 		PI_CMD+=" && echo Captured image remotely: \"${IMAGE_ON_PI}\""
 	fi

@@ -4,21 +4,19 @@
 # It sends gcodes to the Hangprinter, and collects images from Raspberry pi.
 # It then runs hpm locally on the image.
 
-# WARNING! Before you run this command, it is assumet that you have put your effector
+# WARNING! Before you run this command, it is assumed that you have put your effector
 # in the home position, with the nozzle at the origin, and with all lines non-slack.
 
 # hpm is given --try-hard option by default
-# You can append the command with other hpm options if you want, like
+# You can append the command with other hpm options like this:
 #
-# $get_auto_calibration_data_automatically.sh --show result
-#
-# ... whill stop to show result during each invocation of hpm.
+# $ get_auto_calibration_data_automatically.sh --show result
 
 # Your will get images saved into a subdirectory ./images/<something>
 # You will also get a log file called ./logs/<something>.log
 # By default, <something> will be set to a random six character name.
 # If you want to set it explicitly do:
-# DATA_SERIES_NAME="my-awesome-data-collection" ./get_auto_calibration_data_automatically.sh
+# $ DATA_SERIES_NAME="my-awesome-data-collection" ./get_auto_calibration_data_automatically.sh
 
 # Copy/paste friendly, filtered versions of the data strings will be printed out at the end.
 
@@ -26,11 +24,9 @@
 
 set -o pipefail
 
-readonly GCODE_ENDPOINT="http://duet3.local/machine/code/"
+source "./use_params.sh"
 
 SSH_PID=0
-readonly SSH_PIPE="/tmp/ssh-input-for-pi"
-
 XYZ_OF_SAMP=""
 XYZ_OF_SAMPS=""
 MOTOR_POS_SAMP=""
@@ -61,30 +57,10 @@ cleanup() {
 
 trap cleanup SIGINT SIGTERM
 
-readonly THISPATH="$(dirname "$0")"
-readonly IMAGES="${THISPATH}/images"
-
-readonly USEPATH_ON_PI="/home/pi/repos/hp-mark/use"
-
-readonly HPM="../hpm/hpm/hpm"
-readonly CAMPARAMS="../hpm/hpm/example-cam-params/loDistCamParams2.xml"
-readonly MARKERPARAMS="../hpm/hpm/example-marker-params/my-marker-params.xml"
-
-readonly RASPISTILL="/home/pi/repos/NativePiCamera/bin/raspistill_CS_lens"
-readonly SHUTTER="15000" # In daylight
-#readonly SHUTTER="150000" # In low light
-SERIESNAME=$(mktemp --dry-run XXXXX)
-if [ ${DATA_SERIES_NAME} ]; then
-	SERIESNAME="${DATA_SERIES_NAME}"
-fi
-readonly LOGFILE="logs/${SERIESNAME}.log"
 touch ${LOGFILE}
 exec 3>&1 1>>${LOGFILE} 2>&1
 
-readonly IMAGESERIES="${IMAGES}/${SERIESNAME}"
 mkdir -p "${IMAGESERIES}/"
-
-readonly IMAGESERIES_ON_PI="${USEPATH_ON_PI}/images/${SERIESNAME}"
 
 let "INC=1"
 COUNT=""
@@ -134,16 +110,12 @@ for SET_TORQUES in "M98 P\"/macros/Torque_mode\" A0.09 B0.09 C0.01 D0" \
 
 	rm -f ${SSH_PIPE}
 	mkfifo ${SSH_PIPE}
-	tail -f ${SSH_PIPE} | ssh pi@rpi RASPISTILL=${RASPISTILL} USEPATH_ON_PI=${USEPATH_ON_PI} IMAGE_ON_PI=${IMAGE_ON_PI} 'bash -s' 2>&1 | tee /dev/fd/3 &
+	tail -f ${SSH_PIPE} | ssh pi@rpi 'bash -s' 2>&1 | tee /dev/fd/3 &
 	SSH_PID=$!
-	PI_CMD="mkdir -p \"${USEPATH_ON_PI}\" && cd \"${USEPATH_ON_PI}\""
-	if [ ${VERBOSE} ]; then
-		PI_CMD+=" && pwd"
-	fi
-	PI_CMD+=" && mkdir -p \"${IMAGESERIES_ON_PI}/\""
-	PI_CMD+=" && sudo python3 /home/pi/repos/rpi_ws281x/python/examples/tobben_constant_light.py > /dev/null"
-	PI_CMD+=" && "${RASPISTILL}" --quality 100 --timeout 300 --shutter "${SHUTTER}" --ISO 50 -o \"${IMAGE_ON_PI}\" --width 3280 --height 2464"
-	PI_CMD+=" && sudo python3 /home/pi/repos/rpi_ws281x/python/examples/lights_off.py > /dev/null"
+	PI_CMD="mkdir -p \"${IMAGESERIES_ON_PI}/\""
+	PI_CMD+=" && ${LIGHTS_ON_CMD}"
+	PI_CMD+=" && "${IMAGE_COMMAND_EXCEPT_O}" -o \"${IMAGE_ON_PI}\""
+	PI_CMD+=" && ${LIGHTS_OFF_CMD}"
 	if [ ${VERBOSE} ]; then
 		PI_CMD+=" && echo Captured image remotely: \"${IMAGE_ON_PI}\""
 	fi

@@ -12,39 +12,50 @@
 # Reads the example params.
 # Forwards -v, -s, -c or any other trailing arguments to hpm.
 
-set -o errexit
 set -o pipefail
 
-readonly THISPATH="$(dirname "$0")"
-readonly IMAGES="${THISPATH}/images"
-readonly IMAGENAME=$(mktemp --dry-run XXXXX.jpg)
-readonly IMAGE="${IMAGES}/${IMAGENAME}"
+source "./use_params.sh"
 
-readonly USEPATH_ON_PI="/home/pi/repos/hp-mark/use"
-readonly IMAGE_ON_PI="${USEPATH_ON_PI}/images/${IMAGENAME}"
+SSH_PID=0
 
-readonly RASPISTILL="/home/pi/repos/NativePiCamera/bin/raspistill_CS_lens"
-ssh pi@rpi RASPISTILL=${RASPISTILL} USEPATH_ON_PI=${USEPATH_ON_PI} IMAGE_ON_PI=${IMAGE_ON_PI} 'bash -s' <<'ENDSSH'
-mkdir -p "${USEPATH_ON_PI}/images" && \
-cd "${USEPATH_ON_PI}" && pwd && \
-sudo python3 /home/pi/repos/rpi_ws281x/python/examples/tobben_constant_light.py > /dev/null && \
-"${RASPISTILL}" --quality 100 --timeout 300 --shutter 150000 --ISO 50 -o "${IMAGE_ON_PI}" --width 3280 --height 2464 && \
-sudo python3 /home/pi/repos/rpi_ws281x/python/examples/lights_off.py > /dev/null && \
-echo Captured image remotely: "${IMAGE_ON_PI}".
-ENDSSH
+cleanup() {
+	if [ ${VERBOSE} ]; then
+		echo "Running cleanup" 2>&1 | tee /dev/fd/3
+	fi
+	if [ ${SSH_PID} -ne 0 ]; then
+		echo "Waiting for ssh" 2>&1 | tee /dev/fd/3
+		wait ${SSH_PID}
+		rm -f ${SSH_PIPE}
+	fi
+	exit 0
+}
+
+trap cleanup SIGINT SIGTERM
+
+touch ${LOGFILE}
+exec 3>&1 1>>${LOGFILE} 2>&1
+
+PI_CMD="mkdir -p \"${USEPATH_ON_PI}/images/\""
+PI_CMD+=" && ${LIGHTS_ON_CMD}"
+PI_CMD+=" && "${IMAGE_COMMAND_EXCEPT_O}" -o \"${SINGLE_IMAGE_ON_PI}\""
+PI_CMD+=" && ${LIGHTS_OFF_CMD}"
+if [ ${VERBOSE} ]; then
+	PI_CMD+=" && echo Captured image remotely: \"${IMAGE_ON_PI}\""
+fi
+PI_CMD+="; exit"
+
+rm -f ${SSH_PIPE}
+mkfifo ${SSH_PIPE}
+tail -f ${SSH_PIPE} | ssh pi@rpi 'bash -s' 2>&1 | tee /dev/fd/3 &
+SSH_PID=$!
+echo ${PI_CMD} >>${SSH_PIPE}
+wait ${SSH_PID}
+SSH_PID=0
 
 mkdir -p "${IMAGES}/"
-cd "${IMAGES}/"
 echo "Copies home:"
-scp pi@rpi:${IMAGE_ON_PI} .
-cd -
+scp pi@rpi:${SINGLE_IMAGE_ON_PI} ${SINGLE_IMAGE}
 
-readonly HPM="../hpm/hpm/hpm"
-#readonly CAMPARAMS="../hpm/hpm/example-cam-params/myExampleCamParams.xml"
-readonly CAMPARAMS="../hpm/hpm/example-cam-params/loDistCamParams2.xml"
-readonly MARKERPARAMS="../hpm/hpm/example-marker-params/my-marker-params.xml"
-
-readonly COMMAND="${HPM} ${CAMPARAMS} ${MARKERPARAMS} ${IMAGE} $@"
-echo "Will execute:"
+readonly COMMAND="${HPM} ${CAMPARAMS} ${MARKERPARAMS} ${SINGLE_IMAGE} --try-hard $@"
 echo "${COMMAND}"
 $COMMAND
