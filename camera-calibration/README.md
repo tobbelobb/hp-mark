@@ -35,11 +35,20 @@ rm myCamParams.xml pics/camera*
 
 ## How To Take Calibration Images
 
+The duet3 official Raspberry Pi OS image comes with the camera disabled by default.
+To enable it do
+```
+sudo raspi-config
+[Interface Options] -> [Camera] -> [Enable] -> [Reboot yes]
+```
+
 Take your own pics inside the pics directory.
 ```
 cd pics
 ./takeCalibrationStills.sh
 ```
+
+
 Press Enter to take a picture, press X followed by enter before the last image.
 
 Regardless if your first pics are good or bad, put their names in the `pics_list.xml`, and
