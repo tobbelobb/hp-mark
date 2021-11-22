@@ -69,7 +69,7 @@ readonly SET_ENCODER_REFERENCE_POINT="M569.3 P40.0:41.0:42.0:43.0 S"
 readonly READ_ENCODERS="M569.3 P40.0:41.0:42.0:43.0"
 
 # We assume nozzle is at the origin. Set motor encoder reference point.
-curl --silent ${GCODE_ENDPOINT} -d "${SET_ENCODER_REFERENCE_POINT}" >/dev/null
+curl --silent ${GCODE_ENDPOINT} -d "${SET_ENCODER_REFERENCE_POINT}" -H "Content-Type: text/plain" >/dev/null
 
 for SET_TORQUES in "M98 P\"/macros/Torque_mode\" A0.09 B0.09 C0.01 D0" \
 	"M98 P\"/macros/Torque_mode\" A0.08  B0.025 C0.08  D0" \
@@ -93,15 +93,15 @@ for SET_TORQUES in "M98 P\"/macros/Torque_mode\" A0.09 B0.09 C0.01 D0" \
 	printf -v COUNT "%04d" ${INC}
 
 	# Set torque
-	curl --silent ${GCODE_ENDPOINT} -d "${SET_TORQUES}" >/dev/null
+	curl --silent ${GCODE_ENDPOINT} -d "${SET_TORQUES}" -H "Content-Type: text/plain" >/dev/null
 
 	### Read encoders ###
 	MOTOR_POS_SAMP="0"
 	MOTOR_POS_SAMP2="1"
 	while [ "${MOTOR_POS_SAMP}" != "${MOTOR_POS_SAMP2}" ]; do
-		MOTOR_POS_SAMP="$(curl --silent ${GCODE_ENDPOINT} -d "${READ_ENCODERS}" 2>&1 | tr -d '\n')"
+		MOTOR_POS_SAMP="$(curl --silent ${GCODE_ENDPOINT} -d "${READ_ENCODERS}" -H "Content-Type: text/plain" 2>&1 | tr -d '\n')"
 		sleep 0.5 # Let motors move
-		MOTOR_POS_SAMP2="$(curl --silent ${GCODE_ENDPOINT} -d "${READ_ENCODERS}" 2>&1 | tr -d '\n')"
+		MOTOR_POS_SAMP2="$(curl --silent ${GCODE_ENDPOINT} -d "${READ_ENCODERS}" -H "Content-Type: text/plain" 2>&1 | tr -d '\n')"
 	done
 	echo -n ${MOTOR_POS_SAMP} | tee /dev/fd/3
 
