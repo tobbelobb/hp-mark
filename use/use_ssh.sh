@@ -57,5 +57,7 @@ echo "Copies home:"
 scp pi@rpi:${SINGLE_IMAGE_ON_PI} ${SINGLE_IMAGE}
 
 readonly COMMAND="${HPM} ${CAMPARAMS} ${MARKERPARAMS} ${SINGLE_IMAGE} --try-hard $@"
-echo "${COMMAND}"
-$COMMAND
+if [ ${VERBOSE} ]; then
+	echo "${COMMAND}" 2>&1 | tee /dev/fd/3
+fi
+$COMMAND 2>&1 | tee /dev/fd/3

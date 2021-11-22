@@ -88,7 +88,7 @@ while true; do
 		echo "${COMMAND}" 2>&1 | tee /dev/fd/3
 	fi
 	XYZ_OF_SAMP="$($COMMAND 2>&1)"
-	echo ${XYZ_OF_SAMP} | tee /dev/fd/3
+	echo "${XYZ_OF_SAMP}" | tee /dev/fd/3
 
 	if ! [[ "${XYZ_OF_SAMP}" =~ .*Warning.* ]]; then
 		if [ "${XYZ_OF_SAMP}" != "Could not identify markers" ]; then

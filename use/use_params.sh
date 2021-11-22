@@ -8,8 +8,6 @@ if [[ ! -d "$THISPATH_TMP" ]]; then THISPATH_TMP="$PWD"; fi
 SERIESNAME_TMP=$(mktemp --dry-run XXXXX)
 if [ ${DATA_SERIES_NAME} ]; then SERIESNAME_TMP="${DATA_SERIES_NAME}"; fi
 
-
-
 readonly THISPATH="${THISPATH_TMP}"
 readonly GCODE_ENDPOINT="http://duet3.local/machine/code/"
 readonly IMAGES="${THISPATH}/images"
@@ -33,7 +31,6 @@ readonly LIGHTS_OFF_CMD="sudo python3 /home/pi/repos/rpi_ws281x/python/examples/
 # Width and height: Maximize potential of image sensor
 readonly RASPISTILL="/home/pi/repos/NativePiCamera/bin/raspistill_CS_lens"
 readonly IMAGE_COMMAND_EXCEPT_O="${RASPISTILL} --quality 100 --timeout 300 --shutter 150000 --ISO 50 --width 3280 --height 2464"
-
 
 ## Cleanup
 
