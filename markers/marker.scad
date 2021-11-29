@@ -236,17 +236,23 @@ module marker_slider() {
     }
 }
 
-bg_plate();
+//bg_plate();
 module bg_plate(width=90){
   difference(){
-    cylinder(d=width+10, h=0.7,$fn=100);
+    cylinder(d=width, h=0.7,$fn=100);
     translate([0,0,-0.1])
       cylinder(d=3.0, h=1.8, $fn=20);
-    translate([0,0,0.35])
-    difference(){
-      cylinder(d=width+1, h=1, $fn=100);
-      cylinder(d=width, h=2, center=true, $fn=100);
-    }
+  }
+}
+
+color("black")
+translate([0,0,-0.75])
+contrast_edge();
+module contrast_edge(width=90){
+  difference(){
+    cylinder(d=width+5, h=0.7,$fn=100);
+    translate([0,0,-1])
+      cylinder(d=width-5, h=2, $fn=100);
   }
 }
 
