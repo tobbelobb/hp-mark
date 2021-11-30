@@ -34,13 +34,16 @@ trap cleanup SIGINT SIGTERM
 
 touch ${LOGFILE}
 exec 3>&1 1>>${LOGFILE} 2>&1
+if [ ${VERBOSE} ]; then
+	echo "Creating log file: ${LOGFILE}" 2>&1 | tee /dev/fd/3
+fi
 
 PI_CMD="mkdir -p \"${USEPATH_ON_PI}/images/\""
 PI_CMD+=" && ${LIGHTS_ON_CMD}"
 PI_CMD+=" && "${IMAGE_COMMAND_EXCEPT_O}" -o \"${SINGLE_IMAGE_ON_PI}\""
 PI_CMD+=" && ${LIGHTS_OFF_CMD}"
 if [ ${VERBOSE} ]; then
-	PI_CMD+=" && echo Captured image remotely: \"${IMAGE_ON_PI}\""
+	PI_CMD+=" && echo \"Captured image remotely: ${SINGLE_IMAGE_ON_PI}\""
 fi
 PI_CMD+="; exit"
 
@@ -53,7 +56,9 @@ wait ${SSH_PID}
 SSH_PID=0
 
 mkdir -p "${IMAGES}/"
-echo "Copies home:"
+if [ ${VERBOSE} ]; then
+	echo "Copies home image ${SINGLE_IMAGE}" 2>&1 | tee /dev/fd/3
+fi
 scp pi@rpi:${SINGLE_IMAGE_ON_PI} ${SINGLE_IMAGE}
 
 readonly COMMAND="${HPM} ${CAMPARAMS} ${MARKERPARAMS} ${SINGLE_IMAGE} --try-hard $@"
