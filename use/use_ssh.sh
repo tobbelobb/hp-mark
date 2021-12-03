@@ -61,7 +61,7 @@ if [ ${VERBOSE} ]; then
 fi
 scp pi@rpi:${SINGLE_IMAGE_ON_PI} ${SINGLE_IMAGE}
 
-readonly COMMAND="${HPM} ${CAMPARAMS} ${MARKERPARAMS} ${SINGLE_IMAGE} --try-hard $@"
+readonly COMMAND="${HPM} ${CAMPARAMS} ${MARKERPARAMS} ${SINGLE_IMAGE} $@"
 if [ ${VERBOSE} ]; then
 	echo "${COMMAND}" 2>&1 | tee /dev/fd/3
 fi

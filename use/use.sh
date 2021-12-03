@@ -17,6 +17,6 @@ readonly IMAGE=$(mktemp -p "${IMAGES}/" XXXXXXXXXX.jpg)
 ${IMAGE_COMMAND_EXCEPT_O} -o "${IMAGE}"
 echo "Captured image ${IMAGE}."
 
-readonly COMMAND="${HPM} ${CAMPARAMS} ${MARKERPARAMS} ${IMAGE} --try-hard $@"
+readonly COMMAND="${HPM} ${CAMPARAMS} ${MARKERPARAMS} ${IMAGE} $@"
 echo $COMMAND
 $COMMAND
