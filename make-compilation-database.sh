@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
-cd hpm
+readonly SCRIPT_DIR="$(dirname "$0")"
+
+cd ${SCRIPT_DIR}/hpm
 b -vn clean update |& compiledb
 mv compile_commands.json ..
+cd -

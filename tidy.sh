@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+readonly SCRIPT_DIR="$(dirname "$0")"
+cd ${SCRIPT_DIR}
+
 # Find only test files (absolute paths)
 TESTS="hpm/hpm/.*test\.c.*"
 
@@ -34,3 +37,5 @@ if [ -z "$1" ]; then
 	echo "Tidy test code"
 	$CLANG_TIDY_COMMAND -p=. -checks=$CHECKS -quiet $TESTS 2>/dev/null
 fi
+
+cd -
