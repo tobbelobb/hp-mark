@@ -77,7 +77,7 @@ readonly READ_ENCODERS="M569.3 P40.0:41.0:42.0:43.0"
 # We assume nozzle is at the origin. Set motor encoder reference point.
 curl --silent ${GCODE_ENDPOINT} -d "${SET_ENCODER_REFERENCE_POINT}" -H "Content-Type: text/plain" >/dev/null
 
-for i in "${!SET_TORQUES[@]}"; do
+for i in {1..25}; do
 
 	printf -v COUNT "%04d" ${INC}
 
