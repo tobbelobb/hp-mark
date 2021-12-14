@@ -77,12 +77,15 @@ readonly READ_ENCODERS="M569.3 P40.0:41.0:42.0:43.0"
 # We assume nozzle is at the origin. Set motor encoder reference point.
 curl --silent ${GCODE_ENDPOINT} -d "${SET_ENCODER_REFERENCE_POINT}" -H "Content-Type: text/plain" >/dev/null
 
-for i in {1..25}; do
+NUMBER_OF_SAMPLES=25
+
+for i in $(seq 1 ${NUMBER_OF_SAMPLES}); do
 
 	printf -v COUNT "%04d" ${INC}
+	let "SAMPLES_LEFT=NUMBER_OF_SAMPLES - INC + 1"
 
 	# Wait for user to push mover around
-	read -p "Press enter to continue"
+	read -p "Press enter to continue, or Ctrl-C to finish, ${SAMPLES_LEFT} measurements left." 2>&1 | tee /dev/fd/3
 
 	MOTOR_POS_SAMP="$(curl --silent ${GCODE_ENDPOINT} -d "${READ_ENCODERS}" -H "Content-Type: text/plain" 2>&1 | tr -d '\n')"
 	echo -n ${MOTOR_POS_SAMP} | tee /dev/fd/3
