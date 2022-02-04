@@ -129,7 +129,14 @@ An output file `myCamParams.xml` should have been created.
 It should now contain the intrinsic parameters for your PiCam v2.
 
 ### What is a 'small' reprojection error?
-I don't really know how small this value needs to be, but I would consider anything below 0.3 a success.
+I don't really know how small this value needs to be, but I would consider anything below 0.6 a great success.
+I'm currently using a setup with 0.48 error myself.
+
+If you've already spent a good amount of time, and are unable to get below a given reprojection error limit, I generally advice settling with the best you have so far,
+and revisit camera calibration later, if it turns out to be crucial for your application.
+
+In for example a high-stakes project that turns out to rely heavily on hp-mark, it might be worth it to buy some more high-end cameras, that are either pre-calibrated,
+or much easier to calibrate.
 
 As a reference, I generated synthetic calibration images straight out of OpenScad.
 These images should be close to perfect, since there is no real camera involved.
