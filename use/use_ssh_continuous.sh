@@ -46,6 +46,9 @@ cleanup() {
 
 trap cleanup SIGINT SIGTERM
 
+mkdir -p "${THISPATH}/logs"
+mkdir -p "${IMAGES}"
+
 touch ${LOGFILE}
 exec 3>&1 1>>${LOGFILE} 2>&1
 

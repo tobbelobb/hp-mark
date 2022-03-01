@@ -32,6 +32,9 @@ cleanup() {
 
 trap cleanup SIGINT SIGTERM
 
+mkdir -p "${THISPATH}/logs"
+mkdir -p "${IMAGES}"
+
 touch ${LOGFILE}
 exec 3>&1 1>>${LOGFILE} 2>&1
 if [ ${VERBOSE} ]; then
@@ -55,7 +58,6 @@ echo ${PI_CMD} >>${SSH_PIPE}
 wait ${SSH_PID}
 SSH_PID=0
 
-mkdir -p "${IMAGES}/"
 if [ ${VERBOSE} ]; then
 	echo "Copies home image ${SINGLE_IMAGE}" 2>&1 | tee /dev/fd/3
 fi
