@@ -222,10 +222,12 @@ True. Marker parameters is another config file, that describes your markers.
 Examples of such configs are found in `hp-mark/hpm/hpm/example-marker-params/`.
 They contain:
 
- * Maker positions
- * Marker type
- * Marker size
- * A topleft marker center value that's unused for now
+ * Maker positions on the effector
+ * Marker type on the effector
+ * Marker size on the effector
+ * Optionally: marker positions on the bed
+ * Optionally: marker type on the bed
+ * Optionally: marker size on the bed
 
 Your marker type is most probably disk, but hpm also supports sphere.
 Your marker diameter is 90 mm if you follow my standard example. Bigger is generally better.
