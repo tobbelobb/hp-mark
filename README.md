@@ -238,10 +238,19 @@ We want their xyz positions relative to the tip of the nozzle, in a coordinate s
 ![markers principal sketch](./doc/images/markers_principal_sketch.png)
 
 
-It's very hard to take these xyz measurements directly, so I've made a little script that lets you
-take easier measurements, and find the correct xyz positions based on the easier measurements.
+It's very hard to take these xyz measurements directly.
 
-So, there will be 21 measurements.
+You have two options for how to get these xyz measurements.
+
+#### Option 1: Try Markers Positions Detector
+
+Getting the xyz measurements of the markers can be done with computer vision. Dzardajs (aka Github user matusbalazi) has made [Markers Positions Detector](https://github.com/matusbalazi/markers_positions_detector) to help you do that. At the time of writing (April 8, 2022) Markers Positions Detector is still quite new, but I recommend that you try this out first if you already have a well-calibrated camera.
+
+#### Option 2: The find-marker-positions.py Script
+
+This is the old way, like a precursor to Markers Positions Detector.
+
+If you want to use find-marker-positions.py, there will be 21 manual measurements.
 They are all either between the center of a marker to the tip of the nozzle,
 or between two centers of markers.
 Referring to the image, Make the following measurements in the following order:
@@ -269,6 +278,8 @@ Copy/paste the final values you get into your marker-params config file.
 
 Congrats! You should now be able to measure the position of your effector with hp-mark.
 Take a few test images and see if it works.
+
+#### Usage Via SSH
 
 After a while, it gets cumbersome to always have to download the image from the Raspberry Pi to the main computer manually,
 so I've written some scripts to speed that up.
