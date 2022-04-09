@@ -37,6 +37,8 @@ XYZ_OF_SAMP=""
 XYZ_OF_SAMPS=""
 MOTOR_POS_SAMP=""
 MOTOR_POS_SAMPS=""
+FORCE_SAMP=""
+FORCE_SAMPS=""
 
 cleanup() {
 	if [ ${VERBOSE} ]; then
@@ -58,6 +60,11 @@ cleanup() {
 	echo "motor_pos_samp = np.array([" | tee /dev/fd/3
 	echo -n "${MOTOR_POS_SAMPS}" | tee /dev/fd/3
 	echo "])" | tee /dev/fd/3
+
+	echo "" | tee /dev/fd/3
+	echo "force_samp = np.array([" | tee /dev/fd/3
+	echo -n "${FORCE_SAMPS}" | tee /dev/fd/3
+	echo "])" | tee /dev/fd/3
 	exit 0
 }
 
@@ -76,6 +83,7 @@ COUNT=""
 
 readonly SET_ENCODER_REFERENCE_POINT="M569.3 P40.0:41.0:42.0:43.0 S"
 readonly READ_ENCODERS="M569.3 P40.0:41.0:42.0:43.0"
+readonly READ_FORCES="M569.8 P40.0:41.0:42.0:43.0"
 
 # We assume nozzle is at the origin. Set motor encoder reference point.
 curl --silent ${GCODE_ENDPOINT} -d "${SET_ENCODER_REFERENCE_POINT}" -H "Content-Type: text/plain" >/dev/null
@@ -92,6 +100,9 @@ for i in $(seq 1 ${NUMBER_OF_SAMPLES}); do
 
 	MOTOR_POS_SAMP="$(curl --silent ${GCODE_ENDPOINT} -d "${READ_ENCODERS}" -H "Content-Type: text/plain" 2>&1 | tr -d '\n')"
 	echo -n ${MOTOR_POS_SAMP} | tee /dev/fd/3
+
+	FORCE_SAMP="$(curl --silent ${GCODE_ENDPOINT} -d "${READ_FORCES}" -H "Content-Type: text/plain" 2>&1 | tr -d '\n')"
+	echo -n ${FORCE_SAMP} | tee /dev/fd/3
 
 	IMAGE="${IMAGESERIES}/${COUNT}.jpg"
 	IMAGE_ON_PI="${IMAGESERIES_ON_PI}/${COUNT}.jpg"
@@ -128,7 +139,10 @@ for i in $(seq 1 ${NUMBER_OF_SAMPLES}); do
 
 	if ! [[ "${XYZ_OF_SAMP}" =~ .*Warning.* ]]; then
 		if [ "${XYZ_OF_SAMP}" != "Could not identify markers" ]; then
+
 			MOTOR_POS_SAMPS+="${MOTOR_POS_SAMP}
+"
+			FORCE_SAMPS+="${FORCE_SAMP}
 "
 			XYZ_OF_SAMP_WITH_COMMA_NEWLINE="${XYZ_OF_SAMP%?},
 "
