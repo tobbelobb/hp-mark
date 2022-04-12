@@ -297,6 +297,50 @@ It accepts the same flags as `hpm` does, so take it for a ride for example like
 ```
 ... and press Enter to get another image, or ctrl-C to exit.
 
+### How to get external camera parameters?
+After the correct camera calibration you obtained internal camera parameters stored in the `myCamParams.xml` file.
+Then you found markers positions on the effector which are also stored in the XML file.
+Last thing we have to do to use hp-mark is to find out external camera parameters (rotation and translation of camera).
+
+I made simple script which will make it easier and faster for you.
+It runs hpm, analyzes input image, generates XML file with external camera parameters and merges 
+internal and external cam params into one XML file.
+
+All you need is:
+ * XML file with internal camera parameters
+ * XML file with markers parameters
+ * image of your effector with markers placed on it
+
+Now install colorama package by typing to command line:
+
+```
+sudo apt update
+sudo pip install colorama
+```
+
+Then run:
+
+```
+python3 <path-to>/hp-mark/hpm/hpm/get_cam_params.py
+```
+
+There is a bunch of arguments you can add to speed up later process:
+ 1. `-f1` or `--xmlC` means path to the internal cam params XML file
+ 2. `-f2` or `--xmlM` means path to the markers params XML file
+ 3. `-f3` or `--image` means path to the input image which will be analyzed
+
+So the command to run this program can look like this:
+
+```
+python3 <path-to>/hp-mark/hpm/hpm/get_cam_params.py --xmlC <path-to>/myCamParams.xml --xmlM <path-to>/myMarkersParams.xml --image <path-to>/image.jpg 
+
+```
+
+After that `myCamParams.xml` should be generated in the same folder as `get_cam_params.py` is. 
+Last thing you have to change is `CAMPARAMS` variable in `use_ssh_continuous.sh` file so it points to your new config file.
+
+
+
 Another important script, which also tries to move the Hangprinter's effector around between images is called
 `get_auto_calibration_data_automatically.sh`.
 I won't get into detail about that here. Some detail is offered in the hangprinter.org docs.
