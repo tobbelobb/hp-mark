@@ -67,4 +67,20 @@ readonly COMMAND="${HPM} ${CAMPARAMS} ${MARKERPARAMS} ${SINGLE_IMAGE} $@"
 if [ ${VERBOSE} ]; then
 	echo "${COMMAND}" 2>&1 | tee /dev/fd/3
 fi
-$COMMAND 2>&1 | tee /dev/fd/3
+HPM_OUTPUT="$($COMMAND 2>&1)"
+echo ${HPM_OUTPUT} | tee /dev/fd/3
+
+if [ ${SEND_G92} ]; then
+	if ! [[ "${HPM_OUTPUT}" =~ .*Warning.* ]]; then
+		if [ "${HPM_OUTPUT}" != "Could not identify markers" ]; then
+			# Magic regex works both for default hpm output and for verbose hpm output
+			# Searches for the last triplet of numbers within square brackets
+			G92=$(echo ${HPM_OUTPUT} | sed -E --quiet 's/.*\[([0-9.-]+), ([0-9.-]+), ([0-9.-]+).*/G92 X\1 Y\2 Z\3/p')
+			if [ -n "${G92}" ]; then
+				G92_RESPONSE="$(curl --silent ${GCODE_ENDPOINT} -d "${G92}" -H "Content-Type: text/plain" 2>&1 | tr -d '\n')"
+				echo "Sent ${G92} to ${GCODE_ENDPOINT}" | tee /dev/fd/3
+        echo "Got response: \"${G92_RESPONSE}\""  | tee /dev/fd/3
+			fi
+		fi
+	fi
+fi
