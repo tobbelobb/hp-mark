@@ -58,7 +58,7 @@ PI_CMD+="; exit"
 
 rm -f ${SSH_PIPE}
 mkfifo ${SSH_PIPE}
-tail -f ${SSH_PIPE} | ssh pi@rpi 'bash -s' 2>&1 | tee /dev/fd/3 &
+tail -f ${SSH_PIPE} | ssh ${SSH_TO} 'bash -s' 2>&1 | tee /dev/fd/3 &
 SSH_PID=$!
 echo ${PI_CMD} >>${SSH_PIPE}
 wait ${SSH_PID}

@@ -109,7 +109,7 @@ for i in $(seq 1 ${NUMBER_OF_SAMPLES}); do
 
 	rm -f ${SSH_PIPE}
 	mkfifo ${SSH_PIPE}
-	tail -f ${SSH_PIPE} | ssh pi@rpi 'bash -s' 2>&1 | tee /dev/fd/3 &
+	tail -f ${SSH_PIPE} | ssh ${SSH_TO} 'bash -s' 2>&1 | tee /dev/fd/3 &
 	SSH_PID=$!
 	PI_CMD="mkdir -p \"${IMAGESERIES_ON_PI}/\""
 	PI_CMD+=" && ${LIGHTS_ON_CMD}"

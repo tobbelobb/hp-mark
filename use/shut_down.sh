@@ -5,6 +5,6 @@
 set -o errexit
 set -o pipefail
 
-ssh pi@rpi USEPATH_ON_PI=${USEPATH_ON_PI} IMAGE_ON_PI=${IMAGE_ON_PI} 'bash -s' <<'ENDSSH'
+ssh ${SSH_TO} USEPATH_ON_PI=${USEPATH_ON_PI} IMAGE_ON_PI=${IMAGE_ON_PI} 'bash -s' <<'ENDSSH'
 sudo shutdown -h now
 ENDSSH

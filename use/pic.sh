@@ -27,7 +27,7 @@ while [ true ]; do
 	USEPATH_ON_PI="/home/pi/repos/hp-mark/use"
 	IMAGE_ON_PI="${USEPATH_ON_PI}/images/${IMAGENAME}"
 
-	ssh pi@rpi RASPISTILL=${RASPISTILL} USEPATH_ON_PI=${USEPATH_ON_PI} IMAGE_ON_PI=${IMAGE_ON_PI} 'bash -s' <<'ENDSSH'
+	ssh ${SSH_TO} RASPISTILL=${RASPISTILL} USEPATH_ON_PI=${USEPATH_ON_PI} IMAGE_ON_PI=${IMAGE_ON_PI} 'bash -s' <<'ENDSSH'
 cd "${USEPATH_ON_PI}" && pwd && \
 mkdir -p "${USEPATH_ON_PI}/images" && \
 "${RASPISTILL}" --quality 100 --timeout 300 --shutter 5000 --ISO 300 -o "${IMAGE_ON_PI}" --width 3280 --height 2464 && \

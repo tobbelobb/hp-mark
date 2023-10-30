@@ -8,6 +8,7 @@ if [[ ! -d "$THISPATH_TMP" ]]; then THISPATH_TMP="$PWD"; fi
 SERIESNAME_TMP=$(mktemp --dry-run XXXXX)
 if [ ${DATA_SERIES_NAME} ]; then SERIESNAME_TMP="${DATA_SERIES_NAME}"; fi
 
+readonly SSH_TO="pi@duet3.local"
 
 readonly THISPATH="${THISPATH_TMP}"
 readonly GCODE_ENDPOINT="http://duet3.local/machine/code/"
