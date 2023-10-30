@@ -129,11 +129,15 @@ to acquire build2.
 
 ## hpm How To Build
 First, you need a fairly recent version of OpenCV installed somewhere in your C++ compilers' search path.
-
-If you're on Ubuntu 20.04,
-see <href="./doc/simplest-hpm-compilation-ubuntu-20.04">simplest-hpm-compilation-ubuntu-20.04</a>
+You can probably use your system's package manager. On Ubuntu, something like
+```
+$ sudo apt install libopencv-dev
+```
 
 If you're on another system, see OpenCV's or your operating system's official build/install instructions.
+
+Back in the day, I had to build OpenCV myself.
+See <href="./doc/simplest-hpm-compilation-ubuntu-20.04">simplest-hpm-compilation-ubuntu-20.04</a> if you for some reason need to do that.
 
 ### For Users Who Only Build Once
 ```
@@ -303,7 +307,7 @@ Then you found markers positions on the effector which are also stored in the XM
 Last thing we have to do to use hp-mark is to find out external camera parameters (rotation and translation of camera).
 
 I made simple script which will make it easier and faster for you.
-It runs hpm, analyzes input image, generates XML file with external camera parameters and merges 
+It runs hpm, analyzes input image, generates XML file with external camera parameters and merges
 internal and external cam params into one XML file.
 
 All you need is:
@@ -332,11 +336,11 @@ There is a bunch of arguments you can add to speed up later process:
 So the command to run this program can look like this:
 
 ```
-python3 <path-to>/hp-mark/hpm/hpm/get_cam_params.py --xmlC <path-to>/myCamParams.xml --xmlM <path-to>/myMarkersParams.xml --image <path-to>/image.jpg 
+python3 <path-to>/hp-mark/hpm/hpm/get_cam_params.py --xmlC <path-to>/myCamParams.xml --xmlM <path-to>/myMarkersParams.xml --image <path-to>/image.jpg
 
 ```
 
-After that `myCamParams.xml` should be generated in the same folder as `get_cam_params.py` is. 
+After that `myCamParams.xml` should be generated in the same folder as `get_cam_params.py` is.
 Last thing you have to change is `CAMPARAMS` variable in `use_ssh_continuous.sh` file so it points to your new config file.
 
 
