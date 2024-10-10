@@ -29,10 +29,10 @@ readonly LIGHTS_OFF_CMD="sudo python3 /home/pi/repos/rpi_ws281x/python/examples/
 
 # Shutter: Recommend 15000 in daylight, 150000 in low light
 # Timeout: Set as low as possible to prevent image chip from getting so hot it warps
-# ISO: Set as low as possible to minimize image noise
+# gain: Set as low as possible to minimize image noise
 # Width and height: Maximize potential of image sensor
-readonly RASPISTILL="/home/pi/repos/NativePiCamera/bin/raspistill_CS_lens"
-readonly IMAGE_COMMAND_EXCEPT_O="${RASPISTILL} --quality 100 --timeout 300 --shutter 150000 --ISO 50 --width 3280 --height 2464"
+readonly RPICAM_STILL="rpicam-still" # Some lenses require a different rpicam-still, specify yours here
+readonly IMAGE_COMMAND_EXCEPT_O="${RPICAM_STILL} --quality 100 --timeout 300 --shutter 150000 --gain 0.50 --width 3280 --height 2464"
 
 ## Cleanup
 

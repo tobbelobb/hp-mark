@@ -114,7 +114,7 @@ This repo will (for now) assume that a number of dependencies are already instal
  - numpy (not required for build & use)
 
 #### Raspberry Pi 4
- - raspistill (shading fix required if you don't use standard Raspberry Pi Picam. For why, and how to get the right shading fixes for Arducam lenses see [here](https://www.arducam.com/docs/cameras-for-raspberry-pi/native-raspberry-pi-cameras/lens-shading-calibration/).)
+ - rpicam-still (shading fix required if you don't use standard Raspberry Pi Picam. For why, and how to get the right shading fixes for Arducam lenses see [here](https://www.arducam.com/docs/cameras-for-raspberry-pi/native-raspberry-pi-cameras/lens-shading-calibration/).)
 
 ### Why Are Some Dependencies Not Required for hpm Build & Use?
 Scripts `tidy.sh`, `make-compilation-database.sh`, `format.sh` etc are there to softly enforce some coding quality and standards.

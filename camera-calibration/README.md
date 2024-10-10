@@ -56,7 +56,7 @@ execute `doit.sh` like before.
 You will probably get an error the first time, because all the corners could not be identified in
 some, or all of your image(s).
 
-Look into the script `takeCalibrationStills.sh` and adjust each of the flags to `raspistill`
+Look into the script `takeCalibrationStills.sh` and adjust each of the flags to `rpicam-still`
 until you get nice image quality.
 
 Take note of the `-fs/--framestart` flag.

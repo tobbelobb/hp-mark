@@ -9,7 +9,7 @@
 #  - Optionally sends found position to machine (G92 command)
 #
 # Doesn't compile hpm.
-# Invokes raspistill and creates random filename for the image.
+# Invokes rpicam-still and creates random filename for the image.
 # Reads the example params.
 # Forwards -v, -s, -c or any other trailing arguments to hpm.
 #
