@@ -131,7 +131,7 @@ to acquire build2.
 First, you need a fairly recent version of OpenCV installed somewhere in your C++ compilers' search path.
 You can probably use your system's package manager. On Ubuntu, something like
 ```
-$ sudo apt install libopencv-dev
+sudo apt install libopencv-dev
 ```
 
 If you're on another system, see OpenCV's or your operating system's official build/install instructions.
@@ -141,14 +141,19 @@ See <href="./doc/simplest-hpm-compilation-ubuntu-20.04">simplest-hpm-compilation
 
 ### For Users Who Only Build Once
 ```
+sudo apt install libopencv-dev
 cd hp-mark/hpm/hpm
 ./slow_build.sh --no-tests
 ```
 
-It will tell you how it wants to be used.
+Then try running the resulting `hpm` binary:
+```
+./hpm --help
+```
+
 I'm not using it directly most of the time.
 Rather, I'm using it via the scripts found in
-the  hp-mark/use directory
+the hp-mark/use directory
 
 ### For An Advanced User Who Wants To Build Repeatedly
 Build with build2. See <a href="https://build2.org">build2.org</a> for install instructions.
