@@ -322,7 +322,14 @@ int main(int argc, char *argv[]) {
   Ptr<aruco::CharucoBoard> const charucoboard = aruco::CharucoBoard::create(
       squaresX, squaresY, squareLength, markerLength, dictionary);
 #endif
+#if CV_VERSION_MAJOR > 4 || (CV_VERSION_MAJOR == 4 && CV_VERSION_MINOR >= 7)
+  Ptr<aruco::Board> const board =
+      makePtr<aruco::Board>(charucoboard->getObjPoints(),
+                            charucoboard->getDictionary(),
+                            charucoboard->getIds());
+#else
   Ptr<aruco::Board> const board = charucoboard.staticCast<aruco::Board>();
+#endif
 
   // collect data from each frame
   vector<vector<vector<Point2f>>> allCorners;
