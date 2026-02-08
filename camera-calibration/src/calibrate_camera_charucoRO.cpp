@@ -40,6 +40,7 @@ the use of this software, even if advised of the possibility of such damage.
 #include <iostream>
 #include <opencv2/aruco/charuco.hpp>
 #include <opencv2/calib3d.hpp>
+#include <opencv2/core/version.hpp>
 #include <opencv2/highgui.hpp>
 #include <opencv2/imgproc.hpp>
 #include <vector>
@@ -202,6 +203,7 @@ double calibrateCameraCharucoRO(InputArrayOfArrays _charucoCorners,
   // calibrateCamera() function
   vector<vector<Point3f>> allObjPoints;
   allObjPoints.resize(_charucoIds.total());
+  const auto chessboardCorners = _board->getChessboardCorners();
   for (unsigned int i = 0; i < _charucoIds.total(); i++) {
     unsigned int nCorners = (unsigned int)_charucoIds.getMat(i).total();
     CV_Assert(nCorners > 0 && nCorners == _charucoCorners.getMat(i).total());
@@ -210,8 +212,8 @@ double calibrateCameraCharucoRO(InputArrayOfArrays _charucoCorners,
     for (unsigned int j = 0; j < nCorners; j++) {
       int pointId = _charucoIds.getMat(i).at<int>(j);
       CV_Assert(pointId >= 0 &&
-                pointId < (int)_board->chessboardCorners.size());
-      allObjPoints[i].push_back(_board->chessboardCorners[pointId]);
+                pointId < (int)chessboardCorners.size());
+      allObjPoints[i].push_back(chessboardCorners[pointId]);
     }
   }
 
@@ -278,8 +280,13 @@ int main(int argc, char *argv[]) {
   if (parser.get<bool>("principal_point_at_center"))
     calibrationFlags |= CALIB_FIX_PRINCIPAL_POINT;
 
+#if CV_VERSION_MAJOR > 4 || (CV_VERSION_MAJOR == 4 && CV_VERSION_MINOR >= 7)
+  Ptr<aruco::DetectorParameters> detectorParams =
+      makePtr<aruco::DetectorParameters>();
+#else
   Ptr<aruco::DetectorParameters> detectorParams =
       aruco::DetectorParameters::create();
+#endif
   if (parser.has("detector_params")) {
     bool const readOk = readDetectorParameters(
         parser.get<string>("detector_params"), detectorParams);
@@ -297,13 +304,32 @@ int main(int argc, char *argv[]) {
     return 0;
   }
 
+#if CV_VERSION_MAJOR > 4 || (CV_VERSION_MAJOR == 4 && CV_VERSION_MINOR >= 7)
+  Ptr<aruco::Dictionary> const dictionary = makePtr<aruco::Dictionary>(
+      aruco::getPredefinedDictionary(
+          static_cast<aruco::PredefinedDictionaryType>(dictionaryId)));
+#else
   Ptr<aruco::Dictionary> const dictionary = aruco::getPredefinedDictionary(
       aruco::PREDEFINED_DICTIONARY_NAME(dictionaryId));
+#endif
 
   // create charuco board object
+#if CV_VERSION_MAJOR > 4 || (CV_VERSION_MAJOR == 4 && CV_VERSION_MINOR >= 7)
+  Ptr<aruco::CharucoBoard> const charucoboard =
+      makePtr<aruco::CharucoBoard>(Size(squaresX, squaresY), squareLength,
+                                   markerLength, *dictionary);
+#else
   Ptr<aruco::CharucoBoard> const charucoboard = aruco::CharucoBoard::create(
       squaresX, squaresY, squareLength, markerLength, dictionary);
+#endif
+#if CV_VERSION_MAJOR > 4 || (CV_VERSION_MAJOR == 4 && CV_VERSION_MINOR >= 7)
+  Ptr<aruco::Board> const board =
+      makePtr<aruco::Board>(charucoboard->getObjPoints(),
+                            charucoboard->getDictionary(),
+                            charucoboard->getIds());
+#else
   Ptr<aruco::Board> const board = charucoboard.staticCast<aruco::Board>();
+#endif
 
   // collect data from each frame
   vector<vector<vector<Point2f>>> allCorners;
