@@ -305,8 +305,9 @@ int main(int argc, char *argv[]) {
   }
 
 #if CV_VERSION_MAJOR > 4 || (CV_VERSION_MAJOR == 4 && CV_VERSION_MINOR >= 7)
-  Ptr<aruco::Dictionary> const dictionary = aruco::getPredefinedDictionary(
-      static_cast<aruco::PredefinedDictionaryType>(dictionaryId));
+  Ptr<aruco::Dictionary> const dictionary = makePtr<aruco::Dictionary>(
+      aruco::getPredefinedDictionary(
+          static_cast<aruco::PredefinedDictionaryType>(dictionaryId)));
 #else
   Ptr<aruco::Dictionary> const dictionary = aruco::getPredefinedDictionary(
       aruco::PREDEFINED_DICTIONARY_NAME(dictionaryId));
